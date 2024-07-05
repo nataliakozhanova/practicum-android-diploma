@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.creator
+package ru.practicum.android.diploma.util
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
