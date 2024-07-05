@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.NetworkClient
 import ru.practicum.android.diploma.data.dto.Response
+import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(
     private val apiService: HhApiService,
@@ -20,7 +21,7 @@ class RetrofitNetworkClient(
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
 
-        return (capabilities != null) && (
+        return capabilities != null && (
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
                 || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                 || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
@@ -34,9 +35,9 @@ class RetrofitNetworkClient(
         return withContext(Dispatchers.IO) {
             try {
                 // заглушка на 200, потом будет проверка when(dto)
-                Response().apply { resultCode = 200 }
+                Response().apply { resultCode = HttpURLConnection.HTTP_OK }
             } catch (e: Throwable) {
-                Response().apply { resultCode = 500 }
+                Response().apply { resultCode = HttpURLConnection.HTTP_INTERNAL_ERROR  }
             }
         }
     }
