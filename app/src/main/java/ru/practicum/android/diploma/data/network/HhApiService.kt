@@ -7,10 +7,10 @@ import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.Response
 
 interface HhApiService {
-    /*@Headers(
+    @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: Application Name (name@example.com)"
-    )*/
+    )
     @GET("/vacancies/{vacancy_id}")
     suspend fun getVacancy(@Path("vacancy_id") id: String): Response
 }
