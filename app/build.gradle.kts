@@ -64,7 +64,7 @@ dependencies {
     implementation("com.markodevcic:peko:3.0.5")
 
     // DI зависимости
-    implementation("io.insert-koin:koin-android:3.3.0")
+    implementation("io.insert-koin:koin-android:3.5.0")
 
     // навигация
     val navVersion = "2.7.7"
@@ -74,14 +74,14 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$navVersion")
 
     // фрагменты
-    val fragmentVersion = "1.5.6"
+    val fragmentVersion = "1.8.1"
     implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
     // viewpager
-    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
     // Materials
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0")
     // корутины
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     // база данных
     val roomVersion = "2.6.1"
@@ -97,9 +97,9 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     // сетевые запросы
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     // RecyclerView
-    implementation("androidx.recyclerview:recyclerview:1.0.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 }
