@@ -33,5 +33,4 @@ val dataModule = module {
         RetrofitNetworkClient(get(), androidContext())
     }
 
-    // TODO: Room
 }
