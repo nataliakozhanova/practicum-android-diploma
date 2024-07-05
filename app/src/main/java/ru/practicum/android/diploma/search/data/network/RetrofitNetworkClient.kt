@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.data.network
+package ru.practicum.android.diploma.search.data.network
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -7,8 +7,8 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.data.NetworkClient
-import ru.practicum.android.diploma.data.dto.Response
+import ru.practicum.android.diploma.search.data.NetworkClient
+import ru.practicum.android.diploma.search.data.dto.Response
 import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(

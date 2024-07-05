@@ -1,10 +1,10 @@
-package ru.practicum.android.diploma.data.network
+package ru.practicum.android.diploma.search.data.network
 
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
 import ru.practicum.android.diploma.BuildConfig
-import ru.practicum.android.diploma.data.dto.Response
+import ru.practicum.android.diploma.search.data.dto.Response
 
 interface HhApiService {
     @Headers(
