@@ -67,8 +67,11 @@ dependencies {
     implementation("io.insert-koin:koin-android:3.3.0")
 
     // навигация
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    val navVersion = "2.7.7"
+    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+    // Jetpack Compose Integration
+    implementation("androidx.navigation:navigation-compose:$navVersion")
 
     // фрагменты
     val fragmentVersion = "1.5.6"
