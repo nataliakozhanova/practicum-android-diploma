@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".team.ui.TeamFragment">
+
+
+    <TextView
+        android:id="@+id/team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/team"
+        android:fontFamily="@font/ys_text_medium"
+        android:textSize="@dimen/dimen22sp"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/developed_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/ys_display_bold"
+        android:maxLines="2"
+        android:text="@string/developed_application"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="@dimen/dimen32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/team" />
+
+    <TextView
+        android:id="@+id/developer_1"
+        style="@style/text_developer"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/ys_text_medium"
+        android:text="@string/best_android_developers_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/developed_app" />
+
+    <TextView
+        android:id="@+id/developer_2"
+        style="@style/text_developer"
+        android:layout_marginTop="16dp"
+        android:text="@string/best_android_developers_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/developer_1" />
+    <TextView
+        android:id="@+id/developer_3"
+        style="@style/text_developer"
+        android:layout_marginTop="16dp"
+        android:text="@string/best_android_developers_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/developer_2" />
+
+    <TextView
+        android:id="@+id/developer_4"
+        style="@style/text_developer"
+        android:layout_marginTop="16dp"
+        android:text="@string/best_android_developers_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/developer_3" />
+
+    <TextView
+        android:id="@+id/developer_5"
+        style="@style/text_developer"
+        android:layout_marginTop="16dp"
+        android:text="@string/best_android_developers_5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/developer_4" />
+</androidx.constraintlayout.widget.ConstraintLayout>
