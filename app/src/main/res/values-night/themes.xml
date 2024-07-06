@@ -6,7 +6,6 @@
         <item name="android:textColorHint">@color/white_day</item>
         <item name="android:textColor">@color/light_grey</item>
         <item name="hintTextColor">@color/light_grey</item>
-        <item name="colorOnPrimary">@color/light_grey</item>
         <item name="colorPrimary">@color/white_day</item>
         <item name="colorSecondary">@color/black</item>
     </style>
