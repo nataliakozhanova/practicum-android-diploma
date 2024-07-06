@@ -49,7 +49,7 @@ class SearchViewModel(
         if (newSearchText.isNotEmpty()) {
             renderState(SearchState.Loading)
             viewModelScope.launch {
-                interactor.findVacancies(newSearchText)
+                interactor.findVacancies(newSearchText, 0, 3)
                     .collect { pair ->
                         processResult(pair.first, pair.second)
                     }

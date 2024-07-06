@@ -16,8 +16,8 @@ class VacanciesRepositoryImpl(
     private val networkClient: NetworkClient,
     private val context: Context,
 ) : VacanciesRepository {
-    override fun findVacancies(expression: String): Flow<Resource<List<Vacancy>>> = flow {
-        val response = networkClient.doRequest(VacancySearchRequest(expression))
+    override fun findVacancies(expression: String, page: Int?, perPage: Int?): Flow<Resource<List<Vacancy>>> = flow {
+        val response = networkClient.doRequest(VacancySearchRequest(expression, page, perPage))
         when (response.resultCode) {
             HttpURLConnection.HTTP_OK -> {
                 if ((response as VacancySearchResponse).items.isEmpty()) {

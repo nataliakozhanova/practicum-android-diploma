@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.search.data.network
 
 import retrofit2.http.GET
 import retrofit2.http.Headers
-import retrofit2.http.Query
+import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 
@@ -12,11 +12,5 @@ interface HhApiService {
         "HH-User-Agent: PracticumHHCareerCompass (natalia.v.kozhanova@gmail.com)"
     )
     @GET("/vacancies")
-    suspend fun findVacancies(
-        @Query("search_field") searchField: String,
-        @Query("text") text: String,
-    ): VacancySearchResponse
-
-    /*@GET("/vacancies/{vacancy_id}")
-    suspend fun getVacancy(@Path("vacancy_id") id: String): Response*/
+    suspend fun findVacancies(@QueryMap options: Map<String, String>): VacancySearchResponse
 }
