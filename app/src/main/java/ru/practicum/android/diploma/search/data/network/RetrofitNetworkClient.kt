@@ -40,10 +40,10 @@ class RetrofitNetworkClient(
                         val options: HashMap<String, String> = HashMap()
                         options["search_field"] = "name"
                         options["text"] = dto.expression
-                        if (dto.page!=null) {
+                        if (dto.page != null) {
                             options["page"] = dto.page.toString()
                         }
-                        if (dto.perPage!=null) {
+                        if (dto.perPage != null) {
                             options["per_page"] = dto.perPage.toString()
                         }
                         apiService.findVacancies(options).apply { resultCode = HttpURLConnection.HTTP_OK }
