@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.search.data.api
 
 import android.content.Context
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.R
@@ -21,9 +20,7 @@ class VacanciesRepositoryImpl(
         val response = networkClient.doRequest(VacancySearchRequest(expression))
         when (response.resultCode) {
             HttpURLConnection.HTTP_OK -> {
-                Log.d("mine", (response as VacancySearchResponse).toString())
-                emit(Resource.Error(context.getString(R.string.no_vacancies)))
-                /*if ((response as VacancySearchResponse).items.isEmpty()) {
+                if ((response as VacancySearchResponse).items.isEmpty()) {
                     emit(Resource.Error(context.getString(R.string.no_vacancies)))
                 } else {
                     emit(Resource.Success(response.items.map {
@@ -32,7 +29,7 @@ class VacanciesRepositoryImpl(
                             name = it.name,
                         )
                     }))
-                }*/
+                }
             }
 
             else -> {

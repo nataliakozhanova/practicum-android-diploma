@@ -42,8 +42,6 @@ class RetrofitNetworkClient(
 
                     else -> Response().apply { resultCode = HttpURLConnection.HTTP_BAD_REQUEST }
                 }
-                // заглушка на 200, потом будет проверка when(dto)
-                Response().apply { resultCode = HttpURLConnection.HTTP_OK }
             } catch (e: HttpException) {
                 e.message?.let { Log.e("Http", it) }
                 Response().apply { resultCode = HttpURLConnection.HTTP_INTERNAL_ERROR }
