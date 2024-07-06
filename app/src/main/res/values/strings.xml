@@ -47,6 +47,7 @@
     <string name="server_error">Ошибка сервера</string>
     <string name="favorites">Избранное</string>
     <string name="empty_list">Список пуст</string>
+    <string name="main">Главная</string>
     <string name="team">Команда</string>
     <string name="developed_application">Над приложением работали</string>
     <string name="best_android_developers_1">Паничев Алексей</string>
