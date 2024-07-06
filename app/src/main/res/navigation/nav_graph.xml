@@ -3,39 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/main_menu_BNV">
+    app:startDestination="@id/searchFragment">
 
     <fragment
-        android:id="@+id/main_menu_BNV"
+        android:id="@+id/searchFragment"
         android:name="ru.practicum.android.diploma.search.presentation.view.SearchFragment"
         tools:layout="@layout/fragment_search">
 
         <action
             android:id="@+id/action_main_menu_BNV_to_filter_fragment"
-            app:destination="@id/filter_fragment" />
+            app:destination="@id/filterFragment" />
         <action
             android:id="@+id/action_main_menu_BNV_to_details_vacansy_fragment2"
-            app:destination="@id/details_vacansy_fragment" />
+            app:destination="@id/vacancyDetailsFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/favorites_menu_BNV"
+        android:id="@+id/favoritesFragment"
         android:name="ru.practicum.android.diploma.favorites.presentation.view.FavoriteFragment"
         tools:layout="@layout/fragment_favorite" />
 
     <fragment
-        android:id="@+id/team_menu_BNV"
+        android:id="@+id/teamFragment"
         android:name="ru.practicum.android.diploma.team.ui.TeamFragment"
         tools:layout="@layout/fragment_team" />
 
     <fragment
-        android:id="@+id/filter_fragment"
+        android:id="@+id/filterFragment"
         android:name="ru.practicum.android.diploma.filters.ui.FilterFragment"
-        tools:layout="@layout/fragment_filters"/>
+        tools:layout="@layout/fragment_filters" />
 
     <fragment
-        android:id="@+id/details_vacansy_fragment"
-        android:name="ru.practicum.android.diploma.vacancydetail.presentation.view.VacansyDetailsFragment"
-        tools:layout="@layout/fragment_vacansy_details"/>
+        android:id="@+id/vacancyDetailsFragment"
+        android:name="ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment"
+        tools:layout="@layout/fragment_vacancy_details" />
 
 </navigation>

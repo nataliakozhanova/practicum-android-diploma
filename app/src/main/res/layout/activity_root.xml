@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
     tools:context=".root.ui.RootActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -11,6 +12,7 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="?attr/backgroundColor"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,13 +23,13 @@
     <View
         android:id="@+id/bottomNavigationViewLine"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toTopOf="@+id/menu_BNV"
+        app:layout_constraintBottom_toTopOf="@+id/menuBNV"
         android:layout_height="1dp"
         android:background="@color/light_grey"
         />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/menu_BNV"
+        android:id="@+id/menuBNV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:itemBackground="?attr/backgroundColor"
