@@ -36,10 +36,18 @@ class RetrofitNetworkClient(
         return withContext(Dispatchers.IO) {
             try {
                 when (dto) {
-                    is VacancySearchRequest -> apiService.findVacancies(
-                        searchField = "name",
-                        text = dto.expression,
-                    ).apply { resultCode = HttpURLConnection.HTTP_OK }
+                    is VacancySearchRequest -> {
+                        val options: HashMap<String, String> = HashMap()
+                        options["search_field"] = "name"
+                        options["text"] = dto.expression
+                        if (dto.page != null) {
+                            options["page"] = dto.page.toString()
+                        }
+                        if (dto.perPage != null) {
+                            options["per_page"] = dto.perPage.toString()
+                        }
+                        apiService.findVacancies(options).apply { resultCode = HttpURLConnection.HTTP_OK }
+                    }
 
                     else -> Response().apply { resultCode = HttpURLConnection.HTTP_BAD_REQUEST }
                 }
