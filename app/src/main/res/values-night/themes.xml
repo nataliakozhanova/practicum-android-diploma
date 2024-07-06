@@ -7,7 +7,9 @@
         <item name="android:textColor">@color/light_grey</item>
         <item name="hintTextColor">@color/light_grey</item>
         <item name="colorOnPrimary">@color/light_grey</item>
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">@color/white_day</item>
         <item name="colorSecondary">@color/black</item>
     </style>
+
+    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma" />
 </resources>
