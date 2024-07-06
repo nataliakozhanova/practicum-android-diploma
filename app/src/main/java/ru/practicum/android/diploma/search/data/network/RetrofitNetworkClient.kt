@@ -29,6 +29,19 @@ class RetrofitNetworkClient(
                 || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
     }
 
+    private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
+        val options: HashMap<String, String> = HashMap()
+        options["search_field"] = "name"
+        options["text"] = dto.expression
+        if (dto.page != null) {
+            options["page"] = dto.page.toString()
+        }
+        if (dto.perPage != null) {
+            options["per_page"] = dto.perPage.toString()
+        }
+        return options
+    }
+
     override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
@@ -37,15 +50,7 @@ class RetrofitNetworkClient(
             try {
                 when (dto) {
                     is VacancySearchRequest -> {
-                        val options: HashMap<String, String> = HashMap()
-                        options["search_field"] = "name"
-                        options["text"] = dto.expression
-                        if (dto.page != null) {
-                            options["page"] = dto.page.toString()
-                        }
-                        if (dto.perPage != null) {
-                            options["per_page"] = dto.perPage.toString()
-                        }
+                        val options = searchOptions(dto)
                         apiService.findVacancies(options).apply { resultCode = HttpURLConnection.HTTP_OK }
                     }
 
