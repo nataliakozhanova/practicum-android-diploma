@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.search.presentation.models
+package ru.practicum.android.diploma.search.presentation.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -10,6 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.search.domain.api.VacanciesInteractor
+import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.vacancydetail.presentation.models.Vacancy
 
