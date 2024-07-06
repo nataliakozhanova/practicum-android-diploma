@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.search.data.NetworkClient
 import ru.practicum.android.diploma.search.data.dto.Response
+import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(
@@ -22,8 +23,8 @@ class RetrofitNetworkClient(
         ) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
 
-        return capabilities != null &&
-            (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+        return capabilities != null
+            && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
                 || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                 || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
     }
@@ -34,8 +35,14 @@ class RetrofitNetworkClient(
         }
         return withContext(Dispatchers.IO) {
             try {
-                // заглушка на 200, потом будет проверка when(dto)
-                Response().apply { resultCode = HttpURLConnection.HTTP_OK }
+                when (dto) {
+                    is VacancySearchRequest -> apiService.findVacancies(
+                        searchField = "name",
+                        text = dto.expression,
+                    ).apply { resultCode = HttpURLConnection.HTTP_OK }
+
+                    else -> Response().apply { resultCode = HttpURLConnection.HTTP_BAD_REQUEST }
+                }
             } catch (e: HttpException) {
                 e.message?.let { Log.e("Http", it) }
                 Response().apply { resultCode = HttpURLConnection.HTTP_INTERNAL_ERROR }
