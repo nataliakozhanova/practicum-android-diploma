@@ -8,7 +8,15 @@
     <fragment
         android:id="@+id/main_menu_BNV"
         android:name="ru.practicum.android.diploma.search.presentation.view.SearchFragment"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+
+        <action
+            android:id="@+id/action_main_menu_BNV_to_filter_fragment"
+            app:destination="@id/filter_fragment" />
+        <action
+            android:id="@+id/action_main_menu_BNV_to_details_vacansy_fragment2"
+            app:destination="@id/details_vacansy_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/favorites_menu_BNV"
@@ -19,5 +27,15 @@
         android:id="@+id/team_menu_BNV"
         android:name="ru.practicum.android.diploma.team.ui.TeamFragment"
         tools:layout="@layout/fragment_team" />
+
+    <fragment
+        android:id="@+id/filter_fragment"
+        android:name="ru.practicum.android.diploma.filters.ui.FilterFragment"
+        tools:layout="@layout/fragment_filters"/>
+
+    <fragment
+        android:id="@+id/details_vacansy_fragment"
+        android:name="ru.practicum.android.diploma.vacancydetail.presentation.view.VacansyDetailsFragment"
+        tools:layout="@layout/fragment_vacansy_details"/>
 
 </navigation>
