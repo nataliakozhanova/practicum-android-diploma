@@ -4,24 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
     tools:context=".team.ui.TeamFragment">
 
 
     <TextView
-        android:id="@+id/team"
+        android:id="@+id/teamTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/team"
         android:fontFamily="@font/ys_text_medium"
-        android:textSize="@dimen/sp_22"
+        android:text="@string/team"
         android:textColor="?attr/colorPrimary"
+        android:textSize="@dimen/sp_22"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/developed_app"
+        android:id="@+id/developedAppTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -34,10 +35,10 @@
         android:textSize="@dimen/sp_32"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/team" />
+        app:layout_constraintTop_toBottomOf="@+id/teamTV" />
 
     <TextView
-        android:id="@+id/developer_1"
+        android:id="@+id/developer1TV"
         style="@style/text_developer"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/ys_text_medium"
@@ -45,44 +46,45 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/developed_app" />
+        app:layout_constraintTop_toBottomOf="@+id/developedAppTV" />
 
     <TextView
-        android:id="@+id/developer_2"
+        android:id="@+id/developer2TV"
         style="@style/text_developer"
         android:layout_marginTop="16dp"
         android:text="@string/best_android_developers_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/developer_1" />
+        app:layout_constraintTop_toBottomOf="@+id/developer1TV" />
+
     <TextView
-        android:id="@+id/developer_3"
+        android:id="@+id/developer3TV"
         style="@style/text_developer"
         android:layout_marginTop="16dp"
         android:text="@string/best_android_developers_3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/developer_2" />
+        app:layout_constraintTop_toBottomOf="@+id/developer2TV" />
 
     <TextView
-        android:id="@+id/developer_4"
+        android:id="@+id/developer4TV"
         style="@style/text_developer"
         android:layout_marginTop="16dp"
         android:text="@string/best_android_developers_4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/developer_3" />
+        app:layout_constraintTop_toBottomOf="@+id/developer3TV" />
 
     <TextView
-        android:id="@+id/developer_5"
+        android:id="@+id/developer5TV"
         style="@style/text_developer"
         android:layout_marginTop="16dp"
         android:text="@string/best_android_developers_5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/developer_4" />
+        app:layout_constraintTop_toBottomOf="@+id/developer4TV" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.search.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
-import ru.practicum.android.diploma.vacancydetail.presentation.models.Vacancy
+import ru.practicum.android.diploma.vacancydetails.presentation.models.Vacancy
 
 class SearchViewModel(
     private val context: Context,
