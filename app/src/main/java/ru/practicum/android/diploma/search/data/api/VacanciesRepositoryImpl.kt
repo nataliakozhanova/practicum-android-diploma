@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.search.domain.api.VacanciesRepository
 import ru.practicum.android.diploma.util.Resource
-import ru.practicum.android.diploma.vacancy_details.presentation.models.Vacancy
+import ru.practicum.android.diploma.vacancydetail.presentation.models.Vacancy
 import java.net.HttpURLConnection
 
 class VacanciesRepositoryImpl(

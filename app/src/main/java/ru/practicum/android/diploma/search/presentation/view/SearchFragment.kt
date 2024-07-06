@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -14,18 +12,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.models.SearchViewModel
-import ru.practicum.android.diploma.vacancy_details.presentation.models.Vacancy
+import ru.practicum.android.diploma.vacancydetail.presentation.models.Vacancy
 
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
-
     private var searchMask: String = ""
-    private lateinit var queryInput: EditText
-    private lateinit var results: TextView
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -39,24 +33,24 @@ class SearchFragment : Fragment() {
             showToast(it)
         }
 
-        viewModel.observeState().observe(viewLifecycleOwner) { state->
+        viewModel.observeState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SearchState.Content -> {
                     showContent(state.vacancies)
                 }
+
                 is SearchState.Loading -> {
                     showLoading()
                 }
+
                 is SearchState.Empty -> {}
                 is SearchState.Error -> {}
             }
         }
 
-        binding.etSearchExpression.doOnTextChanged{ text, start, before, count ->
+        binding.etSearchExpression.doOnTextChanged { text, start, before, count ->
             searchMask = text.toString()
-            if (searchMask.isEmpty()) {
-
-            } else {
+            if (searchMask.isNotEmpty()) {
                 viewModel.searchDebounce(searchMask, false)
             }
         }

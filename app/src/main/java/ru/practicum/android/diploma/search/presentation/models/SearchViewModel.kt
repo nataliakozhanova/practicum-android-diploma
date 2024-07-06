@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.search.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.util.SingleLiveEvent
-import ru.practicum.android.diploma.vacancy_details.presentation.models.Vacancy
+import ru.practicum.android.diploma.vacancydetail.presentation.models.Vacancy
 
 class SearchViewModel(
     private val context: Context,
@@ -30,9 +30,8 @@ class SearchViewModel(
     private val _state = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = _state
 
-
     fun searchDebounce(changedText: String, force: Boolean) {
-        if (changedText.isEmpty() || ((latestSearchText == changedText) && !force)) {
+        if (changedText.isEmpty() || (latestSearchText == changedText && !force)) {
             return
         }
         latestSearchText = changedText

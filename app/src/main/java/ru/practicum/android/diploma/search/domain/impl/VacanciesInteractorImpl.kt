@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.search.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.search.domain.api.VacanciesRepository
 import ru.practicum.android.diploma.util.Resource
-import ru.practicum.android.diploma.vacancy_details.presentation.models.Vacancy
+import ru.practicum.android.diploma.vacancydetail.presentation.models.Vacancy
 
 class VacanciesInteractorImpl(private val repository: VacanciesRepository) : VacanciesInteractor {
     override fun findVacancies(expression: String): Flow<Pair<List<Vacancy>?, String?>> {
