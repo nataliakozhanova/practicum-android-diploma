@@ -23,9 +23,10 @@ class RetrofitNetworkClient(
         ) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
 
-        return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || capabilities.hasTransport(
-            NetworkCapabilities.TRANSPORT_WIFI
-        ) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
+        return capabilities != null
+            && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
     }
 
     override suspend fun doRequest(dto: Any): Response {

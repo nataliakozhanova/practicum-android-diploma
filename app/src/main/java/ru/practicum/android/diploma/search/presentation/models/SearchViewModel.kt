@@ -31,7 +31,10 @@ class SearchViewModel(
     fun observeState(): LiveData<SearchState> = _state
 
     fun searchDebounce(changedText: String, force: Boolean) {
-        if (changedText.isEmpty() || (latestSearchText == changedText && !force)) {
+        if (changedText.isEmpty()) {
+            return
+        }
+        if (latestSearchText == changedText && !force) {
             return
         }
         latestSearchText = changedText
