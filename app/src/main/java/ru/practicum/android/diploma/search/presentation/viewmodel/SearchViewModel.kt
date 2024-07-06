@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.search.presentation.view_model
+package ru.practicum.android.diploma.search.presentation.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
