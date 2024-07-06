@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.search.data.api
+package ru.practicum.android.diploma.search.data.repo
 
 import android.content.Context
 import kotlinx.coroutines.flow.Flow

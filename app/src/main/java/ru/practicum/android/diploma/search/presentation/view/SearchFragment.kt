@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.presentation.models.SearchState
-import ru.practicum.android.diploma.search.presentation.models.SearchViewModel
+import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
 import ru.practicum.android.diploma.vacancydetail.presentation.models.Vacancy
 
 class SearchFragment : Fragment() {
