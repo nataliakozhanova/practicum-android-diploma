@@ -7,6 +7,7 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.practicum.android.diploma.search.data.HhQueryOptions
 import ru.practicum.android.diploma.search.data.NetworkClient
 import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
@@ -23,20 +24,21 @@ class RetrofitNetworkClient(
         ) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
 
-        return capabilities != null
-            && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+        return capabilities != null && (
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
                 || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
+                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            )
     }
 
     private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
         val options: HashMap<String, String> = HashMap()
-        options["text"] = dto.expression
+        options[HhQueryOptions.TEXT.key] = dto.expression
         if (dto.page != null) {
-            options["page"] = dto.page.toString()
+            options[HhQueryOptions.PAGE.key] = dto.page.toString()
         }
         if (dto.perPage != null) {
-            options["per_page"] = dto.perPage.toString()
+            options[HhQueryOptions.PER_PAGE.key] = dto.perPage.toString()
         }
         return options
     }
