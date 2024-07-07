@@ -8,8 +8,7 @@ class VacancySearchResultItem(
     name: String,
     isFavorite: Boolean,
     val employerInfo: EmployerInfo,
-    val salaryInfo: SalaryInfo,
-    val areaName: String,
+    val salaryInfo: SalaryInfo
 ) : VacancyBase(
     id,
     hhID,
@@ -20,10 +19,11 @@ class VacancySearchResultItem(
 class EmployerInfo(
     val employerName: String,
     val employerLogoUrl: String,
+    val areaName: String
 )
 
 class SalaryInfo(
     val salaryFrom: Int,
     val salaryTo: Int?,
-    val salaryCurrency: String,
+    val salaryCurrency: String
 )
