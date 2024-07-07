@@ -7,15 +7,23 @@ class VacancySearchResultItem(
     hhID: String,
     name: String,
     isFavorite: Boolean,
-    val employerName: String,
-    val employerLogoUrl: String,
-    val salaryFrom: Int,
-    val salaryTo: Int?,
-    val salaryCurrency: String,
+    val employerInfo: EmployerInfo,
+    val salaryInfo: SalaryInfo,
     val areaName: String,
 ) : VacancyBase(
     id,
     hhID,
     name,
     isFavorite
+)
+
+class EmployerInfo(
+    val employerName: String,
+    val employerLogoUrl: String,
+)
+
+class SalaryInfo(
+    val salaryFrom: Int,
+    val salaryTo: Int?,
+    val salaryCurrency: String,
 )
