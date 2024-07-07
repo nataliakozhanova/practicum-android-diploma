@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/searchFragment"
+        android:enabled="true"
+        android:icon="@drawable/main_24px_bottom_navigation_view"
+        android:title="@string/main" />
+
+    <item
+        android:id="@+id/favoritesFragment"
+        android:enabled="true"
+        android:icon="@drawable/favorites_24px_bottom_navigation_view"
+        android:title="@string/favorites" />
+
+    <item
+        android:id="@+id/teamFragment"
+        android:enabled="true"
+        android:icon="@drawable/team_24px_bottom_navigation_view"
+        android:title="@string/team" />
+
+</menu>

@@ -1,7 +1,10 @@
+import com.android.sdklib.AndroidVersion
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("ru.practicum.android.diploma.plugins.developproperties")
+    id("kotlin-kapt")
 }
 
 android {
@@ -10,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "ru.practicum.android.diploma"
-        minSdk = libs.versions.minSdk.get().toInt()
+        minSdk = AndroidVersion.VersionCodes.O
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
@@ -27,15 +30,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
         buildConfig = true
+        viewBinding = true
     }
 }
 
@@ -55,4 +59,47 @@ dependencies {
     androidTestImplementation(libs.uiTests.junitExt)
     androidTestImplementation(libs.uiTests.espressoCore)
     // endregion
+
+    // запрос разрешений
+    implementation("com.markodevcic:peko:3.0.5")
+
+    // DI зависимости
+    implementation("io.insert-koin:koin-android:3.5.0")
+
+    // навигация
+    val navVersion = "2.7.7"
+    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+    // Jetpack Compose Integration
+    implementation("androidx.navigation:navigation-compose:$navVersion")
+
+    // фрагменты
+    val fragmentVersion = "1.8.1"
+    implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
+    // viewpager
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    // Materials
+    implementation("com.google.android.material:material:1.12.0")
+    // корутины
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // база данных
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
+    // работа с картинками
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // JSON
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    // сетевые запросы
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 }
