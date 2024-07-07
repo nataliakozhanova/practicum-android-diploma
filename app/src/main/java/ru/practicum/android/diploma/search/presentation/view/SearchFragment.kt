@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.common.domain.BadRequestError
-import ru.practicum.android.diploma.common.domain.NoInternetError
-import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 
