@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.vacancydetails.presentation.models
 
-import java.util.Currency
-
 data class Vacancy(
     val id: String,
     val name: String,
@@ -13,9 +11,9 @@ data class Vacancy(
     val salaryCurrency: String?,
     val salaryFrom: Int?,
     val salaryTo: Int?,
-    val employment: String?,// тип занятости
-    val experience: String?,// требуемый опыт
+    val employment: String?, // тип занятости
+    val experience: String?, // требуемый опыт
 ) {
     // заглушка, дописать функцию
-    fun Salary() = "$salaryFrom - $salaryTo $salaryCurrency"
+    fun salary() = "$salaryFrom - $salaryTo $salaryCurrency"
 }

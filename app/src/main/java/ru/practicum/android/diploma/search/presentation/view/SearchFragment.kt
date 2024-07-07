@@ -65,9 +65,8 @@ class SearchFragment : Fragment() {
     private fun showContent(vacancies: List<Vacancy>) {
         binding.tvSearchResults.isVisible = true
         binding.pbSearchLoading.isVisible = false
-        binding.tvSearchResults.text = objectToStringWithLineBreaks(vacancies[0]) + "\n" + vacancies[0].Salary()
+        binding.tvSearchResults.text = "${objectToStringWithLineBreaks(vacancies[0])}\n${vacancies[0].salary()}"
     }
-
 
     private fun objectToStringWithLineBreaks(obj: Any): String {
         val stringBuilder = StringBuilder()
