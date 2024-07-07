@@ -13,7 +13,4 @@ data class Vacancy(
     val salaryTo: Int?,
     val employment: String?, // тип занятости
     val experience: String?, // требуемый опыт
-) {
-    // заглушка, дописать функцию
-    fun salary() = "$salaryFrom - $salaryTo $salaryCurrency"
-}
+)
