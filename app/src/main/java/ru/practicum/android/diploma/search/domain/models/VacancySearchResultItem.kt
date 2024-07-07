@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.search.domain.models
 
+import ru.practicum.android.diploma.common.domain.EmployerInfo
+import ru.practicum.android.diploma.common.domain.SalaryInfo
 import ru.practicum.android.diploma.common.domain.VacancyBase
 
 class VacancySearchResultItem(
@@ -14,16 +16,4 @@ class VacancySearchResultItem(
     hhID,
     name,
     isFavorite
-)
-
-class EmployerInfo(
-    val employerName: String,
-    val employerLogoUrl: String,
-    val areaName: String
-)
-
-class SalaryInfo(
-    val salaryFrom: Int,
-    val salaryTo: Int?,
-    val salaryCurrency: String
 )
