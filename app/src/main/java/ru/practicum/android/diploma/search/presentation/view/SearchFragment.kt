@@ -9,6 +9,9 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.common.domain.BadRequestError
+import ru.practicum.android.diploma.common.domain.NoInternetError
+import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
@@ -45,7 +48,21 @@ class SearchFragment : Fragment() {
                 }
 
                 is SearchState.Empty -> {}
-                is SearchState.Error -> {}
+                is SearchState.Error -> {
+                    when (state.errorType) {
+                        is ServerInternalError -> {
+                            TODO("Дописать визуалку Ошибка сервера")
+                        }
+
+                        is BadRequestError -> {
+                            TODO("Дописать визуалку Ошибка сервера")
+                        }
+
+                        is NoInternetError -> {
+                            TODO("Дописать визуалку Нет интернета")
+                        }
+                    }
+                }
             }
         }
 
@@ -79,6 +96,7 @@ class SearchFragment : Fragment() {
 
         return stringBuilder.toString()
     }
+
     private fun showToast(additionalMessage: String) {
         Toast.makeText(requireContext(), additionalMessage, Toast.LENGTH_LONG).show()
     }

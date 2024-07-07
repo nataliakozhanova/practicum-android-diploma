@@ -1,12 +1,11 @@
 package ru.practicum.android.diploma.di
 
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
-import ru.practicum.android.diploma.search.data.repo.VacanciesRepositoryImpl
-import ru.practicum.android.diploma.search.domain.api.VacanciesRepository
+import ru.practicum.android.diploma.search.data.repo.SearchRepositoryImpl
+import ru.practicum.android.diploma.search.domain.api.SearchRepository
 
 val repositoryModule = module {
-    single<VacanciesRepository> {
-        VacanciesRepositoryImpl(get(), androidContext())
+    single<SearchRepository> {
+        SearchRepositoryImpl(get())
     }
 }
