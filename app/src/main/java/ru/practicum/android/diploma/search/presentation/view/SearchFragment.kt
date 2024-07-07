@@ -82,4 +82,9 @@ class SearchFragment : Fragment() {
     private fun showToast(additionalMessage: String) {
         Toast.makeText(requireContext(), additionalMessage, Toast.LENGTH_LONG).show()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
