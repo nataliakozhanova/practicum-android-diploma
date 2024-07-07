@@ -31,7 +31,6 @@ class RetrofitNetworkClient(
 
     private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
         val options: HashMap<String, String> = HashMap()
-        options["search_field"] = "name"
         options["text"] = dto.expression
         if (dto.page != null) {
             options["page"] = dto.page.toString()

@@ -21,7 +21,7 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val FIRST_PAGE = 0
-        private const val ITEMS_PER_PAGE = 3
+        private const val ITEMS_PER_PAGE = 20
     }
 
     private var latestSearchText: String? = null
@@ -33,22 +33,19 @@ class SearchViewModel(
     private val _state = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = _state
 
-    fun searchDebounce(changedText: String, force: Boolean) {
-        if (changedText.isEmpty()) {
-            return
-        }
-        if (latestSearchText == changedText && !force) {
+    fun searchDebounce(changedText: String, page: Int) {
+        if (changedText.isEmpty() || latestSearchText == changedText) {
             return
         }
         latestSearchText = changedText
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
-            searchRequest(changedText)
+            searchRequest(changedText, page)
         }
     }
 
-    private fun searchRequest(newSearchText: String) {
+    private fun searchRequest(newSearchText: String, page: Int) {
         if (newSearchText.isNotEmpty()) {
             renderState(SearchState.Loading)
             viewModelScope.launch {
