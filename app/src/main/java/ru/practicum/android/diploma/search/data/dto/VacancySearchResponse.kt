@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.search.data.dto
 
 import com.google.gson.annotations.SerializedName
+import ru.practicum.android.diploma.common.data.ResponseBase
 
 class VacancySearchResponse(
     val found: Int,
@@ -9,4 +10,4 @@ class VacancySearchResponse(
     @SerializedName("per_page")
     val perPage: Int,
     val items: List<VacancyDto>,
-) : Response()
+) : ResponseBase()

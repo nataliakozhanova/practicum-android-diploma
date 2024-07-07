@@ -41,7 +41,21 @@ class SearchFragment : Fragment() {
                 }
 
                 is SearchState.Empty -> {}
-                is SearchState.Error -> {}
+                is SearchState.Error -> {
+                    when (state.errorType) {
+                        is ServerInternalError -> {
+                            TODO("Дописать визуалку Ошибка сервера")
+                        }
+
+                        is BadRequestError -> {
+                            TODO("Дописать визуалку Ошибка сервера")
+                        }
+
+                        is NoInternetError -> {
+                            TODO("Дописать визуалку Нет интернета")
+                        }
+                    }
+                }
             }
         }*/
 

@@ -8,9 +8,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.search.data.HhQueryOptions
-import ru.practicum.android.diploma.search.data.NetworkClient
-import ru.practicum.android.diploma.search.data.dto.Response
+import ru.practicum.android.diploma.common.data.NetworkClient
+import ru.practicum.android.diploma.common.data.ResponseBase
+import ru.practicum.android.diploma.common.domain.BadRequestError
+import ru.practicum.android.diploma.common.domain.NoInternetError
+import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
+import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
+import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
 import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(
@@ -43,23 +48,43 @@ class RetrofitNetworkClient(
         return options
     }
 
-    override suspend fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): ResponseBase {
         if (!isConnected()) {
-            return Response().apply { resultCode = -1 }
+            return ResponseBase(NoInternetError())
         }
         return withContext(Dispatchers.IO) {
             try {
                 when (dto) {
                     is VacancySearchRequest -> {
                         val options = searchOptions(dto)
-                        apiService.findVacancies(options).apply { resultCode = HttpURLConnection.HTTP_OK }
+                        val response = apiService.findVacancies(options)
+                        when (response.code()) {
+                            HttpURLConnection.HTTP_OK -> {
+                                val vacancySearchResponse = response.body()
+                                if (vacancySearchResponse == null) {
+                                    ResponseBase(VacancyNotFoundType())
+                                } else {
+                                    VacancySearchResponse(
+                                        vacancySearchResponse.found,
+                                        vacancySearchResponse.page,
+                                        vacancySearchResponse.pages,
+                                        vacancySearchResponse.perPage,
+                                        vacancySearchResponse.items
+                                    )
+                                }
+                            }
+
+                            HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(VacancyNotFoundType())
+                            else -> ResponseBase(BadRequestError())
+                        }
                     }
 
-                    else -> Response().apply { resultCode = HttpURLConnection.HTTP_BAD_REQUEST }
+                    else -> ResponseBase(BadRequestError())
                 }
+
             } catch (e: HttpException) {
                 e.message?.let { Log.e("Http", it) }
-                Response().apply { resultCode = HttpURLConnection.HTTP_INTERNAL_ERROR }
+                ResponseBase(ServerInternalError())
             }
         }
     }

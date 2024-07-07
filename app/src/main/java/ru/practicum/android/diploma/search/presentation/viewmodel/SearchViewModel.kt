@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,15 +7,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.search.domain.api.VacanciesInteractor
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.Success
+import ru.practicum.android.diploma.search.domain.api.SearchInteractor
+import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.vacancydetails.presentation.models.Vacancy
 
 class SearchViewModel(
-    private val context: Context,
-    private val interactor: VacanciesInteractor,
+    private val interactor: SearchInteractor,
 ) : ViewModel() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
@@ -57,27 +57,27 @@ class SearchViewModel(
         }
     }
 
-    private fun processResult(found: List<Vacancy>?, errorMessage: String?) {
+    private fun processResult(found: List<Vacancy>?, errorType: ErrorType) {
         val vacancies = mutableListOf<Vacancy>()
         if (found != null) {
             vacancies.addAll(found)
         }
-        when (errorMessage) {
-            null -> {
+        when (errorType) {
+            is Success -> {
                 renderState(
                     SearchState.Content(vacancies)
                 )
             }
 
-            context.getString(R.string.no_vacancies) -> {
+            is VacancyNotFoundType -> {
                 renderState(
-                    SearchState.Empty(errorMessage)
+                    SearchState.Empty
                 )
             }
 
             else -> {
                 renderState(
-                    SearchState.Error(errorMessage)
+                    SearchState.Error(errorType)
                 )
             }
 
