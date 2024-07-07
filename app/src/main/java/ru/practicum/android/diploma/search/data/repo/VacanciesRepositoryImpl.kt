@@ -27,6 +27,16 @@ class VacanciesRepositoryImpl(
                         Vacancy(
                             id = it.id,
                             name = it.name,
+                            region = it.area.name,
+                            city = it.address?.city,
+                            companyId = it.employer.id,
+                            companyName = it.employer.name,
+                            companyLogo = it.employer.logoUrls?.logo240,
+                            salaryCurrency = it.salary.currency,
+                            salaryFrom = it.salary.from,
+                            salaryTo = it.salary.to,
+                            employment = it.employment.name,
+                            experience = it.experience.name,
                         )
                     }))
                 }
