@@ -2,18 +2,188 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="?attr/backgroundColor"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Детали вакансии"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/progressBarCl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="gone">
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/errorPlaceholderCl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="-189dp">
+
+        <ImageView
+            android:id="@+id/arrowBackIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/arrow_back_24px" />
+
+        <TextView
+            android:id="@+id/screenNameVacancy"
+            style="@style/VacancyViewCard22TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="19dp"
+            android:text="@string/vacancy"
+            app:layout_constraintStart_toEndOf="@+id/arrowBackIv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/shareVacansyIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="28dp"
+            android:src="@drawable/sharing_24px_button"
+            app:layout_constraintEnd_toStartOf="@+id/favoriteVacansyIv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/favoriteVacansyIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/favorites_off_24px_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineLeftGl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineRightGl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
+
+        <TextView
+            android:id="@+id/nameVacancyTv"
+            style="@style/Bold32TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="43dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+            app:layout_constraintTop_toBottomOf="@+id/screenNameVacancy"
+            tools:text="Название вакансии" />
+
+        <TextView
+            android:id="@+id/vacancySalaryTv"
+            style="@style/Medium22TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+            app:layout_constraintTop_toBottomOf="@+id/nameVacancyTv"
+            tools:text="от 100 000 Р" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cardInfoCompanyCv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/background_light_gray_rounded"
+            android:padding="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+            app:layout_constraintTop_toBottomOf="@+id/vacancySalaryTv">
+
+            <ImageView
+                android:id="@+id/logoCompanyIv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/logo_placeholder_image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/nameCompanyTv"
+                style="@style/Medium22TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@+id/logoCompanyIv"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Еда" />
+
+            <TextView
+                android:id="@+id/adressCompanyTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@+id/logoCompanyIv"
+                app:layout_constraintTop_toBottomOf="@+id/nameCompanyTv"
+                tools:text="Москва" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/experienceTv"
+            style="@style/Medium16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/required_experience"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+            app:layout_constraintTop_toBottomOf="@+id/cardInfoCompanyCv" />
+
+        <TextView
+            android:id="@+id/valueExperienceTv"
+            style="@style/Regular16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+            app:layout_constraintTop_toBottomOf="@+id/experienceTv"
+            tools:text="От 1 года до 3 лет" />
+
+        <TextView
+            android:id="@+id/formatWorkTv"
+            style="@style/Regular16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="31dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+            app:layout_constraintTop_toBottomOf="@+id/experienceTv"
+            tools:text="Полная занятость, Удаленная работа" />
+
+        <TextView
+            android:id="@+id/vacancyDescriptionTv"
+            style="@style/Medium22TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="82dp"
+            android:text="@string/vacancy_description"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+            app:layout_constraintTop_toTopOf="@+id/valueExperienceTv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
