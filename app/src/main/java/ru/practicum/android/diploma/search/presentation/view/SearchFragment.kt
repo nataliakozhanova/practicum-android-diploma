@@ -5,18 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.domain.BadRequestError
+import ru.practicum.android.diploma.common.domain.NoInternetError
+import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
+import ru.practicum.android.diploma.vacancydetails.presentation.models.Vacancy
+import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
 
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
-    // private var currentPage = 0
-    // private var searchMask: String = ""
+
+    private val vacancySearchAdapter = VacancySearchAdapter() { vacancy -> openVacancy(vacancy) }
+
+    private var currentPage = 0
+    private var searchMask: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -26,11 +39,15 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.searchResultsRV.adapter = vacancySearchAdapter
+
+        showEmptySearch()
+
         viewModel.observeToast().observe(viewLifecycleOwner) {
             showToast(it)
         }
 
-        /*viewModel.observeState().observe(viewLifecycleOwner) { state ->
+        viewModel.observeState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SearchState.Content -> {
                     showContent(state.vacancies)
@@ -40,45 +57,122 @@ class SearchFragment : Fragment() {
                     showLoading()
                 }
 
-                is SearchState.Empty -> {}
+                is SearchState.Empty -> {
+                    showErrorOrEmptySearch(1)
+                }
+
                 is SearchState.Error -> {
                     when (state.errorType) {
                         is ServerInternalError -> {
-                            TODO("Дописать визуалку Ошибка сервера")
+                            showErrorOrEmptySearch(2)
                         }
 
                         is BadRequestError -> {
-                            TODO("Дописать визуалку Ошибка сервера")
+                            showErrorOrEmptySearch(2)
                         }
 
                         is NoInternetError -> {
-                            TODO("Дописать визуалку Нет интернета")
+                            showErrorOrEmptySearch(3)
                         }
                     }
                 }
-            }
-        }*/
 
-        /*binding.etSearchExpression.doOnTextChanged { text, start, before, count ->
+                else -> {}
+            }
+        }
+
+        binding.editTextSearch.doOnTextChanged { text, start, before, count ->
             searchMask = text.toString()
             if (searchMask.isNotEmpty()) {
                 viewModel.searchDebounce(searchMask, currentPage)
             }
-        }*/
+        }
     }
 
-    /*private fun showLoading() {
-        binding.tvSearchResults.isVisible = false
-        binding.searchVacancyView.isVisible = true
-    }*/
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-    /*private fun showContent(vacancies: List<Vacancy>) {
-        binding.tvSearchResults.isVisible = true
-        binding.searchVacancyView.isVisible = false
-        binding.tvSearchResults.text = "${objectToStringWithLineBreaks(vacancies[0])}"
-    }*/
 
-    /*private fun objectToStringWithLineBreaks(obj: Any): String {
+    private fun showLoading() {
+        with(binding) {
+            searchProgressBar.isVisible = true
+//          searchErrorContainer.isVisible = false
+            placeHolderImage.isVisible = false
+            placeHolderText.isVisible = false
+            searchResultsRV.isVisible = false
+            vacanciesCountText.isVisible = false
+        }
+    }
+
+    private fun showEmptySearch() {
+        with(binding) {
+            placeHolderImage.isVisible = true
+            placeHolderImage.setImageResource(R.drawable.image_search_empty)
+            placeHolderText.isVisible = false
+            searchResultsRV.isVisible = false
+            vacanciesCountText.isVisible = false
+        }
+        vacancySearchAdapter.vacancies.clear()
+    }
+
+    private fun showContent(vacancies: MutableList<Vacancy>) {
+        with(binding) {
+            searchProgressBar.isVisible = false
+            vacanciesCountText.isVisible = true
+//          searchErrorContainer.isVisible = false
+            placeHolderImage.isVisible = false
+            placeHolderText.isVisible = false
+            searchResultsRV.isVisible = true
+        }
+        vacancySearchAdapter.vacancies.clear()
+        vacancySearchAdapter.vacancies.addAll(vacancies)
+        vacancySearchAdapter.notifyDataSetChanged()
+
+//        binding.editTextSearch.text = "${objectToStringWithLineBreaks(vacancies[0])}"
+    }
+
+
+    private fun showErrorOrEmptySearch(type: Int) {
+        with(binding) {
+            searchResultsRV.isVisible = false
+            searchProgressBar.isVisible = false
+
+//          searchErrorContainer.isVisible = true
+            placeHolderImage.isVisible = true
+            placeHolderText.isVisible = true
+        }
+        when (type) {
+            1 -> {
+                with(binding) {
+                    vacanciesCountText.isVisible = true
+                    vacanciesCountText.text = getString(R.string.no_vacancies)
+                    placeHolderImage.setImageResource(R.drawable.image_nothing_found)
+                    placeHolderText.text = getString(R.string.failed_to_get_vacancies)
+                }
+            }
+            2 -> {
+                with(binding) {
+                    vacanciesCountText.isVisible = false
+                    placeHolderImage.setImageResource(R.drawable.image_search_server_error)
+                    placeHolderText.text = getString(R.string.server_error)
+                }
+            }
+            3 -> {
+                with(binding) {
+                    vacanciesCountText.isVisible = false
+                    placeHolderImage.setImageResource(R.drawable.image_no_internet_error)
+                    placeHolderText.text = getString(R.string.no_internet)
+                }
+            }
+            else ->{}
+        }
+
+    }
+
+
+    private fun objectToStringWithLineBreaks(obj: Any): String {
         val stringBuilder = StringBuilder()
 
         obj.javaClass.declaredFields.forEach { field ->
@@ -88,13 +182,17 @@ class SearchFragment : Fragment() {
         }
 
         return stringBuilder.toString()
-    }*/
+    }
+
     private fun showToast(additionalMessage: String) {
         Toast.makeText(requireContext(), additionalMessage, Toast.LENGTH_LONG).show()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun openVacancy(vacancy: Vacancy) {
+        findNavController().navigate(
+            R.id.action_searchFragment_to_vacancyDetailsFragment,
+            VacancyDetailsFragment.createArgs(vacancy.id)
+        )
     }
+
 }

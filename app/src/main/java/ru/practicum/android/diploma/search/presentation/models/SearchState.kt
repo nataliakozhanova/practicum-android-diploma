@@ -7,6 +7,6 @@ sealed interface SearchState {
 
     data object Loading : SearchState
     data object Empty : SearchState
-    data class Content(val vacancies: List<Vacancy>) : SearchState
+    data class Content(val vacancies: MutableList<Vacancy>) : SearchState
     data class Error(val errorType: ErrorType) : SearchState
 }
