@@ -61,7 +61,7 @@ class RetrofitNetworkClient(
                         when (response.code()) {
                             HttpURLConnection.HTTP_OK -> {
                                 val vacancySearchResponse = response.body()
-                                if (vacancySearchResponse == null) {
+                                if (vacancySearchResponse == null || vacancySearchResponse.items.isEmpty()) {
                                     ResponseBase(VacancyNotFoundType())
                                 } else {
                                     VacancySearchResponse(

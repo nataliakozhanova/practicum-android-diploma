@@ -73,23 +73,25 @@
             app:layout_scrollFlags="scroll|enterAlways" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ProgressBar android:id="@+id/searchProgressBar"
+    <ProgressBar
+        android:id="@+id/searchProgressBar"
         android:layout_width="@dimen/dp_36"
         android:layout_height="@dimen/dp_36"
         android:layout_gravity="center"
         android:indeterminateTint="@color/blue"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/placeHolderImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dp_36"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchAppBarLayout"
-        tools:src="@drawable/image_search_empty"/>
+        tools:src="@drawable/image_search_empty" />
 
     <TextView
         android:id="@+id/placeHolderText"
@@ -98,15 +100,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="230dp"
-        tools:text="@string/failed_to_get_vacancies"/>
+        android:gravity="center"
+        tools:text="@string/failed_to_get_vacancies" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchResultsRV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:itemCount="11"
         tools:listitem="@layout/item_vacancy_view"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -14,10 +13,11 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.BadRequestError
 import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.domain.ServerInternalError
+import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
-import ru.practicum.android.diploma.vacancydetails.presentation.models.Vacancy
+import ru.practicum.android.diploma.util.getCountableVacancies
 import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
 
 class SearchFragment : Fragment() {
@@ -42,10 +42,6 @@ class SearchFragment : Fragment() {
         binding.searchResultsRV.adapter = vacancySearchAdapter
 
         showEmptySearch()
-
-        viewModel.observeToast().observe(viewLifecycleOwner) {
-            showToast(it)
-        }
 
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -98,7 +94,6 @@ class SearchFragment : Fragment() {
     private fun showLoading() {
         with(binding) {
             searchProgressBar.isVisible = true
-//          searchErrorContainer.isVisible = false
             placeHolderImage.isVisible = false
             placeHolderText.isVisible = false
             searchResultsRV.isVisible = false
@@ -117,11 +112,11 @@ class SearchFragment : Fragment() {
         vacancySearchAdapter.vacancies.clear()
     }
 
-    private fun showContent(vacancies: MutableList<Vacancy>) {
+    private fun showContent(vacancies: MutableList<VacancyBase>) {
         with(binding) {
             searchProgressBar.isVisible = false
             vacanciesCountText.isVisible = true
-//          searchErrorContainer.isVisible = false
+            vacanciesCountText.text = getCountableVacancies(vacancies.size, resources)
             placeHolderImage.isVisible = false
             placeHolderText.isVisible = false
             searchResultsRV.isVisible = true
@@ -129,17 +124,12 @@ class SearchFragment : Fragment() {
         vacancySearchAdapter.vacancies.clear()
         vacancySearchAdapter.vacancies.addAll(vacancies)
         vacancySearchAdapter.notifyDataSetChanged()
-
-//        binding.editTextSearch.text = "${objectToStringWithLineBreaks(vacancies[0])}"
     }
-
 
     private fun showErrorOrEmptySearch(type: Int) {
         with(binding) {
             searchResultsRV.isVisible = false
             searchProgressBar.isVisible = false
-
-//          searchErrorContainer.isVisible = true
             placeHolderImage.isVisible = true
             placeHolderText.isVisible = true
         }
@@ -171,27 +161,10 @@ class SearchFragment : Fragment() {
 
     }
 
-
-    private fun objectToStringWithLineBreaks(obj: Any): String {
-        val stringBuilder = StringBuilder()
-
-        obj.javaClass.declaredFields.forEach { field ->
-            field.isAccessible = true
-            val value = field.get(obj)
-            stringBuilder.append("${field.name}: $value\n")
-        }
-
-        return stringBuilder.toString()
-    }
-
-    private fun showToast(additionalMessage: String) {
-        Toast.makeText(requireContext(), additionalMessage, Toast.LENGTH_LONG).show()
-    }
-
-    private fun openVacancy(vacancy: Vacancy) {
+    private fun openVacancy(vacancy: VacancyBase) {
         findNavController().navigate(
             R.id.action_searchFragment_to_vacancyDetailsFragment,
-            VacancyDetailsFragment.createArgs(vacancy.id)
+            VacancyDetailsFragment.createArgs(vacancy.hhID)
         )
     }
 

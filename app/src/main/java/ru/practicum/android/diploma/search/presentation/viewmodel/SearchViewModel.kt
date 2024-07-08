@@ -9,11 +9,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.ErrorType
 import ru.practicum.android.diploma.common.domain.Success
+import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
+import ru.practicum.android.diploma.search.domain.models.SearchResult
 import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
-import ru.practicum.android.diploma.vacancydetails.presentation.models.Vacancy
 
 class SearchViewModel(
     private val interactor: SearchInteractor,
@@ -57,10 +58,10 @@ class SearchViewModel(
         }
     }
 
-    private fun processResult(found: List<Vacancy>?, errorType: ErrorType) {
-        val vacancies = mutableListOf<Vacancy>()
+    private fun processResult(found: SearchResult?, errorType: ErrorType) {
+        val vacancies = mutableListOf<VacancyBase>()
         if (found != null) {
-            vacancies.addAll(found)
+            vacancies.addAll(found.vacancies)
         }
         when (errorType) {
             is Success -> {
