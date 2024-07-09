@@ -49,6 +49,8 @@ class RetrofitNetworkClient(
     }
 
     override suspend fun doRequest(dto: Any): ResponseBase {
+        Log.d("mine", "isConnected = " + isConnected().toString())
+
         if (!isConnected()) {
             return ResponseBase(NoInternetError())
         }
