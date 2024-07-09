@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.favorites.presentation.view
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.Glide.*
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
@@ -21,7 +20,7 @@ class FavoriteViewHolder(
         binding.subtitleFavoriteItem.text = item.employerName
         binding.priceFavoriteItem.text = formatSalary(item.salaryFrom, item.salaryTo, item.salaryCurrency)
 
-        with(itemView)
+        Glide.with(itemView)
             .load(item.employerLogoUrl)
             .placeholder(R.drawable.logo_placeholder_image)
             .transform(CenterCrop(), RoundedCorners(trackCornerRadius))

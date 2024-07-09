@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.favorites.presentation.view
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
