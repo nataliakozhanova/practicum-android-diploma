@@ -9,8 +9,8 @@ data class VacancyDto(
     val address: AddressDTO?,
     val employer: EmployerDto,
     val salary: SalaryDto?,
-    //val employment: ReferenceDto?,
-    //val experience: ReferenceDto?,
+    // val employment: ReferenceDto?,
+    // val experience: ReferenceDto?,
     // если на hh компания не хочет показать лого в поиске
     // значит и мы в приложении можем это учесть
     @SerializedName("show_logo_in_search")

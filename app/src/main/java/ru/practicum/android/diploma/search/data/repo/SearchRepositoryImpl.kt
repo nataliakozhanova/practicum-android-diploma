@@ -35,13 +35,18 @@ class SearchRepositoryImpl(
                                         employerName = it.employer.name,
                                         employerLogoUrl = it.employer.logoUrls?.logo90
                                     ),
-                                    salaryInfo = if (it.salary != null) SalaryInfo(
-                                        salaryFrom = it.salary.from,
-                                        salaryTo = it.salary.to,
-                                        salaryCurrency = it.salary.currency
-                                    ) else null
+                                    salaryInfo = if (it.salary != null) {
+                                        SalaryInfo(
+                                            salaryFrom = it.salary.from,
+                                            salaryTo = it.salary.to,
+                                            salaryCurrency = it.salary.currency
+                                        )
+                                    } else {
+                                        null
+                                    }
                                 )
-                            })
+                            }
+                        )
                     )
                 )
             }

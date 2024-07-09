@@ -22,6 +22,12 @@ import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDeta
 
 class SearchFragment : Fragment() {
 
+    companion object {
+        private const val EMPTY = "empty"
+        private const val SERVER_ERROR = "server_error"
+        private const val NO_INTERNET = "no_internet"
+    }
+
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
@@ -54,21 +60,21 @@ class SearchFragment : Fragment() {
                 }
 
                 is SearchState.Empty -> {
-                    showErrorOrEmptySearch(1)
+                    showErrorOrEmptySearch(EMPTY)
                 }
 
                 is SearchState.Error -> {
                     when (state.errorType) {
                         is ServerInternalError -> {
-                            showErrorOrEmptySearch(2)
+                            showErrorOrEmptySearch(SERVER_ERROR)
                         }
 
                         is BadRequestError -> {
-                            showErrorOrEmptySearch(2)
+                            showErrorOrEmptySearch(SERVER_ERROR)
                         }
 
                         is NoInternetError -> {
-                            showErrorOrEmptySearch(3)
+                            showErrorOrEmptySearch(NO_INTERNET)
                         }
                     }
                 }
@@ -126,7 +132,7 @@ class SearchFragment : Fragment() {
         vacancySearchAdapter.notifyDataSetChanged()
     }
 
-    private fun showErrorOrEmptySearch(type: Int) {
+    private fun showErrorOrEmptySearch(type: String) {
         with(binding) {
             searchResultsRV.isVisible = false
             searchProgressBar.isVisible = false
@@ -134,7 +140,7 @@ class SearchFragment : Fragment() {
             placeHolderText.isVisible = true
         }
         when (type) {
-            1 -> {
+            EMPTY -> {
                 with(binding) {
                     vacanciesCountText.isVisible = true
                     vacanciesCountText.text = getString(R.string.no_vacancies)
@@ -142,21 +148,21 @@ class SearchFragment : Fragment() {
                     placeHolderText.text = getString(R.string.failed_to_get_vacancies)
                 }
             }
-            2 -> {
+            SERVER_ERROR -> {
                 with(binding) {
                     vacanciesCountText.isVisible = false
                     placeHolderImage.setImageResource(R.drawable.image_search_server_error)
                     placeHolderText.text = getString(R.string.server_error)
                 }
             }
-            3 -> {
+            NO_INTERNET -> {
                 with(binding) {
                     vacanciesCountText.isVisible = false
                     placeHolderImage.setImageResource(R.drawable.image_no_internet_error)
                     placeHolderText.text = getString(R.string.no_internet)
                 }
             }
-            else ->{}
+            else -> {}
         }
 
     }
