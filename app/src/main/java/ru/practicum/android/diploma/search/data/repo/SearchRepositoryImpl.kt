@@ -18,16 +18,16 @@ class SearchRepositoryImpl(
     override fun findVacancies(expression: String, page: Int?, perPage: Int?): Flow<Resource<SearchResult?>> = flow {
         when (val response = networkClient.doRequest(VacancySearchRequest(expression, page, perPage))) {
             is VacancySearchResponse -> {
-                emit(Resource.Success(SearchResult(
+                emit(Resource
+                    .Success(
+                        SearchResult(
                             page = response.page,
                             perPage = response.perPage,
                             pages = response.pages,
                             found = response.found,
                             vacancies = response.items.map {
                                 VacancyBase(
-                                    hhID = it.id,
-                                    name = it.name,
-                                    isFavorite = false,
+                                    hhID = it.id, name = it.name, isFavorite = false,
                                     employerInfo = EmployerInfo(
                                         areaName = it.area.name,
                                         employerName = it.employer.name,
