@@ -7,12 +7,12 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.search.data.HhQueryOptions
 import ru.practicum.android.diploma.common.data.NetworkClient
 import ru.practicum.android.diploma.common.data.ResponseBase
 import ru.practicum.android.diploma.common.domain.BadRequestError
 import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.domain.ServerInternalError
+import ru.practicum.android.diploma.search.data.HhQueryOptions
 import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
@@ -49,8 +49,6 @@ class RetrofitNetworkClient(
     }
 
     override suspend fun doRequest(dto: Any): ResponseBase {
-        Log.d("mine", "isConnected = " + isConnected().toString())
-
         if (!isConnected()) {
             return ResponseBase(NoInternetError())
         }
