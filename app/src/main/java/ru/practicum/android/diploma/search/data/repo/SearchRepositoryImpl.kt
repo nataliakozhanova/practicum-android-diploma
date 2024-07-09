@@ -18,9 +18,7 @@ class SearchRepositoryImpl(
     override fun findVacancies(expression: String, page: Int?, perPage: Int?): Flow<Resource<SearchResult?>> = flow {
         when (val response = networkClient.doRequest(VacancySearchRequest(expression, page, perPage))) {
             is VacancySearchResponse -> {
-                emit(
-                    Resource.Success(
-                        SearchResult(
+                emit(Resource.Success(SearchResult(
                             page = response.page,
                             perPage = response.perPage,
                             pages = response.pages,

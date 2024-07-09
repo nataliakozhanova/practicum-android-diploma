@@ -13,7 +13,6 @@ class VacancySearchAdapter(
     var vacancies: ArrayList<VacancyBase> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancySearchViewHolder {
-
         val layoutInspector = LayoutInflater.from(parent.context)
         return VacancySearchViewHolder(
             searchClickListener,
