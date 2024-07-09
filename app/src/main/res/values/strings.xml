@@ -55,6 +55,8 @@
     <string name="best_android_developers_3">Ерин Александр</string>
     <string name="best_android_developers_4">Зыкова Ангелина</string>
     <string name="best_android_developers_5">Заруба Никита</string>
+    <string name="eat">Еда</string>
+    <string name="android_developer">Android-разработчик, Москва</string>
 
     <plurals name="vacancies_counter">
         <item quantity="zero">Найдено $d вакансий</item>
