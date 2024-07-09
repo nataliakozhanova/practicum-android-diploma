@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -104,6 +106,7 @@ class SearchFragment : Fragment() {
             searchResultsRV.isVisible = false
             vacanciesCountText.isVisible = false
         }
+        hideKeyboard()
     }
 
     private fun showEmptySearch() {
@@ -173,4 +176,12 @@ class SearchFragment : Fragment() {
         )
     }
 
+    private fun hideKeyboard() {
+        val view: View? = activity?.currentFocus
+        if (view != null) {
+            val inputMethodManager =
+                activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
 }
