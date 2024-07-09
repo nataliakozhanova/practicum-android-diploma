@@ -10,6 +10,7 @@ import ru.practicum.android.diploma.databinding.ItemFavoriteViewBinding
 import ru.practicum.android.diploma.util.Formatter
 
 class FavoriteViewHolder(
+    private val clickListener: FavoriteAdapter.FavoriteClickListener,
     private val binding: ItemFavoriteViewBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -29,5 +30,7 @@ class FavoriteViewHolder(
             .placeholder(R.drawable.logo_placeholder_image)
             .transform(CenterCrop(), RoundedCorners(trackCornerRadius))
             .into(binding.imageItemFavorite)
+
+        itemView.setOnClickListener { clickListener.onFavoriteClick(item) }
     }
 }
