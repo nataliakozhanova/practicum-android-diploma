@@ -31,7 +31,7 @@ class SearchRepositoryImpl(
                                     employerInfo = EmployerInfo(
                                         areaName = it.area.name,
                                         employerName = it.employer.name,
-                                        employerLogoUrl = it.employer.logoUrls?.logo90
+                                        employerLogoUrl = it.employer.logoUrls?.logo240
                                     ),
                                     salaryInfo = if (it.salary != null) {
                                         SalaryInfo(
