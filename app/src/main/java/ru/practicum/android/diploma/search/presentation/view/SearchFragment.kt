@@ -32,7 +32,7 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
 
-    private val vacancySearchAdapter = VacancySearchAdapter() { vacancy -> openVacancy(vacancy) }
+    private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> openVacancy(vacancy) }
 
     private var currentPage = 0
     private var searchMask: String = ""
@@ -95,7 +95,6 @@ class SearchFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 
     private fun showLoading() {
         with(binding) {

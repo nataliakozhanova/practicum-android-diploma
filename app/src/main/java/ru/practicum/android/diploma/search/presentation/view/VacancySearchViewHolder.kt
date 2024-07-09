@@ -7,6 +7,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.ItemVacancyViewBinding
+import ru.practicum.android.diploma.util.Formatter
 
 class VacancySearchViewHolder(
     private val clickListener: VacancySearchAdapter.SearchClickListener,
@@ -17,16 +18,12 @@ class VacancySearchViewHolder(
         itemView.context.resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
 
     private val stringBuilderNameAndCity = StringBuilder()
-    private val myString = itemView.context.getString(R.string.initial_salary_value)
 
     fun bind(item: VacancyBase) {
         binding.vacancyNameAndCity.text = stringBuilderNameAndCity
             .append(item.name + ", " + item.employerInfo.areaName)
         binding.companyName.text = item.employerInfo.employerName
-        binding.salaryText.text = myString.format(item.salaryInfo?.salaryFrom)
-
-        // дописать вывод з.п. в нужном формате числа, добавить проверку на От и ДО и Зп не указана
-
+        binding.salaryText.text = Formatter.formatSalary(itemView.context, item.salaryInfo)
         Glide.with(itemView)
             .load(item.employerInfo.employerLogoUrl)
             .placeholder(R.drawable.logo_placeholder_image)
