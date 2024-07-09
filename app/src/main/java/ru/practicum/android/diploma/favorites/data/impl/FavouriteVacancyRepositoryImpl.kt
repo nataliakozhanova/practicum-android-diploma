@@ -10,7 +10,10 @@ import ru.practicum.android.diploma.favorites.data.db.VacancyEntity
 import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyRepository
 import ru.practicum.android.diploma.favorites.domain.models.FavouriteVacanciesModel
 
-class FavouriteVacancyRepositoryImpl(private val vacancyDatabase: VacancyDatabase, private val vacancyDbConverter: VacancyDbConverter) : FavouriteVacancyRepository {
+class FavouriteVacancyRepositoryImpl(
+    private val vacancyDatabase: VacancyDatabase,
+    private val vacancyDbConverter: VacancyDbConverter
+) : FavouriteVacancyRepository {
     override suspend fun addVacancyToFavourite(vacancyId: VacancyBase) {
         val vacancyEntity = convertToVacancyEntity(vacancyId)
         vacancyDatabase.vacancyDao().addVacancyToFavourite(vacancyEntity)
@@ -22,7 +25,8 @@ class FavouriteVacancyRepositoryImpl(private val vacancyDatabase: VacancyDatabas
     }
 
     override fun getAllFavouritesVacancies(): Flow<List<FavouriteVacanciesModel>> {
-        return vacancyDatabase.vacancyDao().getAllFavouritesVacancies().map { vacancy -> convertFromVacancyEntity(vacancy) }
+        return vacancyDatabase.vacancyDao().getAllFavouritesVacancies()
+            .map { vacancy -> convertFromVacancyEntity(vacancy) }
     }
 
     override fun getAllFavouritesVacanciesId(): Flow<List<String>> = flow {

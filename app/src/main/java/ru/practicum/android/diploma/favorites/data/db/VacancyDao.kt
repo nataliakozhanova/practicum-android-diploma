@@ -14,7 +14,7 @@ interface VacancyDao {
     @Delete(entity = VacancyEntity::class)
     fun deleteVacancyFromFavourite(vacancy: VacancyEntity)
     @Query("SELECT * FROM vacancy_table")
-    fun getAllFavouritesVacancies() : Flow<List<VacancyEntity>>
+    fun getAllFavouritesVacancies(): Flow<List<VacancyEntity>>
     @Query("SELECT hhID FROM vacancy_table")
-    fun getAllFavouritesVacanciesId() : List<String>
+    fun getAllFavouritesVacanciesId(): List<String>
 }

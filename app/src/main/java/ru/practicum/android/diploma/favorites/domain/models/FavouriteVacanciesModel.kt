@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.favorites.domain.models
-
-
-data class FavouriteVacanciesModel (
+data class FavouriteVacanciesModel(
     val hhID: String,
     val name: String,
     val isFavorite: Boolean,
@@ -10,4 +8,5 @@ data class FavouriteVacanciesModel (
     val employerLogoUrl: String,
     val salaryTo: Int,
     val salaryFrom: Int,
-    val salaryCurrency: String)
+    val salaryCurrency: String
+)
