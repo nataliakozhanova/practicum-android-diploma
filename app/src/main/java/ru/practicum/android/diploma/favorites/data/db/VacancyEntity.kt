@@ -4,8 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "vacancy_table")
-data class VacancyEntity
-    (
+data class VacancyEntity(
     @PrimaryKey
     val hhID: String,
     val name: String,
