@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/backgroundColor">
@@ -27,11 +28,11 @@
             style="@style/Medium22TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLength="40"
             android:maxLines="10"
             android:scrollHorizontally="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Вакансия, Город очень очень очень очень очень очень очень длинная вакансия и город" />
 
         <TextView
             android:id="@+id/companyName"
@@ -41,15 +42,18 @@
             android:maxLines="10"
             android:scrollHorizontally="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vacancyNameAndCity" />
+            app:layout_constraintTop_toBottomOf="@+id/vacancyNameAndCity"
+            tools:text="Очень хорошая компания с очень очень очень очень длинным названием"/>
 
         <TextView
             android:id="@+id/salaryText"
             style="@style/Regular16TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:scrollHorizontally="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/companyName" />
+            app:layout_constraintTop_toBottomOf="@+id/companyName"
+            tools:text="От 100 000 000 000 000 CUP"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
