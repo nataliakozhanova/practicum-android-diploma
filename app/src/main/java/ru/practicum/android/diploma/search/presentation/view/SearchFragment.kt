@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.search.presentation.view
 
-// import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -25,6 +24,7 @@ import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.getCountableVacancies
 import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
+// import android.annotation.SuppressLint
 
 class SearchFragment : Fragment() {
 
