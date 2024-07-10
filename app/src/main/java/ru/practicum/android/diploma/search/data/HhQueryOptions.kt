@@ -4,4 +4,5 @@ enum class HhQueryOptions(val key: String) {
     TEXT("text"),
     PAGE("page"),
     PER_PAGE("per_page"),
+    SEARCH_FIELD("search_field"),
 }
