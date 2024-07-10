@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.view
 
-import android.annotation.SuppressLint
+// import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -49,7 +49,7 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    // @SuppressLint("ClickableViewAccessibility")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -108,7 +108,7 @@ class SearchFragment : Fragment() {
                 changeDrawableSearchIcon(binding.editTextSearch)
                 binding.editTextSearch.setText(SEARCH_MASK)
                 showEmptySearch()
-                return@setOnTouchListener true
+                true
             }
             false
         }
