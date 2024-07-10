@@ -2,10 +2,13 @@ package ru.practicum.android.diploma.search.presentation.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -21,6 +24,7 @@ import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.getCountableVacancies
 import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
+// import android.annotation.SuppressLint
 
 class SearchFragment : Fragment() {
 
@@ -28,6 +32,7 @@ class SearchFragment : Fragment() {
         private const val EMPTY = "empty"
         private const val SERVER_ERROR = "server_error"
         private const val NO_INTERNET = "no_internet"
+        private const val SEARCH_MASK = ""
     }
 
     private var _binding: FragmentSearchBinding? = null
@@ -37,12 +42,14 @@ class SearchFragment : Fragment() {
     private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> openVacancy(vacancy) }
 
     private var currentPage = 0
-    private var searchMask: String = ""
+    private var searchMask = SEARCH_MASK
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    // @SuppressLint("ClickableViewAccessibility")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,9 +95,24 @@ class SearchFragment : Fragment() {
         binding.editTextSearch.doOnTextChanged { text, start, before, count ->
             searchMask = text.toString()
             if (searchMask.isNotEmpty()) {
+                changeDrawableClearText(binding.editTextSearch)
                 viewModel.searchDebounce(searchMask, currentPage)
             }
         }
+
+        binding.editTextSearch.setOnTouchListener { v, event ->
+            v.performClick()
+            if (event.action == MotionEvent.ACTION_UP &&
+                event.rawX >= binding.editTextSearch.right - binding.editTextSearch.compoundDrawables[2].bounds.width()
+            ) {
+                changeDrawableSearchIcon(binding.editTextSearch)
+                binding.editTextSearch.setText(SEARCH_MASK)
+                showEmptySearch()
+                true
+            }
+            false
+        }
+
     }
 
     override fun onDestroyView() {
@@ -150,6 +172,7 @@ class SearchFragment : Fragment() {
                     placeHolderText.text = getString(R.string.failed_to_get_vacancies)
                 }
             }
+
             SERVER_ERROR -> {
                 with(binding) {
                     vacanciesCountText.isVisible = false
@@ -157,6 +180,7 @@ class SearchFragment : Fragment() {
                     placeHolderText.text = getString(R.string.server_error)
                 }
             }
+
             NO_INTERNET -> {
                 with(binding) {
                     vacanciesCountText.isVisible = false
@@ -164,9 +188,24 @@ class SearchFragment : Fragment() {
                     placeHolderText.text = getString(R.string.no_internet)
                 }
             }
+
             else -> {}
         }
 
+    }
+
+    private fun changeDrawableClearText(editText: EditText) {
+        // Меняем иконку на другую
+        val newIcon = ContextCompat.getDrawable(requireContext(), R.drawable.clear_24px_input_edittext_button)
+        newIcon?.setBounds(0, 0, newIcon.intrinsicWidth, newIcon.intrinsicHeight)
+        editText.setCompoundDrawables(null, null, newIcon, null) // Устанавливаем новую иконку справа
+    }
+
+    private fun changeDrawableSearchIcon(editText: EditText) {
+        // Меняем иконку на другую
+        val newIcon = ContextCompat.getDrawable(requireContext(), R.drawable.search_24px_input_edittext_icon)
+        newIcon?.setBounds(0, 0, newIcon.intrinsicWidth, newIcon.intrinsicHeight)
+        editText.setCompoundDrawables(null, null, newIcon, null) // Устанавливаем новую иконку справа
     }
 
     private fun openVacancy(vacancy: VacancyBase) {

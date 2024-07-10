@@ -10,4 +10,12 @@ class VacancySearchResponse(
     @SerializedName("per_page")
     val perPage: Int,
     val items: List<VacancyDto>,
+    val arguments: List<Argument>?,
 ) : ResponseBase()
+
+data class Argument(
+    val argument: String,
+    val value: String,
+    @SerializedName("value_description")
+    val valueDescription: String?,
+)
