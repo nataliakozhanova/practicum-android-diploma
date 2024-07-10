@@ -100,13 +100,13 @@ class SearchFragment : Fragment() {
 
         binding.editTextSearch.setOnTouchListener { v, event ->
             v.performClick()
-            if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX >= (binding.editTextSearch.right - binding.editTextSearch.compoundDrawables[2].bounds.width())) {
-                    changeDrawableSearchIcon(binding.editTextSearch)
-                    binding.editTextSearch.setText(SEARCH_MASK)
-                    showEmptySearch()
-                    return@setOnTouchListener true
-                }
+            if ((event.action == MotionEvent.ACTION_UP) &&
+                event.rawX >= binding.editTextSearch.right - binding.editTextSearch.compoundDrawables[2].bounds.width()
+            ) {
+                changeDrawableSearchIcon(binding.editTextSearch)
+                binding.editTextSearch.setText(SEARCH_MASK)
+                showEmptySearch()
+                return@setOnTouchListener true
             }
             false
         }
