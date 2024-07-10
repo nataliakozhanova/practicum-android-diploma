@@ -7,9 +7,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.core.content.ContextCompat
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -102,7 +102,7 @@ class SearchFragment : Fragment() {
 
         binding.editTextSearch.setOnTouchListener { v, event ->
             v.performClick()
-            if ((event.action == MotionEvent.ACTION_UP) &&
+            if (event.action == MotionEvent.ACTION_UP &&
                 event.rawX >= binding.editTextSearch.right - binding.editTextSearch.compoundDrawables[2].bounds.width()
             ) {
                 changeDrawableSearchIcon(binding.editTextSearch)
