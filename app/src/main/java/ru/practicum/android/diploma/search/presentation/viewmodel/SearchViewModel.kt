@@ -20,9 +20,8 @@ class SearchViewModel(
     private val interactor: SearchInteractor,
 ) : ViewModel() {
     companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private const val FIRST_PAGE = 0
-        private const val ITEMS_PER_PAGE = 20
+        private const val SEARCH_DEBOUNCE_DELAY = 5000L
+        private const val ITEMS_PER_PAGE = 5
     }
 
     private var latestSearchText: String? = null
@@ -50,7 +49,7 @@ class SearchViewModel(
         if (newSearchText.isNotEmpty()) {
             renderState(SearchState.Loading)
             viewModelScope.launch {
-                interactor.findVacancies(newSearchText, FIRST_PAGE, ITEMS_PER_PAGE)
+                interactor.findVacancies(newSearchText, page, ITEMS_PER_PAGE)
                     .collect { pair ->
                         processResult(pair.first, pair.second)
                     }
