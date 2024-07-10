@@ -1,14 +1,11 @@
 package ru.practicum.android.diploma.search.presentation.view
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -105,16 +102,9 @@ class SearchFragment : Fragment() {
             v.performClick()
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= (binding.editTextSearch.right - binding.editTextSearch.compoundDrawables[2].bounds.width())) {
-                    val inputMethodManager =
-                        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                    inputMethodManager?.hideSoftInputFromWindow(
-                        binding.editTextSearch.windowToken,
-                        0
-                    )
-
-                    showEmptySearch()
                     changeDrawableSearchIcon(binding.editTextSearch)
-                    searchMask = SEARCH_MASK
+                    binding.editTextSearch.setText(SEARCH_MASK)
+                    showEmptySearch()
                     return@setOnTouchListener true
                 }
             }
