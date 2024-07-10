@@ -40,6 +40,9 @@ class RetrofitNetworkClient(
         val options: HashMap<String, String> = HashMap()
         options[HhQueryOptions.TEXT.key] = dto.expression
         options[HhQueryOptions.SEARCH_FIELD.key] = "name"
+        options[HhQueryOptions.DESCRIBE_ARGUMENTS.key] = "true"
+        options[HhQueryOptions.VACANCY_SEARCH_ORDER.key] = "publication_time"
+        options[HhQueryOptions.NO_MAGIC.key] = "true"
         if (dto.page != null) {
             options[HhQueryOptions.PAGE.key] = dto.page.toString()
         }
@@ -59,7 +62,6 @@ class RetrofitNetworkClient(
                     is VacancySearchRequest -> {
                         val options = searchOptions(dto)
                         val response = apiService.findVacancies(options)
-                        Log.d("mine", "Search($options)")
                         when (response.code()) {
                             HttpURLConnection.HTTP_OK -> {
                                 val vacancySearchResponse = response.body()
@@ -71,7 +73,8 @@ class RetrofitNetworkClient(
                                         vacancySearchResponse.page,
                                         vacancySearchResponse.pages,
                                         vacancySearchResponse.perPage,
-                                        vacancySearchResponse.items
+                                        vacancySearchResponse.items,
+                                        vacancySearchResponse.arguments
                                     )
                                 }
                             }

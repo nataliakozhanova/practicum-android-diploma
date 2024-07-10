@@ -14,21 +14,14 @@ class VacancySearchViewHolder(
     private val binding: ItemVacancyViewBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private val trackCornerRadius: Int =
-        itemView.context.resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
-
-    private val stringBuilderNameAndCity = StringBuilder()
+    private val trackCornerRadius: Int = itemView.context.resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
 
     fun bind(item: VacancyBase) {
-        binding.vacancyNameAndCity.text = stringBuilderNameAndCity
-            .append(item.name + ", " + item.employerInfo.areaName)
+        binding.vacancyNameAndCity.text = "${item.name}, ${item.employerInfo.areaName}"
         binding.companyName.text = item.employerInfo.employerName
         binding.salaryText.text = Formatter.formatSalary(itemView.context, item.salaryInfo)
-        Glide.with(itemView)
-            .load(item.employerInfo.employerLogoUrl)
-            .placeholder(R.drawable.logo_placeholder_image)
-            .transform(CenterCrop(), RoundedCorners(trackCornerRadius))
-            .into(binding.vacancyLogo)
+        Glide.with(itemView).load(item.employerInfo.employerLogoUrl).placeholder(R.drawable.logo_placeholder_image)
+            .transform(CenterCrop(), RoundedCorners(trackCornerRadius)).into(binding.vacancyLogo)
 
         itemView.setOnClickListener { clickListener.onVacancyClick(item) }
     }
