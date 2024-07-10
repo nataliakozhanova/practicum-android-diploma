@@ -24,7 +24,7 @@ import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.getCountableVacancies
 import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
-// import android.annotation.SuppressLint
+import android.annotation.SuppressLint
 
 class SearchFragment : Fragment() {
 
@@ -49,7 +49,7 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    // @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
