@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.ItemFavoriteViewBinding
-import ru.practicum.android.diploma.favorites.domain.models.FavouriteVacanciesModel
 
 class FavoriteAdapter(
     private val favoriteClickListener: FavoriteClickListener,
