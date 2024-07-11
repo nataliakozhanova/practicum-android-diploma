@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.favorites.data.converters.VacancyDbConverter
 import ru.practicum.android.diploma.favorites.data.db.VacancyDatabase
 import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.vacancydetails.data.network.RetrofitNetworkClientDetails
 
 val dataModule = module {
     single<HhApiService> {
@@ -41,6 +42,9 @@ val dataModule = module {
 
     single<NetworkClient> {
         RetrofitNetworkClient(get(), androidContext())
+    }
+    single {
+        RetrofitNetworkClientDetails(get(), androidContext())
     }
 
 }

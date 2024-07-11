@@ -30,7 +30,6 @@ class RetrofitNetworkClientDetails(
         return withContext(Dispatchers.IO) {
             try {
                 hhApiServiceDetails.getVacancyDetails(dto.toString())
-                ResponseBase(Success())
             } catch (e: HttpException) {
                 when (e.code()) {
                     SERVER_ERROR -> ResponseBase(ServerInternalError())
