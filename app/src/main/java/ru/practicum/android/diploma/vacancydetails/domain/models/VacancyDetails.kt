@@ -10,8 +10,19 @@ class VacancyDetails(
     name: String,
     area: String,
     isFavorite: Boolean,
-    employerInfo: EmployerInfo, //name, logoUrl
+    employerInfo: EmployerInfo, // name, logoUrl
     salaryInfo: SalaryInfo?,
+    val details: Details,
+) : VacancyBase(
+    hhID,
+    name,
+    area,
+    isFavorite,
+    employerInfo,
+    salaryInfo
+)
+
+data class Details(
     val address: Address?,
     val experience: NameInfo?,
     val employment: NameInfo?,
@@ -20,8 +31,6 @@ class VacancyDetails(
     val keySkill: List<String>,
     val contacts: Contacts?,
     val hhVacancyLink: String,
-) : VacancyBase(
-    hhID, name, area, isFavorite, employerInfo, salaryInfo
 )
 
 data class Address(
