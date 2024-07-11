@@ -8,24 +8,31 @@ data class DetailsDto(
     val name: String,
     val area: AreaDto,
     val address: AddressDto?,
-    val employer: EmployerDto,
+    val employer: EmployerDto?,
     val salary: SalaryDto?,
-    val experience: ExperienceDto,
-    val working: WorkingDto,
-    val keySkill: KeySkillDto,
-    val contacts: ContactsDto,
-    @SerializedName("show_logo_in_search")
-    val showLogoInSearch: Boolean?
+    val experience: NameInfoDto?,
+    val employment: NameInfoDto?,
+    val schedule: NameInfoDto?,
+    val description: String,
+    val keySkill: List<String>,
+    val contacts: ContactsDto?,
+    @SerializedName("alternate_url")
+    val hhVacancyLink: String,
+    // @SerializedName("show_logo_in_search")
+    // val employerLogoUrl: Boolean?
 ) : ResponseBase()
 
 data class AreaDto(
-    val id: String,
+    // val id: String,
     val name: String,
-    val url: String
+    // val url: String
 )
 
 data class AddressDto(
-    val city: String?
+    val city: String?,
+    val building: String?,
+    val street: String?,
+    val description: String?
 )
 
 data class ContactsDto(
@@ -46,8 +53,7 @@ data class EmployerDto(
     val id: String?,
     val name: String,
     @SerializedName("logo_urls")
-    val logoUrls: LogoUrls?,
-    val url: String?,
+    val logoUrls: LogoUrls?
 )
 
 data class LogoUrls(
@@ -61,20 +67,11 @@ data class LogoUrls(
 data class SalaryDto(
     val currency: String?,
     val from: Int?,
-    val to: Int?,
-    val gross: Boolean?, // Признак что границы зарплаты указаны до вычета налогов
+    val to: Int?
 )
 
-data class ExperienceDto(
-    val id: String,
-    val name: String
-)
-
-data class KeySkillDto(
-    val name: String
-)
-
-data class WorkingDto(
+data class NameInfoDto(
     val id: String?,
     val name: String
 )
+
