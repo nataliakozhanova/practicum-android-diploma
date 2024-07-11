@@ -6,113 +6,168 @@
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/searchVacancyView"
-            style="@style/Medium22TextStyle"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/dp_16"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/search_for_vacancies">
+            android:background="@android:color/transparent"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/contentLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/buttonFilters"
-                style="@style/ButtonsStyle"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/searchVacancyView"
+                style="@style/Medium22TextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/dp_16"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:title="@string/search_for_vacancies">
+
+                <ImageView
+                    android:id="@+id/buttonFilters"
+                    style="@style/ButtonsStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="@dimen/dp_16"
+                    android:src="@drawable/filter_24px_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.appcompat.widget.Toolbar>
+
+
+            <EditText
+                android:id="@+id/editTextSearch"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_56"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="@drawable/edit_text_background"
+                android:drawableEnd="@drawable/search_24px_input_edittext_icon"
+                android:drawablePadding="@dimen/dp_8"
+                android:hint="@string/enter_your_request"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLength="30"
+                android:padding="@dimen/dp_16"
+                android:singleLine="true"
+                app:layout_constraintTop_toBottomOf="@+id/searchVacancyText"
+                app:layout_scrollFlags="scroll|enterAlways"
+                tools:text="" />
+
+            <TextView
+                android:id="@+id/vacanciesCountText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:padding="@dimen/dp_16"
-                android:src="@drawable/filter_24px_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.appcompat.widget.Toolbar>
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/vacancies_count_background"
+                android:fontFamily="@font/ys_display_regular"
+                android:padding="5dp"
+                android:paddingStart="@dimen/dp_16"
+                android:paddingEnd="@dimen/dp_16"
+                android:textColor="@color/white_day"
+                android:textSize="@dimen/sp_16"
+                android:visibility="gone"
+                app:layout_scrollFlags="scroll|enterAlways" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-
-        <EditText
-            android:id="@+id/editTextSearch"
-            style="@style/EditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_56"
-            android:layout_marginLeft="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginRight="@dimen/dp_16"
-            android:background="@drawable/edit_text_background"
-            android:drawableEnd="@drawable/search_24px_input_edittext_icon"
-            android:drawablePadding="@dimen/dp_8"
-            android:hint="@string/enter_your_request"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:lines="1"
-            android:maxLength="30"
-            android:padding="@dimen/dp_16"
-            android:singleLine="true"
-            app:layout_constraintTop_toBottomOf="@+id/searchVacancyText"
-            app:layout_scrollFlags="scroll|enterAlways"
-            tools:text=""/>
-
-        <TextView
-            android:id="@+id/vacanciesCountText"
+        <ImageView
+            android:id="@+id/placeHolderImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/vacancies_count_background"
-            android:fontFamily="@font/ys_display_regular"
-            android:padding="5dp"
-            android:paddingStart="@dimen/dp_16"
-            android:paddingEnd="@dimen/dp_16"
-            android:textColor="@color/white_day"
-            android:textSize="@dimen/sp_16"
+            android:layout_marginBottom="@dimen/dp_36"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+            tools:src="@drawable/image_search_empty" />
+
+        <ProgressBar
+            android:id="@+id/searchProgressBar"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="@dimen/dp_36"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
             android:visibility="gone"
-            app:layout_scrollFlags="scroll|enterAlways" />
-    </com.google.android.material.appbar.AppBarLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+            tools:visibility="gone" />
 
-    <ProgressBar
-        android:id="@+id/searchProgressBar"
-        android:layout_width="@dimen/dp_36"
-        android:layout_height="@dimen/dp_36"
-        android:layout_gravity="center"
-        android:indeterminateTint="@color/blue"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        <LinearLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
-    <ImageView
-        android:id="@+id/placeHolderImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/dp_36"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchAppBarLayout"
-        tools:src="@drawable/image_search_empty" />
 
-    <TextView
-        android:id="@+id/placeHolderText"
-        style="@style/Medium22TextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="230dp"
-        android:gravity="center"
-        tools:text="@string/failed_to_get_vacancies" />
+            <TextView
+                android:id="@+id/placeHolderText"
+                style="@style/Medium22TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="230dp"
+                android:gravity="center"
+                tools:text="@string/failed_to_get_vacancies" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchResultsRV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:itemCount="11"
-        tools:listitem="@layout/item_vacancy_view"
-        tools:visibility="visible" />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/idNestedSV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/searchResultsRV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/item_vacancy_view"
+                        tools:visibility="visible" />
+
+
+                    <ProgressBar
+                        android:id="@+id/searchNewItemsProgressBar"
+                        android:layout_width="@dimen/dp_36"
+                        android:layout_height="@dimen/dp_36"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@color/blue"
+                        android:layout_marginVertical="@dimen/dp_36"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
