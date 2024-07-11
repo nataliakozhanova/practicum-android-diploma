@@ -36,11 +36,11 @@ class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsR
     private fun mapDetail(it: VacancyDto): VacancyBase = VacancyBase(
         hhID = it.id,
         name = it.name,
-        area = it.area.name,
         isFavorite = false,
         employerInfo = EmployerInfo(
             employerName = it.employer.name,
             employerLogoUrl = it.employer.logoUrls?.logo240,
+            areaName = it.area.name
         ),
         salaryInfo = if (it.salary != null) {
             SalaryInfo(

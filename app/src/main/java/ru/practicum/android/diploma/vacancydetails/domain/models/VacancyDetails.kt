@@ -8,7 +8,6 @@ import ru.practicum.android.diploma.common.domain.VacancyBase
 class VacancyDetails(
     hhID: String,
     name: String,
-    area: String,
     isFavorite: Boolean,
     employerInfo: EmployerInfo, // name, logoUrl
     salaryInfo: SalaryInfo?,
@@ -16,7 +15,6 @@ class VacancyDetails(
 ) : VacancyBase(
     hhID,
     name,
-    area,
     isFavorite,
     employerInfo,
     salaryInfo

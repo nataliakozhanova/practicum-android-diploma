@@ -43,9 +43,9 @@ class SearchRepositoryImpl(
         VacancyBase(
             hhID = it.id,
             name = it.name,
-            area = it.area.name,
             isFavorite = false,
             employerInfo = EmployerInfo(
+                areaName = it.area.name,
                 employerName = it.employer.name,
                 employerLogoUrl = it.employer.logoUrls?.logo240
             ),

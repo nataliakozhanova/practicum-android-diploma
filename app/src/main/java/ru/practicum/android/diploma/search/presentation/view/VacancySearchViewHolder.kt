@@ -17,7 +17,7 @@ class VacancySearchViewHolder(
     private val trackCornerRadius: Int = itemView.context.resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
 
     fun bind(item: VacancyBase) {
-        binding.vacancyNameAndCity.text = "${item.name}, ${item.area}"
+        binding.vacancyNameAndCity.text = "${item.name}, ${item.employerInfo.areaName}"
         binding.companyName.text = item.employerInfo.employerName
         binding.salaryText.text = Formatter.formatSalary(itemView.context, item.salaryInfo)
         Glide.with(itemView).load(item.employerInfo.employerLogoUrl).placeholder(R.drawable.logo_placeholder_image)

@@ -21,7 +21,7 @@ class FavoriteViewHolder(
 
     fun bind(item: VacancyBase) {
         binding.titleFavoriteItem.text = stringBuilderNameAndCity
-            .append(item.name + ", " + item.area)
+            .append(item.name + ", " + item.employerInfo.areaName)
         binding.subtitleFavoriteItem.text = item.employerInfo.employerName
         binding.priceFavoriteItem.text = Formatter.formatSalary(itemView.context, item.salaryInfo)
 

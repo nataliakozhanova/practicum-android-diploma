@@ -6,7 +6,6 @@ import ru.practicum.android.diploma.common.domain.SalaryInfo
 data class VacancyDetailsTest(
     val hhID: String,
     val name: String,
-    val area: String,
     val isFavorite: Boolean,
     val employerInfo: EmployerInfo,
     val salaryInfo: SalaryInfo?,

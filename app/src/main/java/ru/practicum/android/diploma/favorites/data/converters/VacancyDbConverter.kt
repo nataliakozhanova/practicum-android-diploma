@@ -11,7 +11,7 @@ class VacancyDbConverter {
             vacancy.hhID,
             vacancy.name,
             vacancy.isFavorite,
-            vacancy.area,
+            vacancy.employerInfo.areaName,
             vacancy.employerInfo.employerName,
             vacancy.employerInfo.employerLogoUrl ?: "",
             vacancy.salaryInfo?.salaryTo ?: 0,
@@ -24,11 +24,11 @@ class VacancyDbConverter {
         return VacancyBase(
             hhID = vacancy.hhID,
             name = vacancy.name,
-            area = vacancy.areaName,
             isFavorite = vacancy.isFavorite,
             employerInfo = EmployerInfo(
                 employerName = vacancy.employerName,
-                employerLogoUrl = vacancy.employerLogoUrl
+                employerLogoUrl = vacancy.employerLogoUrl,
+                areaName = vacancy.areaName
             ),
             salaryInfo = SalaryInfo(
                 salaryFrom = if (vacancy.salaryFrom > 0) vacancy.salaryFrom else null,

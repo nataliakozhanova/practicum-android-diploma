@@ -15,9 +15,9 @@ class VacancyDetailsViewHolder(private val binding: ItemVacancyDetailsViewBindin
     private val trackCornerRadius: Int = itemView.context.resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
 
     fun bind(vacancy: VacancyDetailsTest) {
-        binding.nameVacancyTv.text = "${vacancy.name}, ${vacancy.area}"
+        binding.nameVacancyTv.text = "${vacancy.name}, ${vacancy.employerInfo.areaName}"
         binding.nameCompanyTv.text = vacancy.employerInfo.employerName
-        binding.adressCompanyTv.text = vacancy.area
+        binding.adressCompanyTv.text = vacancy.employerInfo.areaName
         binding.experienceTv.text = vacancy.experience
         binding.formatWorkTv.text = vacancy.formatWork
         binding.vacancySalaryTv.text = Formatter.formatSalary(itemView.context, vacancy.salaryInfo)
