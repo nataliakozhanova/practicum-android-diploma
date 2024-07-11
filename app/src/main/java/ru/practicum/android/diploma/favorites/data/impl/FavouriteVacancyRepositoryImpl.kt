@@ -8,7 +8,6 @@ import ru.practicum.android.diploma.favorites.data.converters.VacancyDbConverter
 import ru.practicum.android.diploma.favorites.data.db.VacancyDatabase
 import ru.practicum.android.diploma.favorites.data.db.VacancyEntity
 import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyRepository
-import ru.practicum.android.diploma.favorites.domain.models.FavouriteVacanciesModel
 
 class FavouriteVacancyRepositoryImpl(
     private val vacancyDatabase: VacancyDatabase,
@@ -24,9 +23,10 @@ class FavouriteVacancyRepositoryImpl(
         vacancyDatabase.vacancyDao().deleteVacancyFromFavourite(vacancyEntity)
     }
 
-    override fun getAllFavouritesVacancies(): Flow<List<FavouriteVacanciesModel>> {
-        return vacancyDatabase.vacancyDao().getAllFavouritesVacancies()
-            .map { vacancy -> convertFromVacancyEntity(vacancy) }
+    override fun getAllFavouritesVacancies(): Flow<ArrayList<VacancyBase>> {
+        val list =
+            vacancyDatabase.vacancyDao().getAllFavouritesVacancies().map { vacancy -> convertToVacancyBase(vacancy) }
+        return list
     }
 
     override fun getAllFavouritesVacanciesId(): Flow<List<String>> = flow {
@@ -34,11 +34,12 @@ class FavouriteVacancyRepositoryImpl(
         emit(vacancyId)
     }
 
-    private fun convertFromVacancyEntity(vacancies: List<VacancyEntity>): List<FavouriteVacanciesModel> {
-        return vacancies.map { vacancy -> vacancyDbConverter.map(vacancy) }
-    }
 
     private fun convertToVacancyEntity(track: VacancyBase): VacancyEntity {
         return vacancyDbConverter.map(track)
+    }
+
+    private fun convertToVacancyBase(vacancies: List<VacancyEntity>): ArrayList<VacancyBase> {
+        return ArrayList(vacancies.map { vacancy -> vacancyDbConverter.map(vacancy) })
     }
 }

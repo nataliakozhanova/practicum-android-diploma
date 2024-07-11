@@ -11,10 +11,13 @@ import kotlinx.coroutines.flow.Flow
 interface VacancyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addVacancyToFavourite(vacancy: VacancyEntity)
+
     @Delete(entity = VacancyEntity::class)
     fun deleteVacancyFromFavourite(vacancy: VacancyEntity)
+
     @Query("SELECT * FROM vacancy_table")
     fun getAllFavouritesVacancies(): Flow<List<VacancyEntity>>
+
     @Query("SELECT hhID FROM vacancy_table")
     fun getAllFavouritesVacanciesId(): List<String>
 }
