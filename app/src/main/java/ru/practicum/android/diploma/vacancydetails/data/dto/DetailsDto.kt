@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.vacancydetails.data.dto
 
 import com.google.gson.annotations.SerializedName
+import ru.practicum.android.diploma.common.data.ResponseBase
 
 data class DetailsDto(
     val id: String,
@@ -15,7 +16,7 @@ data class DetailsDto(
     val contacts: ContactsDto,
     @SerializedName("show_logo_in_search")
     val showLogoInSearch: Boolean?
-)
+) : ResponseBase()
 
 data class AreaDto(
     val id: String,

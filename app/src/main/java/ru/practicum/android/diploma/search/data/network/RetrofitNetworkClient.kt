@@ -1,8 +1,6 @@
 package ru.practicum.android.diploma.search.data.network
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,25 +14,13 @@ import ru.practicum.android.diploma.search.data.HhQueryOptions
 import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
+import ru.practicum.android.diploma.util.isConnected
 import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(
     private val apiService: HhApiService,
     private val context: Context,
 ) : NetworkClient {
-
-    private fun isConnected(): Boolean {
-        val connectivityManager = context.getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager
-        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-
-        return capabilities != null && (
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-            )
-    }
 
     private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
         val options: HashMap<String, String> = HashMap()
@@ -50,7 +36,7 @@ class RetrofitNetworkClient(
     }
 
     override suspend fun doRequest(dto: Any): ResponseBase {
-        if (!isConnected()) {
+        if (!isConnected(context)) {
             return ResponseBase(NoInternetError())
         }
         return withContext(Dispatchers.IO) {
