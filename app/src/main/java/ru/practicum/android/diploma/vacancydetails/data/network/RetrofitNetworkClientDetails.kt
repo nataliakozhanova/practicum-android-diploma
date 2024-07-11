@@ -1,8 +1,6 @@
 package ru.practicum.android.diploma.vacancydetails.data.network
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,11 +10,11 @@ import ru.practicum.android.diploma.common.data.ResponseBase
 import ru.practicum.android.diploma.common.domain.BadRequestError
 import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.domain.ServerInternalError
-import ru.practicum.android.diploma.common.domain.Success
+import ru.practicum.android.diploma.util.isConnected
 
 class RetrofitNetworkClientDetails(
     private val hhApiServiceDetails: HhApiServiceDetails,
-    private val context: Context
+    private val context: Context,
 ) : NetworkClient {
 
     companion object {
@@ -24,7 +22,7 @@ class RetrofitNetworkClientDetails(
     }
 
     override suspend fun doRequest(dto: Any): ResponseBase {
-        if (!isConnected()) {
+        if (!isConnected(context)) {
             return ResponseBase(NoInternetError())
         }
         return withContext(Dispatchers.IO) {
@@ -40,18 +38,5 @@ class RetrofitNetworkClientDetails(
                 ResponseBase(NoInternetError())
             }
         }
-    }
-
-    private fun isConnected(): Boolean {
-        val connectivityManager = context.getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager
-        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-
-        return capabilities != null && (
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-            )
     }
 }

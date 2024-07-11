@@ -17,11 +17,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.domain.BadRequestError
+import ru.practicum.android.diploma.common.domain.ErrorType
 import ru.practicum.android.diploma.common.domain.NoInternetError
-import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.getCountableVacancies
@@ -30,9 +30,6 @@ import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDeta
 class SearchFragment : Fragment() {
 
     companion object {
-        private const val EMPTY = "empty"
-        private const val SERVER_ERROR = "server_error"
-        private const val NO_INTERNET = "no_internet"
         private const val SEARCH_MASK = ""
     }
 
@@ -69,23 +66,11 @@ class SearchFragment : Fragment() {
                 }
 
                 is SearchState.Empty -> {
-                    showErrorOrEmptySearch(EMPTY)
+                    showErrorOrEmptySearch(VacancyNotFoundType())
                 }
 
                 is SearchState.Error -> {
-                    when (state.errorType) {
-                        is ServerInternalError -> {
-                            showErrorOrEmptySearch(SERVER_ERROR)
-                        }
-
-                        is BadRequestError -> {
-                            showErrorOrEmptySearch(SERVER_ERROR)
-                        }
-
-                        is NoInternetError -> {
-                            showErrorOrEmptySearch(NO_INTERNET)
-                        }
-                    }
+                    showErrorOrEmptySearch(state.errorType)
                 }
 
                 else -> {}
@@ -180,7 +165,7 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun showErrorOrEmptySearch(type: String) {
+    private fun showErrorOrEmptySearch(type: ErrorType) {
         with(binding) {
             searchResultsRV.isVisible = false
             searchProgressBar.isVisible = false
@@ -188,7 +173,7 @@ class SearchFragment : Fragment() {
             placeHolderText.isVisible = true
         }
         when (type) {
-            EMPTY -> {
+            is VacancyNotFoundType -> {
                 with(binding) {
                     vacanciesCountText.isVisible = true
                     vacanciesCountText.text = getString(R.string.no_vacancies)
@@ -197,15 +182,7 @@ class SearchFragment : Fragment() {
                 }
             }
 
-            SERVER_ERROR -> {
-                with(binding) {
-                    vacanciesCountText.isVisible = false
-                    placeHolderImage.setImageResource(R.drawable.image_search_server_error)
-                    placeHolderText.text = getString(R.string.server_error)
-                }
-            }
-
-            NO_INTERNET -> {
+            is NoInternetError -> {
                 with(binding) {
                     vacanciesCountText.isVisible = false
                     placeHolderImage.setImageResource(R.drawable.image_no_internet_error)
@@ -213,7 +190,13 @@ class SearchFragment : Fragment() {
                 }
             }
 
-            else -> {}
+            else -> {
+                with(binding) {
+                    vacanciesCountText.isVisible = false
+                    placeHolderImage.setImageResource(R.drawable.image_search_server_error)
+                    placeHolderText.text = getString(R.string.server_error)
+                }
+            }
         }
 
     }

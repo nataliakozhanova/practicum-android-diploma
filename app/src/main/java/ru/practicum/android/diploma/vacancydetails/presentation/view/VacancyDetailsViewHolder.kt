@@ -7,14 +7,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyDetailsViewBinding
 import ru.practicum.android.diploma.util.Formatter
-import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
+import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetailsTest
 
 class VacancyDetailsViewHolder(private val binding: ItemVacancyDetailsViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     private val trackCornerRadius: Int = itemView.context.resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
 
-    fun bind(vacancy: VacancyDetails) {
+    fun bind(vacancy: VacancyDetailsTest) {
         binding.nameVacancyTv.text = "${vacancy.name}, ${vacancy.employerInfo.areaName}"
         binding.nameCompanyTv.text = vacancy.employerInfo.employerName
         binding.adressCompanyTv.text = vacancy.employerInfo.areaName
