@@ -6,8 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 
 @Dao
 interface VacancyDao {
@@ -22,6 +20,4 @@ interface VacancyDao {
 
     @Query("SELECT hhID FROM vacancy_table")
     fun getAllFavouritesVacanciesId(): List<String>
-
-
 }

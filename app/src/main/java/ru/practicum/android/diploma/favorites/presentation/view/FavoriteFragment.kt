@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,7 +27,6 @@ class FavoriteFragment : Fragment() {
     private val viewModelFavourites: FavouritesViewModel by viewModel()
     private var isClickAllowed = true
     private val favoriteAdapter = FavoriteAdapter { vacancy -> openDetailsFragment(vacancy) }
-    private lateinit var recycleFavourites: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
@@ -86,7 +84,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun initRecycle() {
-        recycleFavourites = binding.favoriteRV
+        val recycleFavourites = binding.favoriteRV
         recycleFavourites.adapter = favoriteAdapter
         recycleFavourites.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }

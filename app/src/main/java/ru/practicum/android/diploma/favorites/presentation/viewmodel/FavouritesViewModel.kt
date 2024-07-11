@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyInteractor
 import ru.practicum.android.diploma.favorites.presentation.models.FavouritesStates
-import java.lang.Exception
+import java.io.IOException
 
 class FavouritesViewModel(private val favouriteVacancyInteractor: FavouriteVacancyInteractor) : ViewModel() {
     private val _state = MutableLiveData<FavouritesStates>()
@@ -28,7 +28,7 @@ class FavouritesViewModel(private val favouriteVacancyInteractor: FavouriteVacan
                                 _state.postValue(FavouritesStates.NotEmpty(it))
                             }
                         }
-                } catch (e: Exception) {
+                } catch (e: IOException) {
                     _state.postValue(FavouritesStates.Error(e))
                 }
             }
