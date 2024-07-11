@@ -20,12 +20,13 @@ class SearchViewModel(
     private val interactor: SearchInteractor,
 ) : ViewModel() {
     companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 5000L
-        private const val ITEMS_PER_PAGE = 5
+        const val SEARCH_DEBOUNCE_DELAY = 5000L
+        const val ITEMS_PER_PAGE = 10
     }
 
     private var latestSearchText: String? = null
     private var searchJob: Job? = null
+    private var isNextPageLoading = false
 
     private val _toast = SingleLiveEvent<String>()
     fun observeToast(): LiveData<String> = _toast
@@ -34,9 +35,10 @@ class SearchViewModel(
     fun observeState(): LiveData<SearchState> = _state
 
     fun searchDebounce(changedText: String, page: Int) {
-        if (changedText.isEmpty() || latestSearchText == changedText) {
+        if (changedText.isEmpty()/* || latestSearchText == changedText*/) {
             return
         }
+
         latestSearchText = changedText
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
@@ -47,7 +49,9 @@ class SearchViewModel(
 
     private fun searchRequest(newSearchText: String, page: Int) {
         if (newSearchText.isNotEmpty()) {
-            renderState(SearchState.Loading)
+            if (page == 0) {
+                renderState(SearchState.Loading)
+            }
             viewModelScope.launch {
                 interactor.findVacancies(newSearchText, page, ITEMS_PER_PAGE)
                     .collect { pair ->
@@ -57,16 +61,16 @@ class SearchViewModel(
         }
     }
 
-    private fun processResult(found: SearchResult?, errorType: ErrorType) {
+    private fun processResult(searchResult: SearchResult?, errorType: ErrorType) {
         val vacancies = mutableListOf<VacancyBase>()
-        if (found != null) {
-            vacancies.addAll(found.vacancies)
-        }
         when (errorType) {
             is Success -> {
-                renderState(
-                    SearchState.Content(vacancies)
-                )
+                if (searchResult != null) {
+                    vacancies.addAll(searchResult.vacancies)
+                    renderState(
+                        SearchState.Content(vacancies, searchResult.found, searchResult.pages, searchResult.page)
+                    )
+                }
             }
 
             is VacancyNotFoundType -> {

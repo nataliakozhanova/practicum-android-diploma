@@ -1,15 +1,17 @@
 package ru.practicum.android.diploma.search.presentation.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -24,7 +26,6 @@ import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.getCountableVacancies
 import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
-import android.annotation.SuppressLint
 
 class SearchFragment : Fragment() {
 
@@ -50,7 +51,6 @@ class SearchFragment : Fragment() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,7 +61,7 @@ class SearchFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SearchState.Content -> {
-                    showContent(state.vacancies)
+                    showContent(state)
                 }
 
                 is SearchState.Loading -> {
@@ -92,11 +92,15 @@ class SearchFragment : Fragment() {
             }
         }
 
+        doBindings()
+    }
+
+    private fun doBindings() {
         binding.editTextSearch.doOnTextChanged { text, start, before, count ->
             searchMask = text.toString()
             if (searchMask.isNotEmpty()) {
                 changeDrawableClearText(binding.editTextSearch)
-                viewModel.searchDebounce(searchMask, currentPage)
+                viewModel.searchDebounce(searchMask, 0)
             }
         }
 
@@ -113,6 +117,16 @@ class SearchFragment : Fragment() {
             false
         }
 
+        binding.idNestedSV.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight
+                    && !binding.searchNewItemsProgressBar.isVisible
+                ) {
+                    binding.searchNewItemsProgressBar.isVisible = true
+                    viewModel.searchDebounce(searchMask, currentPage + 1)
+                }
+            }
+        )
     }
 
     override fun onDestroyView() {
@@ -142,18 +156,28 @@ class SearchFragment : Fragment() {
         vacancySearchAdapter.vacancies.clear()
     }
 
-    private fun showContent(vacancies: MutableList<VacancyBase>) {
+    private fun showContent(state: SearchState.Content) {
+        val vacancies = state.vacancies
         with(binding) {
             searchProgressBar.isVisible = false
             vacanciesCountText.isVisible = true
-            vacanciesCountText.text = getCountableVacancies(vacancies.size, resources)
+            vacanciesCountText.text = getCountableVacancies(state.found, resources)
             placeHolderImage.isVisible = false
             placeHolderText.isVisible = false
             searchResultsRV.isVisible = true
         }
-        vacancySearchAdapter.vacancies.clear()
-        vacancySearchAdapter.vacancies.addAll(vacancies)
-        vacancySearchAdapter.notifyDataSetChanged()
+        currentPage = state.page
+        if (currentPage > 0) {
+            binding.searchNewItemsProgressBar.isVisible = false
+            for (newVac in vacancies) {
+                vacancySearchAdapter.vacancies.add(newVac)
+                vacancySearchAdapter.notifyItemInserted(vacancySearchAdapter.vacancies.size - 1)
+            }
+        } else {
+            vacancySearchAdapter.vacancies.clear()
+            vacancySearchAdapter.vacancies.addAll(vacancies)
+            vacancySearchAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun showErrorOrEmptySearch(type: String) {
