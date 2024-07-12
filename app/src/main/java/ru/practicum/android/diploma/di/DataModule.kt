@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.favorites.data.converters.VacancyDbConverter
 import ru.practicum.android.diploma.favorites.data.db.VacancyDatabase
 import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.vacancydetails.data.network.HhApiServiceDetails
 import ru.practicum.android.diploma.vacancydetails.data.network.RetrofitNetworkClientDetails
 
 val dataModule = module {
@@ -22,6 +23,14 @@ val dataModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiService::class.java)
+    }
+
+    single<HhApiServiceDetails> {
+        Retrofit.Builder()
+            .baseUrl("https://api.hh.ru")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(HhApiServiceDetails::class.java)
     }
 
     single {

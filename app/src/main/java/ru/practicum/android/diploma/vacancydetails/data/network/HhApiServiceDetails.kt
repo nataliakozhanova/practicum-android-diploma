@@ -14,6 +14,4 @@ interface HhApiServiceDetails {
     )
     @GET("/vacancies/{vacancy_id}")
     suspend fun getVacancyDetails(@Path("vacancy_id") id: String): Response<VacancyDetailsResponse>
-// DetailsResponse - здесь класс должен быть типом ретрофитовского класса Response,
-// так как нам нужно обработать ошибки сервера.
 }
