@@ -26,7 +26,6 @@
                 style="@style/Medium22TextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/dp_16"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:title="@string/search_for_vacancies">
 
