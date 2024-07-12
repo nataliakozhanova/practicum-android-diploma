@@ -3,11 +3,11 @@ package ru.practicum.android.diploma.search.data.repo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.common.data.NetworkClient
+import ru.practicum.android.diploma.common.data.Resource
 import ru.practicum.android.diploma.common.domain.EmployerInfo
-import ru.practicum.android.diploma.common.domain.Resource
 import ru.practicum.android.diploma.common.domain.SalaryInfo
 import ru.practicum.android.diploma.common.domain.VacancyBase
-import ru.practicum.android.diploma.search.data.dto.VacancyDto
+import ru.practicum.android.diploma.search.data.dto.VacancySearchDto
 import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
@@ -39,7 +39,7 @@ class SearchRepositoryImpl(
         }
     }
 
-    private fun convertVacancy(it: VacancyDto): VacancyBase =
+    private fun convertVacancy(it: VacancySearchDto): VacancyBase =
         VacancyBase(
             hhID = it.id,
             name = it.name,

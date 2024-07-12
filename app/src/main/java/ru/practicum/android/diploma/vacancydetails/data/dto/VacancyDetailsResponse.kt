@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.vacancydetails.data.dto
 import com.google.gson.annotations.SerializedName
 import ru.practicum.android.diploma.common.data.ResponseBase
 
-data class DetailsDto(
+data class VacancyDetailsResponse(
     val id: String,
     val name: String,
     val area: AreaDto,
