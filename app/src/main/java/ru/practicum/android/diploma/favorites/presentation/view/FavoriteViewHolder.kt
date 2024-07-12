@@ -17,11 +17,8 @@ class FavoriteViewHolder(
     private val trackCornerRadius: Int =
         itemView.context.resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
 
-    private val stringBuilderNameAndCity = StringBuilder()
-
     fun bind(item: VacancyBase) {
-        binding.titleFavoriteItem.text = stringBuilderNameAndCity
-            .append(item.name + ", " + item.employerInfo.areaName)
+        binding.titleFavoriteItem.text = "${item.name}, ${item.employerInfo.areaName}"
         binding.subtitleFavoriteItem.text = item.employerInfo.employerName
         binding.priceFavoriteItem.text = Formatter.formatSalary(itemView.context, item.salaryInfo)
 
