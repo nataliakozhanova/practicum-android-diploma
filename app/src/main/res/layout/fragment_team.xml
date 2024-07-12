@@ -18,6 +18,8 @@
         android:text="@string/team"
         android:textColor="?attr/colorPrimary"
         android:textSize="@dimen/sp_22"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.006"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
