@@ -4,10 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.common.data.NetworkClient
 import ru.practicum.android.diploma.common.data.Resource
-import ru.practicum.android.diploma.common.domain.EmployerInfo
-import ru.practicum.android.diploma.common.domain.SalaryInfo
-import ru.practicum.android.diploma.common.domain.VacancyBase
-import ru.practicum.android.diploma.search.data.dto.VacancySearchDto
 import ru.practicum.android.diploma.vacancydetails.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.vacancydetails.data.dto.VacancyDetailsResponse
 import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsRepository
