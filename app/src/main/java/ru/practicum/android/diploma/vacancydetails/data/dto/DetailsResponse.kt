@@ -5,7 +5,7 @@ package ru.practicum.android.diploma.vacancydetails.data.dto
 // import ru.practicum.android.diploma.common.data.Success
 // import ru.practicum.android.diploma.search.data.dto.VacancyDto
 
-//class DetailsResponse(
+// class DetailsResponse(
 //    val found: Int,
 //    val page: Int,
 //    val pages: Int,

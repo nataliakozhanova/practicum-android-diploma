@@ -18,7 +18,11 @@ class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsR
         when (val response = networkClient.doRequest(VacancyDetailsRequest(vacancyId))) {
             is VacancyDetailsResponse -> {
                 emit(
-                    Resource.Success(DetailsResult(response.id)) // Здесь нужно привеcти сразу к модели domain VacancyDetails.
+                    Resource.Success(
+                        DetailsResult(
+                            response.id // Здесь нужно привеcти сразу к модели domain VacancyDetails.
+                        )
+                    )
                 )
             }
 
@@ -27,25 +31,26 @@ class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsR
             }
         }
     }
-
-    private fun mapDetail(it: VacancySearchDto): VacancyBase =
-        VacancyBase( // Оставлено для образца. Можно сделать конвертацию из VacancyDetailsResponse (dto) в VacancyDetails(domain)
-            hhID = it.id,
-            name = it.name,
-            isFavorite = false,
-            employerInfo = EmployerInfo(
-                employerName = it.employer.name,
-                employerLogoUrl = it.employer.logoUrls?.logo240,
-                areaName = it.area.name
-            ),
-            salaryInfo = if (it.salary != null) {
-                SalaryInfo(
-                    salaryCurrency = it.salary.currency,
-                    salaryTo = it.salary.to,
-                    salaryFrom = it.salary.from
-                )
-            } else {
-                null
-            }
-        )
 }
+// Оставлено для образца. Можно сделать конвертацию из VacancyDetailsResponse (dto) в VacancyDetails(domain)
+//    private fun mapDetail(it: VacancySearchDto): VacancyBase =
+//        VacancyBase(
+//            hhID = it.id,
+//            name = it.name,
+//            isFavorite = false,
+//            employerInfo = EmployerInfo(
+//                employerName = it.employer.name,
+//                employerLogoUrl = it.employer.logoUrls?.logo240,
+//                areaName = it.area.name
+//            ),
+//            salaryInfo = if (it.salary != null) {
+//                SalaryInfo(
+//                    salaryCurrency = it.salary.currency,
+//                    salaryTo = it.salary.to,
+//                    salaryFrom = it.salary.from
+//                )
+//            } else {
+//                null
+//            }
+//        )
+
