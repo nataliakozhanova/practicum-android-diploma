@@ -36,21 +36,7 @@ class RetrofitNetworkClientDetails(
                                 if (vacancyDetailsResponse == null) {
                                     ResponseBase(DetailsNotFoundType())
                                 } else {
-                                    VacancyDetailsResponse(
-                                        vacancyDetailsResponse.id,
-                                        vacancyDetailsResponse.name,
-                                        vacancyDetailsResponse.area,
-                                        vacancyDetailsResponse.address,
-                                        vacancyDetailsResponse.employer,
-                                        vacancyDetailsResponse.salary,
-                                        vacancyDetailsResponse.experience,
-                                        vacancyDetailsResponse.employment,
-                                        vacancyDetailsResponse.schedule,
-                                        vacancyDetailsResponse.description,
-                                        vacancyDetailsResponse.keySkill,
-                                        vacancyDetailsResponse.contacts,
-                                        vacancyDetailsResponse.hhVacancyLink
-                                    )
+                                    createVacancyDetails(vacancyDetailsResponse)
                                 }
 
                             }
@@ -68,6 +54,24 @@ class RetrofitNetworkClientDetails(
                 ResponseBase(ServerInternalError())
             }
         }
+    }
+
+    private fun createVacancyDetails(details: VacancyDetailsResponse): ResponseBase {
+        return VacancyDetailsResponse(
+            details.id,
+            details.name,
+            details.area,
+            details.address,
+            details.employer,
+            details.salary,
+            details.experience,
+            details.employment,
+            details.schedule,
+            details.description,
+            details.keySkill,
+            details.contacts,
+            details.hhVacancyLink
+        )
     }
 }
 
