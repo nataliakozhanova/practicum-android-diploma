@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.common.domain
+package ru.practicum.android.diploma.common.data
 
 abstract class ErrorType
 

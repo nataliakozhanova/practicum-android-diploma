@@ -9,5 +9,5 @@ class VacancySearchResponse(
     val pages: Int,
     @SerializedName("per_page")
     val perPage: Int,
-    val items: List<VacancyDto>,
+    val items: List<VacancySearchDto>,
 ) : ResponseBase()

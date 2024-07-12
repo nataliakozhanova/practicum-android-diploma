@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.common.domain
+package ru.practicum.android.diploma.common.data
 
 sealed class Resource<T>(val data: T? = null, val error: ErrorType = Success()) {
     class Success<T>(data: T) : Resource<T>(data)

@@ -17,8 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.domain.ErrorType
-import ru.practicum.android.diploma.common.domain.NoInternetError
+import ru.practicum.android.diploma.common.data.ErrorType
+import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType

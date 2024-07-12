@@ -2,8 +2,8 @@ package ru.practicum.android.diploma.search.domain.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.practicum.android.diploma.common.domain.ErrorType
-import ru.practicum.android.diploma.common.domain.Resource
+import ru.practicum.android.diploma.common.data.ErrorType
+import ru.practicum.android.diploma.common.data.Resource
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.domain.models.SearchResult
