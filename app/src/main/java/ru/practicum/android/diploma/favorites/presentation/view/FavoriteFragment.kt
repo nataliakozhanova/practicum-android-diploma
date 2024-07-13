@@ -104,13 +104,13 @@ class FavoriteFragment : Fragment() {
 
     private fun isInternetAvailable(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork ?: return false
-        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return activeNetwork.run {
+        val network = connectivityManager.activeNetwork
+        val activeNetwork = network?.let { connectivityManager.getNetworkCapabilities(it) }
+        return activeNetwork?.run {
             hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                 hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
                 hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-        }
+        } ?: false
     }
 
     private fun clickDebounce(): Boolean {
