@@ -20,8 +20,8 @@ class SearchViewModel(
     private val interactor: SearchInteractor,
 ) : ViewModel() {
     companion object {
-        const val SEARCH_DEBOUNCE_DELAY = 5000L
-        const val ITEMS_PER_PAGE = 10
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
+        const val ITEMS_PER_PAGE = 20
     }
 
     private var latestSearchText: String? = null
