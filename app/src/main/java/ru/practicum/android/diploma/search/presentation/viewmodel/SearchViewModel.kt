@@ -26,13 +26,16 @@ class SearchViewModel(
 
     private var latestSearchText: String? = null
     private var searchJob: Job? = null
-    private var isNextPageLoading = false
 
     private val _toast = SingleLiveEvent<String>()
     fun observeToast(): LiveData<String> = _toast
 
     private val _state = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = _state
+
+    fun stopSearch() {
+        searchJob?.cancel()
+    }
 
     fun searchDebounce(changedText: String, page: Int) {
         if (changedText.isEmpty()/* || latestSearchText == changedText*/) {

@@ -88,6 +88,9 @@ class SearchFragment : Fragment() {
             if (searchMask.isNotEmpty()) {
                 changeDrawableClearText(binding.editTextSearch)
                 viewModel.searchDebounce(searchMask, 0)
+            } else {
+                changeDrawableSearchIcon(binding.editTextSearch)
+                viewModel.stopSearch()
             }
         }
 
@@ -140,8 +143,11 @@ class SearchFragment : Fragment() {
             searchResultsRV.isVisible = false
             vacanciesCountText.isVisible = false
         }
-        vacancySearchAdapter.vacancies.clear()
-        vacancySearchAdapter.notifyDataSetChanged()
+        val adapterListSize = vacancySearchAdapter.vacancies.size
+        if (adapterListSize > 0) {
+            vacancySearchAdapter.vacancies.clear()
+            vacancySearchAdapter.notifyItemRangeRemoved(0, adapterListSize)
+        }
     }
 
     private fun showContent(state: SearchState.Content) {
