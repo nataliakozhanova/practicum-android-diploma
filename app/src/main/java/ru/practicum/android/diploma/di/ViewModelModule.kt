@@ -13,7 +13,7 @@ val viewModelModule = module {
     viewModel {
         FavouritesViewModel(get())
     }
-    viewModel{
+    viewModel {
         DetailsViewModel(get())
     }
 }
