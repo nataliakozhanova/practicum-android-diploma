@@ -39,6 +39,7 @@ class VacancyDetailsFragment : Fragment() {
 
         }
         // showToast("vacancyId=$vacancyId")
+        binding.favoriteVacansyIv.setOnClickListener {}
     }
 
     override fun onDestroyView() {
