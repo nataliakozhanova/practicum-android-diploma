@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.data.Success
+import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyInteractor
 import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsInteractor
 import ru.practicum.android.diploma.vacancydetails.presentation.models.DetailsState
 
 class DetailsViewModel(
     private val vacancyInteractor: DetailsInteractor,
-    //private val favoriteInteractor: FavouriteVacancyInteractor,
     private val vacancyId: String
 ) : ViewModel() {
 
