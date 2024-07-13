@@ -92,7 +92,6 @@ class FavoriteFragment : Fragment() {
         recycleFavourites.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
-
     private fun openDetailsFragment(vacancy: VacancyBase) {
         val context = requireContext()
         if (clickDebounce() && isInternetAvailable(context)) {
@@ -107,11 +106,10 @@ class FavoriteFragment : Fragment() {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork ?: return false
         val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return when {
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-            else -> false
+        return activeNetwork.run {
+            hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
         }
     }
 
@@ -126,5 +124,4 @@ class FavoriteFragment : Fragment() {
         }
         return current
     }
-
 }

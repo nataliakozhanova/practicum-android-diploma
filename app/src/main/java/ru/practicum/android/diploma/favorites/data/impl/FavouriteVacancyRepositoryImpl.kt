@@ -24,7 +24,6 @@ class FavouriteVacancyRepositoryImpl(
     }
 
     override fun getAllFavouritesVacancies(): Flow<ArrayList<VacancyDetails>> {
-
         return vacancyDatabase.vacancyDao().getAllFavouritesVacancies()
             .map { vacancy -> convertToVacancyDetails(vacancy) }
     }
