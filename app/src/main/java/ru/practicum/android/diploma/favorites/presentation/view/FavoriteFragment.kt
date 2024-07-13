@@ -1,5 +1,8 @@
 package ru.practicum.android.diploma.favorites.presentation.view
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +44,7 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecycle()
-        viewModelFavourites.getAllFavouriteVacancies()
+        viewModelFavourites.getAllFavouriteVacanciesView()
         viewModelFavourites.state.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is FavouritesStates.NotEmpty -> {
@@ -89,12 +92,26 @@ class FavoriteFragment : Fragment() {
         recycleFavourites.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
+
     private fun openDetailsFragment(vacancy: VacancyBase) {
-        if (clickDebounce()) {
+        val context = requireContext()
+        if (clickDebounce() && isInternetAvailable(context)) {
             findNavController().navigate(
                 R.id.action_favoritesFragment_to_vacancyDetailsFragment,
                 VacancyDetailsFragment.createArgs(vacancy.hhID)
             )
+        }
+    }
+
+    private fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return when {
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
         }
     }
 
