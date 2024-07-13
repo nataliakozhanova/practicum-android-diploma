@@ -31,7 +31,7 @@ class VacancyDetailsFragment : Fragment() {
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is DetailsState.Content -> {
-                    // showContent
+                    binding.testVac.text = "${state.vacancy.name} ${state.vacancy.details}"
                 }
 
                 else -> {}
