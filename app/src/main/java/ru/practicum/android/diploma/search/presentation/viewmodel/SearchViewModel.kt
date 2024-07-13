@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.models.SearchResult
-import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
+import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
 
@@ -73,7 +73,7 @@ class SearchViewModel(
                 }
             }
 
-            is VacancyNotFoundType -> {
+            is VacanciesNotFoundType -> {
                 renderState(
                     SearchState.Empty
                 )
