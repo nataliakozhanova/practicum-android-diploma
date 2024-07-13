@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor">
 
+    <TextView
+        android:id="@+id/testVac"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blue"
+        android:gravity="center"
+        android:textColor="@color/white"
+        tools:text="TEST"
+        android:translationZ="99999dp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/progressBarCl"
         android:layout_width="match_parent"
