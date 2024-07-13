@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,11 +28,12 @@ class VacancyDetailsFragment : Fragment() {
         if (vacancyId != null) {
             viewModel.getVacancy(vacancyId)
         }
-        viewModel.observeVacancyState().observe(viewLifecycleOwner) {state->
+        viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is DetailsState.Content -> {
                     // showContent
                 }
+
                 else -> {}
             }
 
@@ -44,10 +44,6 @@ class VacancyDetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun showToast(additionalMessage: String) {
-        Toast.makeText(requireContext(), additionalMessage, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
