@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -40,6 +41,7 @@ class SearchFragment : Fragment() {
     private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> openVacancy(vacancy) }
 
     private var currentPage = 0
+    private var totalPages = 0
     private var searchMask = SEARCH_MASK
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -81,6 +83,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun doBindings() {
+
         binding.editTextSearch.doOnTextChanged { text, start, before, count ->
             searchMask = text.toString()
             if (searchMask.isNotEmpty()) {
@@ -107,8 +110,7 @@ class SearchFragment : Fragment() {
                 if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight
                     && !binding.searchNewItemsProgressBar.isVisible
                 ) {
-                    binding.searchNewItemsProgressBar.isVisible = true
-                    viewModel.searchDebounce(searchMask, currentPage + 1)
+                    loadNextPage()
                 }
             }
         )
@@ -152,6 +154,7 @@ class SearchFragment : Fragment() {
             searchResultsRV.isVisible = true
         }
         currentPage = state.page
+        totalPages = state.pages
         if (currentPage > 0) {
             binding.searchNewItemsProgressBar.isVisible = false
             for (newVac in vacancies) {
@@ -165,7 +168,19 @@ class SearchFragment : Fragment() {
         }
     }
 
+    private fun loadNextPage() {
+        if (currentPage+1 == totalPages) {
+            showToast(getString(R.string.bottom_of_list))
+        } else {
+            hideKeyboard()
+            binding.searchNewItemsProgressBar.isVisible = true
+            viewModel.searchDebounce(searchMask, currentPage + 1)
+        }
+    }
+
     private fun showErrorOrEmptySearch(type: ErrorType) {
+
+        hideKeyboard()
         with(binding) {
             searchResultsRV.isVisible = false
             searchProgressBar.isVisible = false
@@ -220,6 +235,10 @@ class SearchFragment : Fragment() {
             R.id.action_searchFragment_to_vacancyDetailsFragment,
             VacancyDetailsFragment.createArgs(vacancy.hhID)
         )
+    }
+
+    private fun showToast(additionalMessage: String) {
+        Toast.makeText(requireContext(), additionalMessage, Toast.LENGTH_SHORT).show()
     }
 
     private fun hideKeyboard() {

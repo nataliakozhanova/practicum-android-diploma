@@ -50,6 +50,7 @@
     <string name="server_error">Ошибка сервера</string>
     <string name="favorites">Избранное</string>
     <string name="empty_list">Список пуст</string>
+    <string name="bottom_of_list">Вы достигли конца списка</string>
     <string name="main">Главная</string>
     <string name="team">Команда</string>
     <string name="developed_application">Над приложением работали</string>
@@ -65,7 +66,7 @@
         <item quantity="zero">Найдено %d вакансий</item>
         <item quantity="one">Найдено %d вакансия</item>
         <item quantity="two">Найдено %d вакансии</item>
-        <item quantity="few">Найдено %d вакансий</item>
+        <item quantity="few">Найдено %d вакансии</item>
         <item quantity="many">Найдено %d вакансий</item>
         <item quantity="other">Найдено %d вакансий</item>
     </plurals>
