@@ -11,7 +11,6 @@ import ru.practicum.android.diploma.vacancydetails.presentation.models.DetailsSt
 
 class DetailsViewModel(
     private val vacancyInteractor: DetailsInteractor,
-    private val vacancyId: String
 ) : ViewModel() {
 
     private var isFavorite = MutableLiveData<Boolean>()

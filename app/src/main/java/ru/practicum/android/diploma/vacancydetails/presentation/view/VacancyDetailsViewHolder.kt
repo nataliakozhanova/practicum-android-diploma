@@ -30,6 +30,6 @@ class VacancyDetailsViewHolder(private val binding: ItemVacancyDetailsViewBindin
         binding.vacancyResponsibilitiesTv.text = vacancy.responsibilities.joinToString("\n• ", "• ")
         binding.vacancyRequirementsTv.text = vacancy.requirements.joinToString("\n• ", "• ")
         binding.vacancyConditionsTv.text = vacancy.conditions.joinToString("\n• ", "• ")
-        binding.vacancyKeySkillsTv.text = vacancy.keySkills.joinToString("\n• ", "• ")
+        binding.vacancyKeySkillsTv.text = vacancy.keySkills?.joinToString("\n• ", "• ")
     }
 }
