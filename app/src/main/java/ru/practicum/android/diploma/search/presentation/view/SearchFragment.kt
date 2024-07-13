@@ -83,7 +83,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun doBindings() {
-
         binding.editTextSearch.doOnTextChanged { text, start, before, count ->
             searchMask = text.toString()
             if (searchMask.isNotEmpty()) {
@@ -169,7 +168,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun loadNextPage() {
-        if (currentPage+1 == totalPages) {
+        if (currentPage + 1 == totalPages) {
             showToast(getString(R.string.bottom_of_list))
         } else {
             hideKeyboard()
@@ -179,7 +178,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showErrorOrEmptySearch(type: ErrorType) {
-
         hideKeyboard()
         with(binding) {
             searchResultsRV.isVisible = false
