@@ -10,6 +10,7 @@
         android:id="@+id/testVac"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
         android:background="@color/blue"
         android:gravity="center"
         android:textColor="@color/white"
@@ -46,6 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
+            android:visibility="visible"
+            android:clickable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/arrow_back_24px" />
@@ -67,6 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="28dp"
+            android:clickable="true"
             android:src="@drawable/sharing_24px_button"
             app:layout_constraintEnd_toStartOf="@+id/favoriteVacansyIv"
             app:layout_constraintTop_toTopOf="parent" />
@@ -77,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:clickable="true"
             android:src="@drawable/favorites_off_24px_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
