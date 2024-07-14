@@ -60,9 +60,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/logoCompanyIv"
             app:layout_constraintTop_toBottomOf="@+id/nameCompanyTv"
-            tools:text="Москва" />
+            tools:text="Москва"
+            android:maxLines="2"
+            android:ellipsize="end"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -106,90 +110,30 @@
         app:layout_constraintTop_toBottomOf="@+id/formatWorkTv" />
 
     <TextView
-        android:id="@+id/responsibilities"
-        style="@style/Medium16TextStyle"
+        android:id="@+id/descriptionVacancy"
+        style="@style/Regular16TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"
-        android:text="@string/responsibilities"
+        android:text="@string/descriptionVacancy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vacancyDescriptionTv" />
-
-    <TextView
-        android:id="@+id/vacancyResponsibilitiesTv"
-        style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/responsibilities"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/responsibilities"
-        tools:text="•  Разрабатывать новую функциональность приложения, Помогать с интеграцией нашего SDK в другие приложения" />
-
-    <TextView
-        android:id="@+id/requirements"
-        style="@style/Medium16TextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/requirements"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vacancyResponsibilitiesTv" />
-
-    <TextView
-        android:id="@+id/vacancyRequirementsTv"
-        style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/requirements"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/requirements"
-        tools:text="•  100% Kotlin, WebRTC, CI по модели Trunk Based Development" />
-
-    <TextView
-        android:id="@+id/conditions"
-        style="@style/Medium16TextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/conditions"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vacancyRequirementsTv" />
-
-    <TextView
-        android:id="@+id/vacancyConditionsTv"
-        style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/conditions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/conditions"
-        tools:text="•  Сильная команда, с которой можно расти и возможности влиять на процесс и результат, расширенная программа ДМС: стоматология, обследования, вызов врача на дом и многое другое" />
 
     <TextView
         android:id="@+id/key_skills"
         style="@style/Medium22TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="@string/key_skills"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vacancyConditionsTv" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionVacancy" />
 
     <TextView
         android:id="@+id/vacancyKeySkillsTv"
         style="@style/Regular16TextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/key_skills"
         app:layout_constraintEnd_toEndOf="parent"
@@ -212,9 +156,8 @@
         style="@style/Regular16TextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/contacts"
+        android:text="@string/Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contacts" />
@@ -224,11 +167,33 @@
         style="@style/Regular16TextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Комментарий к информации о контактах"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vacancyContactsTv" />
+
+    <TextView
+        android:id="@+id/emailVD"
+        style="@style/Regular16TextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/Email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vacancyContactsCommentTv" />
+
+    <TextView
+        android:id="@+id/phoneVD"
+        style="@style/Regular16TextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/Phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailVD" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
