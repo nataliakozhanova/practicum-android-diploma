@@ -42,7 +42,7 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
 
-    private lateinit var onVacancyClickDebounce: (VacancyBase) -> Unit
+    private var onVacancyClickDebounce: (VacancyBase) -> Unit = { _ -> }
     private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> onVacancyClickDebounce(vacancy) }
 
     private var currentPage = 0

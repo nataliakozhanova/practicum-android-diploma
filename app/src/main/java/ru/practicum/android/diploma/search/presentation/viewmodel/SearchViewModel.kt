@@ -95,7 +95,7 @@ class SearchViewModel(
         _state.postValue(state)
     }
 
-    fun searchByClick(searchText: String){
+    fun searchByClick(searchText: String) {
         if (latestSearchText == searchText && _state.value !is SearchState.Error) {
             return
         }
