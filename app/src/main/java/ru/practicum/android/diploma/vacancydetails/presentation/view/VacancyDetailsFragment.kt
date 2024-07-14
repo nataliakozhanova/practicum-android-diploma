@@ -67,10 +67,11 @@ class VacancyDetailsFragment : Fragment() {
                         state.vacancy.details.description,
                         Html.FROM_HTML_MODE_LEGACY
                     )
+                    val trackCornerRadius: Int = resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
                     Glide.with(view)
                         .load(state.vacancy.employerInfo.employerLogoUrl)
                         .placeholder(R.drawable.logo_placeholder_image)
-                        .transform(CenterCrop(), RoundedCorners(16))
+                        .transform(CenterCrop(), RoundedCorners(trackCornerRadius))
                         .into(vacancyDetailsBinding.logoCompanyIv)
                 }
                 else -> {}
