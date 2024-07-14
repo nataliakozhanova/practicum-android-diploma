@@ -270,8 +270,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showErrorOrEmptySearch(type: ErrorType) {
-
-
         Log.d("mine", "size=${vacancySearchAdapter.vacancies.size}")
         hideKeyboard()
         val errorMessage = getErrorMessage(type)

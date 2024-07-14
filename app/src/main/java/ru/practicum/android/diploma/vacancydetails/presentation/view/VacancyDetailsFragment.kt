@@ -45,7 +45,8 @@ class VacancyDetailsFragment : Fragment() {
                     val vacancyDetailsBinding = ItemVacancyDetailsViewBinding.bind(binding.root)
                     vacancyDetailsBinding.nameVacancyTv.text = Html.fromHtml(
                         "${state.vacancy.name}," +
-                            " ${state.vacancy.employerInfo.areaName}", Html.FROM_HTML_MODE_LEGACY
+                            " ${state.vacancy.employerInfo.areaName}",
+                        Html.FROM_HTML_MODE_LEGACY
                     )
                     vacancyDetailsBinding.nameCompanyTv.text = Html.fromHtml(
                         state.vacancy.employerInfo.employerName,
@@ -74,6 +75,7 @@ class VacancyDetailsFragment : Fragment() {
                         .transform(CenterCrop(), RoundedCorners(trackCornerRadius))
                         .into(vacancyDetailsBinding.logoCompanyIv)
                 }
+
                 else -> {}
             }
 
