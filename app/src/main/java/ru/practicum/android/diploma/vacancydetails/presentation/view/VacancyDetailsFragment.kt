@@ -92,10 +92,8 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun setSalary(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-        binding.vacancySalaryTv.text = Html.fromHtml(
-            Formatter.formatSalary(requireContext(), state.vacancy.salaryInfo),
-            Html.FROM_HTML_MODE_LEGACY
-        )
+        binding.vacancySalaryTv.text =
+            Formatter.formatSalary(requireContext(), state.vacancy.salaryInfo)
     }
 
     private fun setKeySkills(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
@@ -126,7 +124,7 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun setContacts(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val contacts = state.vacancy.details.contacts
-        if (contacts == null || (contacts.email.isNullOrEmpty() && contacts.name.isNullOrEmpty() && contacts.phone.isNullOrEmpty())) {
+        if (contacts == null || contacts.email.isNullOrEmpty() && contacts.name.isNullOrEmpty() && contacts.phone.isNullOrEmpty()) {
             hideAllContactViews(binding)
         } else {
             showContactViews(binding, contacts)
