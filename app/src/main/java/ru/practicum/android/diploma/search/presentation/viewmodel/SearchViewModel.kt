@@ -36,13 +36,15 @@ class SearchViewModel(
     fun observeState(): LiveData<SearchState> = _state
 
     fun stopSearch() {
+        latestPage = null
         if (searchJob != null && searchJob!!.isActive) {
             searchJob?.cancel()
-            latestPage = null
         }
     }
 
     fun searchDebounce(changedText: String, page: Int) {
+        Log.d("mine", "page $page/$latestPage")
+
         if (changedText.trim().isEmpty() || page == latestPage) {
             return
         }

@@ -108,8 +108,8 @@ class SearchFragment : Fragment() {
         with(binding.editTextSearch) {
             // изменение текста
             doOnTextChanged { text, start, before, count ->
-                // любое изменение прерывает текущий поиск
-                viewModel.stopSearch()
+                // любое изменение сбрасывает текущий поиск
+                resetSearchParams()
                 searchMask = text.toString().trim()
                 // иконка в поле поиска
                 setEditTextIconBySearchMask()
@@ -125,8 +125,8 @@ class SearchFragment : Fragment() {
                     && event.rawX >= binding.editTextSearch.right
                     - binding.editTextSearch.compoundDrawables[2].bounds.width()
                 ) {
-                    // остановим поиск при очистке поля
-                    viewModel.stopSearch()
+                    // сбросим параметры для нового поиска
+                    resetSearchParams()
                     searchMask = ""
                     setEditTextIconBySearchMask()
                     binding.editTextSearch.setText(searchMask)
@@ -237,6 +237,11 @@ class SearchFragment : Fragment() {
         }
 
         binding.vacanciesCountText.append(" (${vacancySearchAdapter.vacancies.size})")
+    }
+
+    private fun resetSearchParams() {
+        viewModel.stopSearch()
+        currentPage = 0
     }
 
     private fun loadNextPage() {
