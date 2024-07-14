@@ -56,7 +56,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:lines="1"
-                android:maxLength="30"
+                android:maxLength="50"
                 android:padding="@dimen/dp_16"
                 android:singleLine="true"
                 app:layout_constraintTop_toBottomOf="@+id/searchVacancyText"
@@ -111,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/vacancies_count_background"
             android:fontFamily="@font/ys_display_regular"
             android:padding="5dp"
@@ -155,7 +155,7 @@
                         android:id="@+id/searchResultsRV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="28dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"
                         tools:itemCount="3"
@@ -174,9 +174,6 @@
 
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
-
-
-
 
         </LinearLayout>
 
