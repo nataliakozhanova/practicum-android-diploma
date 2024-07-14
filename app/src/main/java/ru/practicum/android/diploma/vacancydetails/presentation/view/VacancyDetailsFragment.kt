@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.vacancydetails.presentation.view
 
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,8 @@ class VacancyDetailsFragment : Fragment() {
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is DetailsState.Content -> {
-                    binding.testVac.text = "${state.vacancy.name} ${state.vacancy.details}"
+                    binding.testVac.text = Html.fromHtml("${state.vacancy.name} ${state.vacancy.details}",
+                        Html.FROM_HTML_MODE_LEGACY)
                 }
 
                 else -> {}
