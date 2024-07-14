@@ -6,27 +6,22 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.VacancyBase
-import ru.practicum.android.diploma.databinding.ItemFavoriteViewBinding
+import ru.practicum.android.diploma.databinding.ItemVacancyViewBinding
 import ru.practicum.android.diploma.util.Formatter
 
 class FavoriteViewHolder(
     private val clickListener: FavoriteAdapter.FavoriteClickListener,
-    private val binding: ItemFavoriteViewBinding,
+    private val binding: ItemVacancyViewBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private val trackCornerRadius: Int =
-        itemView.context.resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
+    private val trackCornerRadius: Int = itemView.context.resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
 
     fun bind(item: VacancyBase) {
-        binding.titleFavoriteItem.text = "${item.name}, ${item.employerInfo.areaName}"
-        binding.subtitleFavoriteItem.text = item.employerInfo.employerName
-        binding.priceFavoriteItem.text = Formatter.formatSalary(itemView.context, item.salaryInfo)
-
-        Glide.with(itemView)
-            .load(item.employerInfo.employerLogoUrl)
-            .placeholder(R.drawable.logo_placeholder_image)
-            .transform(CenterCrop(), RoundedCorners(trackCornerRadius))
-            .into(binding.imageItemFavorite)
+        binding.vacancyNameAndCity.text = "${item.name}, ${item.employerInfo.areaName}"
+        binding.companyName.text = item.employerInfo.employerName
+        binding.salaryText.text = Formatter.formatSalary(itemView.context, item.salaryInfo)
+        Glide.with(itemView).load(item.employerInfo.employerLogoUrl).placeholder(R.drawable.logo_placeholder_image)
+            .transform(CenterCrop(), RoundedCorners(trackCornerRadius)).into(binding.vacancyLogo)
 
         itemView.setOnClickListener { clickListener.onFavoriteClick(item) }
     }

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.common.domain.VacancyBase
-import ru.practicum.android.diploma.databinding.ItemFavoriteViewBinding
+import ru.practicum.android.diploma.databinding.ItemVacancyViewBinding
 
 class FavoriteAdapter(
     private val favoriteClickListener: FavoriteClickListener,
@@ -16,7 +16,7 @@ class FavoriteAdapter(
         val layoutInflater = LayoutInflater.from(parent.context)
         return FavoriteViewHolder(
             favoriteClickListener,
-            ItemFavoriteViewBinding.inflate(layoutInflater, parent, false)
+            ItemVacancyViewBinding.inflate(layoutInflater, parent, false)
         )
     }
 
@@ -31,5 +31,4 @@ class FavoriteAdapter(
     fun interface FavoriteClickListener {
         fun onFavoriteClick(item: VacancyBase)
     }
-
 }
