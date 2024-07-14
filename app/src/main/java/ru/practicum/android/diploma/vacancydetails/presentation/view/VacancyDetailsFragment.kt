@@ -59,6 +59,10 @@ class VacancyDetailsFragment : Fragment() {
                         Formatter.formatSalary(requireContext(), state.vacancy.salaryInfo),
                         Html.FROM_HTML_MODE_LEGACY
                     )
+                    vacancyDetailsBinding.vacancyKeySkillsTv.text = Html.fromHtml(state.vacancy.details.keySkill.toString(),
+                        Html.FROM_HTML_MODE_LEGACY)
+                    vacancyDetailsBinding.vacancyResponsibilitiesTv.text = Html.fromHtml(state.vacancy.details.description,
+                        Html.FROM_HTML_MODE_LEGACY)
                 }
 
                 else -> {}
