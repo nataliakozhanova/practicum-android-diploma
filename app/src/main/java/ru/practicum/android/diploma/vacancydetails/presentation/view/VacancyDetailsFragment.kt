@@ -124,7 +124,7 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun setContacts(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val contacts = state.vacancy.details.contacts
-        if (contacts == null || contacts.email.isNullOrEmpty() && contacts.name.isNullOrEmpty() && contacts.phone.isNullOrEmpty()) {
+        if (contacts == null || contacts.email.isNullOrEmpty() && contacts.phone.isNullOrEmpty()) {
             hideAllContactViews(binding)
         } else {
             showContactViews(binding, contacts)
