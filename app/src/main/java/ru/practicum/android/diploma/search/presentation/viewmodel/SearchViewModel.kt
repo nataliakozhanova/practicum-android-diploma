@@ -94,4 +94,13 @@ class SearchViewModel(
     private fun renderState(state: SearchState) {
         _state.postValue(state)
     }
+
+    fun searchByClick(searchText: String) {
+        if (latestSearchText == searchText && _state.value !is SearchState.Error) {
+            return
+        }
+        this.latestSearchText = searchText
+
+        searchRequest(searchText, 0)
+    }
 }

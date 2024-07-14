@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
@@ -15,6 +16,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -25,6 +27,7 @@ import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
+import ru.practicum.android.diploma.util.debounce
 import ru.practicum.android.diploma.util.getCountableVacancies
 import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
 
@@ -32,13 +35,15 @@ class SearchFragment : Fragment() {
 
     companion object {
         private const val SEARCH_MASK = ""
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 200L
     }
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
 
-    private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> openVacancy(vacancy) }
+    private var onVacancyClickDebounce: (VacancyBase) -> Unit = { _ -> }
+    private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> onVacancyClickDebounce(vacancy) }
 
     private var currentPage = 0
     private var totalPages = 0
@@ -54,8 +59,15 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.searchResultsRV.adapter = vacancySearchAdapter
+        onVacancyClickDebounce = debounce<VacancyBase>(
+            CLICK_DEBOUNCE_DELAY_MILLIS,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { track ->
+            openVacancy(track)
+        }
 
-        showEmptySearch()
+        showStartPage()
 
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -82,10 +94,11 @@ class SearchFragment : Fragment() {
         doBindings()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun doBindings() {
         binding.editTextSearch.doOnTextChanged { text, start, before, count ->
             searchMask = text.toString()
-            if (searchMask.isNotEmpty()) {
+            if (binding.editTextSearch.hasFocus() && searchMask.isNotEmpty()) {
                 changeDrawableClearText(binding.editTextSearch)
                 viewModel.searchDebounce(searchMask, 0)
             } else {
@@ -101,7 +114,15 @@ class SearchFragment : Fragment() {
             ) {
                 changeDrawableSearchIcon(binding.editTextSearch)
                 binding.editTextSearch.setText(SEARCH_MASK)
-                showEmptySearch()
+                showStartPage()
+                true
+            }
+            false
+        }
+
+        binding.editTextSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.searchByClick(binding.editTextSearch.text.toString())
                 true
             }
             false
@@ -134,7 +155,7 @@ class SearchFragment : Fragment() {
         hideKeyboard()
     }
 
-    private fun showEmptySearch() {
+    private fun showStartPage() {
         with(binding) {
             placeHolderImage.isVisible = true
             placeHolderImage.setImageResource(R.drawable.image_search_empty)
@@ -223,17 +244,15 @@ class SearchFragment : Fragment() {
     }
 
     private fun changeDrawableClearText(editText: EditText) {
-        // Меняем иконку на другую
         val newIcon = ContextCompat.getDrawable(requireContext(), R.drawable.clear_24px_input_edittext_button)
         newIcon?.setBounds(0, 0, newIcon.intrinsicWidth, newIcon.intrinsicHeight)
-        editText.setCompoundDrawables(null, null, newIcon, null) // Устанавливаем новую иконку справа
+        editText.setCompoundDrawables(null, null, newIcon, null)
     }
 
     private fun changeDrawableSearchIcon(editText: EditText) {
-        // Меняем иконку на другую
         val newIcon = ContextCompat.getDrawable(requireContext(), R.drawable.search_24px_input_edittext_icon)
         newIcon?.setBounds(0, 0, newIcon.intrinsicWidth, newIcon.intrinsicHeight)
-        editText.setCompoundDrawables(null, null, newIcon, null) // Устанавливаем новую иконку справа
+        editText.setCompoundDrawables(null, null, newIcon, null)
     }
 
     private fun openVacancy(vacancy: VacancyBase) {
