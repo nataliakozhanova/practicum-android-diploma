@@ -78,6 +78,9 @@ class SearchFragment : Fragment() {
 
         // подпишемся на результаты поиска
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
+
+            Log.d("mine", "STATE=${state.javaClass}")
+
             when (state) {
                 is SearchState.Content -> {
                     isNextPageLoading = false
@@ -267,6 +270,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun showErrorOrEmptySearch(type: ErrorType) {
+
+
+        Log.d("mine", "size=${vacancySearchAdapter.vacancies.size}")
         hideKeyboard()
         val errorMessage = getErrorMessage(type)
         if (vacancySearchAdapter.vacancies.size > 0) {

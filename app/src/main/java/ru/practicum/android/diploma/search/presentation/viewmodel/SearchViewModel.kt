@@ -75,6 +75,9 @@ class SearchViewModel(
 
     private fun processResult(searchResult: SearchResult?, errorType: ErrorType) {
         val vacancies = mutableListOf<VacancyBase>()
+
+        Log.d("mine", "errorType=${errorType.javaClass}")
+
         when (errorType) {
             is Success -> {
                 if (searchResult != null) {

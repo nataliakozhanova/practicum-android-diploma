@@ -71,7 +71,7 @@ class RetrofitNetworkClient(
     }
 
     private fun convertVacancySearchResponse(responseBody: VacancySearchResponse?): ResponseBase =
-        if (responseBody == null) {
+        if (responseBody == null || responseBody.items.isEmpty()) {
             ResponseBase(VacanciesNotFoundType())
         } else {
             VacancySearchResponse(
