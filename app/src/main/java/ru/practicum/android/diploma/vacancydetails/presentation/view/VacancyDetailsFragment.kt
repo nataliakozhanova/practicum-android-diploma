@@ -7,7 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyDetailsViewBinding
 import ru.practicum.android.diploma.util.Formatter
@@ -63,8 +67,12 @@ class VacancyDetailsFragment : Fragment() {
                         state.vacancy.details.description,
                         Html.FROM_HTML_MODE_LEGACY
                     )
+                    Glide.with(view)
+                        .load(state.vacancy.employerInfo.employerLogoUrl)
+                        .placeholder(R.drawable.logo_placeholder_image)
+                        .transform(CenterCrop(), RoundedCorners(16))
+                        .into(vacancyDetailsBinding.logoCompanyIv)
                 }
-
                 else -> {}
             }
 
