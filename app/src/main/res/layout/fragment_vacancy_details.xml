@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor">
 
-    <TextView
-        android:id="@+id/testVac"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="120dp"
-        android:background="@color/blue"
-        android:gravity="center"
-        android:textColor="@color/white"
-        tools:text="TEST"
-        android:translationZ="99999dp"
-        android:visibility="gone"/>
-
     <ProgressBar
         android:id="@+id/detailsProgressBar"
         android:layout_width="@dimen/dp_36"
