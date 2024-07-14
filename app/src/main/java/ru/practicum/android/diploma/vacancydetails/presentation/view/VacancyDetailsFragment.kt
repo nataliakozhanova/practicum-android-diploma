@@ -97,13 +97,15 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun setKeySkills(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-        binding.vacancyKeySkillsTv.text = state.vacancy.details.keySkill.toString()
-        if (state.vacancy.details.keySkill.isNullOrEmpty()) {
+        val keySkills = state.vacancy.details.keySkill
+        if (keySkills.isNullOrEmpty()) {
             binding.keySkills.visibility = View.GONE
             binding.vacancyKeySkillsTv.visibility = View.GONE
         } else {
             binding.keySkills.visibility = View.VISIBLE
             binding.vacancyKeySkillsTv.visibility = View.VISIBLE
+            val skillsText = keySkills.joinToString(separator = "\n") { "•  ${it.name}" }
+            binding.vacancyKeySkillsTv.text = skillsText
         }
     }
 
