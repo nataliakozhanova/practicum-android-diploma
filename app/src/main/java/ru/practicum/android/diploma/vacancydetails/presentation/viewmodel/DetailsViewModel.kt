@@ -35,7 +35,7 @@ class DetailsViewModel(
                 favouriteVacancyInteractor.addVacancyToFavourite(vacancyId)
             }
             isFavourite = true
-            vacancyState.postValue(DetailsState.isFavourite(isFavourite))
+            vacancyState.postValue(DetailsState.isFavorite(isFavourite))
         }
     }
 
@@ -45,7 +45,7 @@ class DetailsViewModel(
                 favouriteVacancyInteractor.deleteVacancyFromFavourite(vacancyId)
             }
             isFavourite = false
-            vacancyState.postValue(DetailsState.isFavourite(isFavourite))
+            vacancyState.postValue(DetailsState.isFavorite(isFavourite))
         }
     }
 
@@ -60,10 +60,10 @@ class DetailsViewModel(
             }
             if (favouriteTracksId!!.contains(vacancyId)) {
                 isFavourite = true
-                vacancyState.postValue(DetailsState.isFavourite(isFavourite))
+                vacancyState.postValue(DetailsState.isFavorite(isFavourite))
             } else {
                 isFavourite = false
-                vacancyState.postValue(DetailsState.isFavourite(isFavourite))
+                vacancyState.postValue(DetailsState.isFavorite(isFavourite))
             }
         }
     }

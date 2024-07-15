@@ -20,9 +20,7 @@ import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyDetailsViewBinding
 import ru.practicum.android.diploma.util.Formatter
-import ru.practicum.android.diploma.vacancydetails.domain.models.Contacts
 import ru.practicum.android.diploma.vacancydetails.domain.models.DetailsNotFoundType
-import ru.practicum.android.diploma.vacancydetails.domain.models.Phone
 import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 import ru.practicum.android.diploma.vacancydetails.presentation.models.DetailsState
 import ru.practicum.android.diploma.vacancydetails.presentation.viewmodel.DetailsViewModel
@@ -51,7 +49,9 @@ class VacancyDetailsFragment : Fragment() {
             when (state) {
                 is DetailsState.Content -> {
                     vacancy = state.vacancy
+                    hideErrorsAndLoading()
                     showVacancyContent(state)
+                    binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = true
                 }
 
                 is DetailsState.Error -> {
@@ -66,11 +66,10 @@ class VacancyDetailsFragment : Fragment() {
                     showLoading()
                 }
 
-                is DetailsState.isFavourite -> checkFavouriteIcon(state.isFav)
+                is DetailsState.isFavorite -> checkFavouriteIcon(state.isFav)
                 else -> {}
             }
-            binding.detailsProgressBar.isVisible = false
-            binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = true
+
         }
 
         binding.favoriteVacansyIv.setOnClickListener {
@@ -102,32 +101,30 @@ class VacancyDetailsFragment : Fragment() {
         _binding = null
     }
 
+    private fun hideErrorsAndLoading() {
+        binding.detailsProgressBar.isVisible = false
+        binding.errorPlaceholderIv.isVisible = false
+        binding.errorPlaceholderTv.isVisible = false
+    }
+
     private fun showTypeErrorOrEmpty(type: ErrorType) {
         binding.detailsProgressBar.isVisible = false
-        binding.errorPlaceholderCl.isVisible = true
+        binding.errorPlaceholderIv.isVisible = true
+        binding.errorPlaceholderTv.isVisible = true
         binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = false
         when (type) {
             is BadRequestError -> {
-                binding.errorPlaceholderTv.isVisible = true
                 binding.errorPlaceholderTv.text = getString(R.string.server_error)
-
-                binding.errorPlaceholderIv.isVisible = true
                 binding.errorPlaceholderIv.setImageResource(R.drawable.image_vacancy_server_error)
             }
 
             is NoInternetError -> {
-                binding.errorPlaceholderTv.isVisible = true
                 binding.errorPlaceholderTv.text = getString(R.string.no_internet)
-
-                binding.errorPlaceholderIv.isVisible = true
                 binding.errorPlaceholderIv.setImageResource(R.drawable.image_no_internet_error)
             }
 
             else -> {
-                binding.errorPlaceholderTv.isVisible = true
                 binding.errorPlaceholderTv.text = getString(R.string.not_found_or_deleted_vacancy)
-
-                binding.errorPlaceholderIv.isVisible = true
                 binding.errorPlaceholderIv.setImageResource(R.drawable.image_vacancy_not_found_error)
             }
         }
@@ -151,7 +148,7 @@ class VacancyDetailsFragment : Fragment() {
         setDescription(vacancyDetailsBinding, state)
         setExperience(vacancyDetailsBinding, state)
         setEmployment(vacancyDetailsBinding, state)
-        setContacts(vacancyDetailsBinding, state)
+        // setContacts(vacancyDetailsBinding, state)
         setCompanyLogo(vacancyDetailsBinding, state)
     }
 
@@ -208,80 +205,80 @@ class VacancyDetailsFragment : Fragment() {
         binding.formatWorkTv.text = state.vacancy.details.employment?.name
     }
 
-    private fun setContacts(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-        val contacts = state.vacancy.details.contacts
-        if (contacts == null || contacts.email.isNullOrEmpty() && contacts.phone.isNullOrEmpty()) {
-            // hideAllContactViews(binding)
-            showMockContacts(binding)
-        } else {
-            showContactViews(binding, contacts)
-        }
-    }
-
-    private fun hideAllContactViews(binding: ItemVacancyDetailsViewBinding) {
-        binding.contacts.visibility = View.GONE
-        binding.vacancyContactsTv.visibility = View.GONE
-        binding.vacancyContactsCommentTv.visibility = View.GONE
-        binding.emailVD.visibility = View.GONE
-        binding.phoneVD.visibility = View.GONE
-    }
-
-    private fun showMockContacts(binding: ItemVacancyDetailsViewBinding) {
-        binding.contacts.visibility = View.VISIBLE
-        setName(binding, getString(R.string.name_mock))
-        setEmail(binding, getString(R.string.email_mock))
-        binding.phoneVD.visibility = View.VISIBLE
-        binding.phoneVD.text = getString(R.string.phone_mock)
-        binding.phoneVD.setOnClickListener {
-            // Слушатель нажатия на телефон
-        }
-        binding.emailVD.setOnClickListener {
-            // Слушатель нажатия на почту
-        }
-    }
-
-    private fun showContactViews(binding: ItemVacancyDetailsViewBinding, contacts: Contacts) {
-        binding.contacts.visibility = View.VISIBLE
-        setName(binding, contacts.name)
-        setEmail(binding, contacts.email)
-        setPhone(binding, contacts.phone)
-    }
-
-    private fun setName(binding: ItemVacancyDetailsViewBinding, name: String?) {
-        if (name.isNullOrEmpty()) {
-            binding.vacancyContactsTv.visibility = View.GONE
-        } else {
-            binding.vacancyContactsTv.visibility = View.VISIBLE
-            binding.vacancyContactsTv.text = name
-        }
-    }
-
-    private fun setEmail(binding: ItemVacancyDetailsViewBinding, email: String?) {
-        if (email.isNullOrEmpty()) {
-            binding.emailVD.visibility = View.GONE
-        } else {
-            binding.emailVD.visibility = View.VISIBLE
-            binding.emailVD.text = email
-            binding.emailVD.setOnClickListener {
-                // Слушатель нажатия на почту
-            }
-        }
-    }
-
-    private fun setPhone(binding: ItemVacancyDetailsViewBinding, phoneList: List<Phone>?) {
-        if (phoneList.isNullOrEmpty()) {
-            binding.phoneVD.visibility = View.GONE
-        } else {
-            binding.phoneVD.visibility = View.VISIBLE
-            val phoneInfo = phoneList.joinToString("\n") { phone ->
-                "${phone.formatted} (${phone.comment ?: "Нет комментария"})"
-            }
-            binding.phoneVD.text = phoneInfo
-            binding.phoneVD.setOnClickListener {
-                // Слушатель нажатия на телефон
-            }
-        }
-    }
+//    private fun setContacts(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
+//        val contacts = state.vacancy.details.contacts
+//        if (contacts == null || contacts.email.isNullOrEmpty() && contacts.phone.isNullOrEmpty()) {
+//            // hideAllContactViews(binding)
+//            showMockContacts(binding)
+//        } else {
+//            showContactViews(binding, contacts)
+//        }
+//    }
+//
+//    private fun hideAllContactViews(binding: ItemVacancyDetailsViewBinding) {
+//        binding.contacts.visibility = View.GONE
+//        binding.vacancyContactsTv.visibility = View.GONE
+//        binding.vacancyContactsCommentTv.visibility = View.GONE
+//        binding.emailVD.visibility = View.GONE
+//        binding.phoneVD.visibility = View.GONE
+//    }
+//
+//    private fun showMockContacts(binding: ItemVacancyDetailsViewBinding) {
+//        binding.contacts.visibility = View.VISIBLE
+//        setName(binding, getString(R.string.name_mock))
+//        setEmail(binding, getString(R.string.email_mock))
+//        binding.phoneVD.visibility = View.VISIBLE
+//        binding.phoneVD.text = getString(R.string.phone_mock)
+//        binding.phoneVD.setOnClickListener {
+//            // Слушатель нажатия на телефон
+//        }
+//        binding.emailVD.setOnClickListener {
+//            // Слушатель нажатия на почту
+//        }
+//    }
+//
+//    private fun showContactViews(binding: ItemVacancyDetailsViewBinding, contacts: Contacts) {
+//        binding.contacts.visibility = View.VISIBLE
+//        setName(binding, contacts.name)
+//        setEmail(binding, contacts.email)
+//        setPhone(binding, contacts.phone)
+//    }
+//
+//    private fun setName(binding: ItemVacancyDetailsViewBinding, name: String?) {
+//        if (name.isNullOrEmpty()) {
+//            binding.vacancyContactsTv.visibility = View.GONE
+//        } else {
+//            binding.vacancyContactsTv.visibility = View.VISIBLE
+//            binding.vacancyContactsTv.text = name
+//        }
+//    }
+//
+//    private fun setEmail(binding: ItemVacancyDetailsViewBinding, email: String?) {
+//        if (email.isNullOrEmpty()) {
+//            binding.emailVD.visibility = View.GONE
+//        } else {
+//            binding.emailVD.visibility = View.VISIBLE
+//            binding.emailVD.text = email
+//            binding.emailVD.setOnClickListener {
+//                // Слушатель нажатия на почту
+//            }
+//        }
+//    }
+//
+//    private fun setPhone(binding: ItemVacancyDetailsViewBinding, phoneList: List<Phone>?) {
+//        if (phoneList.isNullOrEmpty()) {
+//            binding.phoneVD.visibility = View.GONE
+//        } else {
+//            binding.phoneVD.visibility = View.VISIBLE
+//            val phoneInfo = phoneList.joinToString("\n") { phone ->
+//                "${phone.formatted} (${phone.comment ?: "Нет комментария"})"
+//            }
+//            binding.phoneVD.text = phoneInfo
+//            binding.phoneVD.setOnClickListener {
+//                // Слушатель нажатия на телефон
+//            }
+//        }
+//    }
 
     private fun setCompanyLogo(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val placeHolderCornerRadius: Int = resources.getDimensionPixelSize(R.dimen.logo_corner_radius)
