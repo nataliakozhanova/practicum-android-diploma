@@ -125,7 +125,6 @@ class SearchFragment : Fragment() {
             is SearchState.Content -> {
                 nextPagePreloaderToggle(false)
                 loadVacancies(state.vacancies)
-                showToast("Показано: ${vacancySearchAdapter.vacancies.size}")
             }
 
             is SearchState.Empty -> {
