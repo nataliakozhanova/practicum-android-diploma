@@ -26,8 +26,8 @@ class DetailsViewModel(
 
     private val vacancyState = MutableLiveData<DetailsState>()
     fun observeVacancyState(): LiveData<DetailsState> = vacancyState
-    private lateinit var favouriteTracksId: List<String>
-    public lateinit var vacancy: VacancyDetails
+    private var favouriteTracksId: List<String>? = null
+    var vacancy: VacancyDetails? = null
     fun addToFavById(vacancyId: VacancyDetails) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -57,7 +57,7 @@ class DetailsViewModel(
                         favouriteTracksId = it
                     }
             }
-            if (favouriteTracksId.contains(vacancyId)) {
+            if (favouriteTracksId!!.contains(vacancyId)) {
                 isFavourite = true
                 vacancyState.postValue(DetailsState.isFavourite(isFavourite))
             } else {
@@ -101,7 +101,6 @@ class DetailsViewModel(
                     DetailsState.Error(errorType)
                 )
             }
-
         }
     }
 
@@ -112,5 +111,4 @@ class DetailsViewModel(
     fun getFavouriteState(): Boolean {
         return isFavourite
     }
-
 }

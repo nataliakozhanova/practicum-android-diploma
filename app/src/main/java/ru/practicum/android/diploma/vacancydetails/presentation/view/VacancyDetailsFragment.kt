@@ -22,13 +22,12 @@ import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 import ru.practicum.android.diploma.vacancydetails.presentation.models.DetailsState
 import ru.practicum.android.diploma.vacancydetails.presentation.viewmodel.DetailsViewModel
 
-
 class VacancyDetailsFragment : Fragment() {
 
     private var _binding: FragmentVacancyDetailsBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<DetailsViewModel>()
-    private lateinit var vacancy: VacancyDetails
+    private var vacancy: VacancyDetails? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
@@ -66,7 +65,6 @@ class VacancyDetailsFragment : Fragment() {
     private fun checkFavouriteIcon(isFavorite: Boolean) {
         if (isFavorite) {
             binding.favoriteVacansyIv.setImageResource(R.drawable.favorites_on_24px_button)
-
         } else {
             binding.favoriteVacansyIv.setImageResource(R.drawable.favorites_off_24px_button)
         }
@@ -74,9 +72,9 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun checkIsFavourite(favouriteState: Boolean) {
         if (favouriteState) {
-            vacancy.hhID.let { id -> viewModel.deleteFavouriteVacancy(id) }
+            vacancy!!.hhID.let { id -> viewModel.deleteFavouriteVacancy(id) }
         } else {
-            viewModel.addToFavById(vacancy)
+            viewModel.addToFavById(vacancy!!)
         }
     }
 
