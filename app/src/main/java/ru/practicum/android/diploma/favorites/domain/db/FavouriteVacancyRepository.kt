@@ -8,4 +8,5 @@ interface FavouriteVacancyRepository {
     suspend fun deleteVacancyFromFavourite(vacancyId: String)
     fun getAllFavouritesVacancies(): Flow<ArrayList<VacancyDetails>>
     fun getAllFavouritesVacanciesId(): Flow<List<String>>
+
 }

@@ -20,35 +20,30 @@ class DetailsViewModel(
     private val favouriteVacancyInteractor: FavouriteVacancyInteractor
 ) : ViewModel() {
 
-    private var isFavourite: Boolean = false
-    private var isFavorite = MutableLiveData<Boolean>()
-    fun observeFavoriteState(): LiveData<Boolean> = isFavorite
-
-    private val vacancyState = MutableLiveData<DetailsState>()
+private val vacancyState = MutableLiveData<DetailsState>()
     fun observeVacancyState(): LiveData<DetailsState> = vacancyState
-    private var favouriteTracksId: List<String>? = null
-    var vacancy: VacancyDetails? = null
+    private lateinit var favouriteTracksId: List<String>
+
+
     fun addToFavById(vacancyId: VacancyDetails) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 favouriteVacancyInteractor.addVacancyToFavourite(vacancyId)
             }
-            isFavourite = true
-            vacancyState.postValue(DetailsState.isFavourite(isFavourite))
         }
+        vacancyId.isFavorite = false
     }
 
-    fun deleteFavouriteVacancy(vacancyId: String) {
+    fun deleteFavouriteVacancy(vacancyId: VacancyDetails) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 favouriteVacancyInteractor.deleteVacancyFromFavourite(vacancyId)
             }
-            isFavourite = false
-            vacancyState.postValue(DetailsState.isFavourite(isFavourite))
         }
+        vacancyId.isFavorite = true
     }
 
-    fun isFavourite(vacancyId: String) {
+    fun isFavourite(vacancyId: VacancyDetails) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 favouriteVacancyInteractor
@@ -57,12 +52,10 @@ class DetailsViewModel(
                         favouriteTracksId = it
                     }
             }
-            if (favouriteTracksId!!.contains(vacancyId)) {
-                isFavourite = true
-                vacancyState.postValue(DetailsState.isFavourite(isFavourite))
+            if (favouriteTracksId.contains(vacancyId.hhID)) {
+                vacancyId.isFavorite = true
             } else {
-                isFavourite = false
-                vacancyState.postValue(DetailsState.isFavourite(isFavourite))
+                vacancyId.isFavorite = false
             }
         }
     }
@@ -108,7 +101,4 @@ class DetailsViewModel(
         vacancyState.postValue(state)
     }
 
-    fun getFavouriteState(): Boolean {
-        return isFavourite
-    }
 }

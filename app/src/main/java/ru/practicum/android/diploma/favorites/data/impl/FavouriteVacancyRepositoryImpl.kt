@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.favorites.data.impl
 
+
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -18,8 +19,9 @@ class FavouriteVacancyRepositoryImpl(
         vacancyDatabase.vacancyDao().addVacancyToFavourite(vacancyEntity)
     }
 
-    override suspend fun deleteVacancyFromFavourite(vacancyId: String) {
-        vacancyDatabase.vacancyDao().deleteVacancyFromFavourite(vacancyId)
+    override suspend fun deleteVacancyFromFavourite(vacancyId: VacancyDetails) {
+        val vacancyEntity = convertToVacancyEntity(vacancyId)
+        vacancyDatabase.vacancyDao().deleteVacancyFromFavourite(vacancyEntity.hhID)
     }
 
     override fun getAllFavouritesVacancies(): Flow<ArrayList<VacancyDetails>> {
