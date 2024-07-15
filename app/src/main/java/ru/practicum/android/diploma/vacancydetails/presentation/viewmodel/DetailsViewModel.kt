@@ -23,7 +23,7 @@ class DetailsViewModel(
 
     private var isFavourite: Boolean = false
     private var isFavorite = MutableLiveData<Boolean>()
-    fun observeFavoriteState(): LiveData<Boolean> = isFavorite
+    // fun observeFavoriteState(): LiveData<Boolean> = isFavorite
 
     private val vacancyState = MutableLiveData<DetailsState>()
     fun observeVacancyState(): LiveData<DetailsState> = vacancyState
@@ -139,8 +139,8 @@ class DetailsViewModel(
         return isFavourite
     }
 
-    fun getSharingIntent() : Intent? {
-        return if(vacancy!=null) {
+    fun getSharingIntent(): Intent? {
+        return if (vacancy != null) {
             vacancyInteractor.shareVacancy(vacancy!!.details.hhVacancyLink)
         } else {
             null
