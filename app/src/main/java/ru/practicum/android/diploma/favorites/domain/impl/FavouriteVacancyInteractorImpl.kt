@@ -12,7 +12,7 @@ class FavouriteVacancyInteractorImpl(private val favouriteVacancyRepository: Fav
         favouriteVacancyRepository.addVacancyToFavourite(vacancyId)
     }
 
-   override suspend fun deleteVacancyFromFavourite(vacancyId: VacancyDetails) {
+    override suspend fun deleteVacancyFromFavourite(vacancyId: String) {
         favouriteVacancyRepository.deleteVacancyFromFavourite(vacancyId)
     }
 

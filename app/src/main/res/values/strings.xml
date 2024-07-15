@@ -37,10 +37,11 @@
     <string name="job_title">Название вакансии</string>
     <string name="required_experience">Требуемый опыт</string>
     <string name="vacancy_description">Описание вакансии</string>
-    <string name="responsibilities">Обязанности</string>
+    <string name="descriptionVacancy">Детальное описание вакансии с требованиями, условиями </string>
     <string name="requirements">Требования</string>
     <string name="conditions">Условия</string>
     <string name="key_skills">Ключевые навыки</string>
+    <string name="contacts">Контакты</string>
     <string name="text_for_description_vacancy">Знание классических алгоритмов и структуры данных</string>
     <string name="salary_from">от %s %s</string>
     <string name="salary_to">до %s %s</string>
@@ -60,6 +61,12 @@
     <string name="best_android_developers_4">Зыкова Ангелина</string>
     <string name="best_android_developers_5">Заруба Никита</string>
     <string name="eat">Еда</string>
+    <string name="email">Email</string>
+    <string name="email_mock">JohnDoe@foo.com</string>
+    <string name="phone">Телефон</string>
+    <string name="phone_mock">+71234567</string>
+    <string name="name">Имя</string>
+    <string name="name_mock">JohnDoe</string>
     <string name="android_developer">Android-разработчик, Москва</string>
 
     <plurals name="vacancies_counter">

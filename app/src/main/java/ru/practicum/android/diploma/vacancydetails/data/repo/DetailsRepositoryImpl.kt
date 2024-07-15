@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsRepository
 import ru.practicum.android.diploma.vacancydetails.domain.models.Address
 import ru.practicum.android.diploma.vacancydetails.domain.models.Contacts
 import ru.practicum.android.diploma.vacancydetails.domain.models.Details
+import ru.practicum.android.diploma.vacancydetails.domain.models.KeySkill
 import ru.practicum.android.diploma.vacancydetails.domain.models.Phone
 import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 
@@ -59,11 +60,13 @@ class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsR
                     employment = NameInfo(id = it.employment?.id ?: "", name = it.employment?.name ?: ""),
                     schedule = NameInfo(id = it.schedule?.id ?: "", name = it.schedule?.name ?: ""),
                     description = it.description,
-                    keySkill = it.keySkill,
+                    keySkill = it.keySkill?.map {
+                        KeySkill(it.name)
+                    },
                     contacts = if (it.contacts != null) {
                         transformContacts(it.contacts)
                     } else {
-                        null
+                        Contacts("", "", mutableListOf())
                     },
                     hhVacancyLink = it.hhVacancyLink
                 )
@@ -86,7 +89,7 @@ class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsR
             Contacts(
                 email = contacts.email,
                 name = contacts.name,
-                phone = contacts.phone?.map { phoneDto ->
+                phone = contacts.phones?.map { phoneDto ->
                     Phone(
                         city = phoneDto.city,
                         comment = phoneDto.comment,

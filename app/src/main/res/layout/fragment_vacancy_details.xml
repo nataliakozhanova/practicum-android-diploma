@@ -6,25 +6,17 @@
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor">
 
-    <TextView
-        android:id="@+id/testVac"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="120dp"
-        android:background="@color/blue"
-        android:gravity="center"
-        android:textColor="@color/white"
-        tools:text="TEST"
-        android:translationZ="99999dp" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/progressBarCl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ProgressBar
+        android:id="@+id/detailsProgressBar"
+        android:layout_width="@dimen/dp_36"
+        android:layout_height="0dp"
+        android:indeterminateTint="@color/blue"
         android:visibility="gone"
-        tools:visibility="gone">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/errorPlaceholderCl"
@@ -36,6 +28,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,11 +40,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:visibility="visible"
             android:clickable="true"
+            android:src="@drawable/arrow_back_24px"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/arrow_back_24px" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/screenNameVacancy"
@@ -100,20 +93,8 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/vacancy_details_RV"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="32dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
-            app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
-            app:layout_constraintTop_toBottomOf="@+id/screenNameVacancy"
-            tools:listitem="@layout/item_vacancy_details_view" />
-
         <ImageView
-            android:id="@+id/image_vacancy_not_found_error"
+            android:id="@+id/errorPlaceholderIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/image_vacancy_not_found_error"
@@ -124,7 +105,7 @@
             app:layout_constraintTop_toBottomOf="@+id/screenNameVacancy" />
 
         <TextView
-            android:id="@+id/not_found_or_deleted_vacancy"
+            android:id="@+id/errorPlaceholderTv"
             style="@style/Medium22TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -132,9 +113,36 @@
             android:gravity="center"
             android:text="@string/not_found_or_deleted_vacancy"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/image_vacancy_not_found_error"
-            app:layout_constraintStart_toStartOf="@+id/image_vacancy_not_found_error"
-            app:layout_constraintTop_toBottomOf="@+id/image_vacancy_not_found_error" />
+            app:layout_constraintEnd_toEndOf="@+id/errorPlaceholderIv"
+            app:layout_constraintStart_toStartOf="@+id/errorPlaceholderIv"
+            app:layout_constraintTop_toBottomOf="@+id/errorPlaceholderIv" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineRightGl"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+            app:layout_constraintTop_toBottomOf="@+id/screenNameVacancy">
+
+            <include
+                android:id="@+id/itemVacancyDetails"
+                layout="@layout/item_vacancy_details_view" />
+
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/detailsProgressBar2"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="0dp"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

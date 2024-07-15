@@ -20,7 +20,7 @@ class DetailsViewModel(
     private val favouriteVacancyInteractor: FavouriteVacancyInteractor
 ) : ViewModel() {
 
-    private val vacancyState = MutableLiveData<DetailsState>()
+private val vacancyState = MutableLiveData<DetailsState>()
     fun observeVacancyState(): LiveData<DetailsState> = vacancyState
     private lateinit var favouriteTracksId: List<String>
 
@@ -94,11 +94,11 @@ class DetailsViewModel(
                     DetailsState.Error(errorType)
                 )
             }
-
         }
     }
 
     private fun renderState(state: DetailsState) {
         vacancyState.postValue(state)
     }
+
 }

@@ -6,9 +6,11 @@ import ru.practicum.android.diploma.common.domain.EmployerInfo
 import ru.practicum.android.diploma.common.domain.NameInfo
 import ru.practicum.android.diploma.common.domain.SalaryInfo
 import ru.practicum.android.diploma.favorites.data.db.VacancyEntity
+import ru.practicum.android.diploma.vacancydetails.data.dto.KeySkillDto
 import ru.practicum.android.diploma.vacancydetails.domain.models.Address
 import ru.practicum.android.diploma.vacancydetails.domain.models.Contacts
 import ru.practicum.android.diploma.vacancydetails.domain.models.Details
+import ru.practicum.android.diploma.vacancydetails.domain.models.KeySkill
 import ru.practicum.android.diploma.vacancydetails.domain.models.Phone
 import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 
@@ -47,7 +49,7 @@ class VacancyDbConverter {
         )
     }
 
-    private fun mapKeySkills(keySkills: List<String>?): String {
+    private fun mapKeySkills(keySkills: List<KeySkill>?): String {
         return Gson().toJson(keySkills)
     }
 
@@ -131,8 +133,10 @@ class VacancyDbConverter {
         )
     }
 
-    private fun mapKeySkills(keySkills: String): List<String> {
-        return Gson().fromJson(keySkills, object : TypeToken<List<String>>() {}.type)
+    fun mapKeySkill(keySkill: KeySkillDto): String = keySkill.name
+
+    private fun mapKeySkills(keySkills: String): List<KeySkill> {
+        return Gson().fromJson(keySkills, object : TypeToken<List<KeySkill>>() {}.type) ?: emptyList()
     }
 
     private fun mapContacts(vacancy: VacancyEntity): Contacts {
