@@ -153,10 +153,13 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun setVacancyTitle(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.nameVacancyTv.text = "${state.vacancy.name}, ${state.vacancy.employerInfo.areaName}"
+        binding.cardInfoCompanyCv.visibility = View.VISIBLE
+        binding.nameVacancyTv.visibility = View.VISIBLE
     }
 
     private fun setCompanyDetails(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.nameCompanyTv.text = state.vacancy.employerInfo.employerName
+        binding.nameCompanyTv.visibility = View.VISIBLE
     }
 
     private fun setAddress(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
@@ -194,14 +197,18 @@ class VacancyDetailsFragment : Fragment() {
             state.vacancy.details.description,
             Html.FROM_HTML_MODE_LEGACY
         )
+        binding.descriptionVacancy.visibility = View.VISIBLE
     }
 
     private fun setExperience(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.valueExperienceTv.text = state.vacancy.details.experience?.name
+        binding.valueExperienceTv.visibility = View.VISIBLE
     }
 
     private fun setEmployment(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-        binding.formatWorkTv.text = state.vacancy.details.employment?.name
+        val employment = state.vacancy.details.employment?.name ?: ""
+        val schedule = state.vacancy.details.schedule?.name ?: ""
+        binding.formatWorkTv.text = "$employment, $schedule"
     }
 
     private fun setCompanyLogo(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
