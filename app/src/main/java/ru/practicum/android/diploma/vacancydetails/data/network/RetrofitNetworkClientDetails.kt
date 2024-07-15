@@ -67,8 +67,7 @@ class RetrofitNetworkClientDetails(
                 responseBody.employment,
                 responseBody.schedule,
                 responseBody.description,
-                responseBody.keySkill,
-                responseBody.contacts,
+                responseBody.keySkills,
                 responseBody.hhVacancyLink
             )
         }

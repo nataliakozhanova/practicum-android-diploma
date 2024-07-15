@@ -8,17 +8,13 @@ import ru.practicum.android.diploma.common.domain.EmployerInfo
 import ru.practicum.android.diploma.common.domain.NameInfo
 import ru.practicum.android.diploma.common.domain.SalaryInfo
 import ru.practicum.android.diploma.vacancydetails.data.dto.AddressDto
-import ru.practicum.android.diploma.vacancydetails.data.dto.ContactsDto
 import ru.practicum.android.diploma.vacancydetails.data.dto.NameInfoDto
 import ru.practicum.android.diploma.vacancydetails.data.dto.SalaryDto
 import ru.practicum.android.diploma.vacancydetails.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.vacancydetails.data.dto.VacancyDetailsResponse
 import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsRepository
 import ru.practicum.android.diploma.vacancydetails.domain.models.Address
-import ru.practicum.android.diploma.vacancydetails.domain.models.Contacts
 import ru.practicum.android.diploma.vacancydetails.domain.models.Details
-import ru.practicum.android.diploma.vacancydetails.domain.models.KeySkill
-import ru.practicum.android.diploma.vacancydetails.domain.models.Phone
 import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 
 class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsRepository {
@@ -60,13 +56,8 @@ class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsR
                     employment = NameInfo(id = it.employment?.id ?: "", name = it.employment?.name ?: ""),
                     schedule = NameInfo(id = it.schedule?.id ?: "", name = it.schedule?.name ?: ""),
                     description = it.description,
-                    keySkill = it.keySkill?.map {
-                        KeySkill(it.name)
-                    },
-                    contacts = if (it.contacts != null) {
-                        transformContacts(it.contacts)
-                    } else {
-                        Contacts("", "", mutableListOf())
+                    keySkills = it.keySkills.map {
+                        NameInfo(null, it.name)
                     },
                     hhVacancyLink = it.hhVacancyLink
                 )
@@ -82,24 +73,6 @@ class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsR
                 salaryCurrency = salary.currency
             )
         }
-    }
-
-    private fun transformContacts(contacts: ContactsDto): Contacts {
-        return contacts.let { contactsDto ->
-            Contacts(
-                email = contacts.email,
-                name = contacts.name,
-                phone = contacts.phones?.map { phoneDto ->
-                    Phone(
-                        city = phoneDto.city,
-                        comment = phoneDto.comment,
-                        country = phoneDto.country,
-                        formatted = phoneDto.formatted,
-                        number = phoneDto.number
-                    )
-                }
-            )
-        } ?: Contacts("", "", null) // Возвращает пустой, при отсутствии данных
     }
 
     private fun transformAddress(addressDto: AddressDto?): Address {
@@ -124,9 +97,6 @@ class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsR
                 id = it.id ?: "",
                 name = it.name
             )
-        } ?: NameInfo(
-            id = "",
-            name = ""
-        )
+        }
     }
 }

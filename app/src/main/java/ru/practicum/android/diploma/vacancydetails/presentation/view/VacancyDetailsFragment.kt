@@ -148,7 +148,6 @@ class VacancyDetailsFragment : Fragment() {
         setDescription(vacancyDetailsBinding, state)
         setExperience(vacancyDetailsBinding, state)
         setEmployment(vacancyDetailsBinding, state)
-        // setContacts(vacancyDetailsBinding, state)
         setCompanyLogo(vacancyDetailsBinding, state)
     }
 
@@ -178,7 +177,7 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun setKeySkills(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-        val keySkills = state.vacancy.details.keySkill
+        val keySkills = state.vacancy.details.keySkills
         if (keySkills.isNullOrEmpty()) {
             binding.keySkills.visibility = View.GONE
             binding.vacancyKeySkillsTv.visibility = View.GONE
@@ -204,81 +203,6 @@ class VacancyDetailsFragment : Fragment() {
     private fun setEmployment(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.formatWorkTv.text = state.vacancy.details.employment?.name
     }
-
-//    private fun setContacts(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-//        val contacts = state.vacancy.details.contacts
-//        if (contacts == null || contacts.email.isNullOrEmpty() && contacts.phone.isNullOrEmpty()) {
-//            // hideAllContactViews(binding)
-//            showMockContacts(binding)
-//        } else {
-//            showContactViews(binding, contacts)
-//        }
-//    }
-//
-//    private fun hideAllContactViews(binding: ItemVacancyDetailsViewBinding) {
-//        binding.contacts.visibility = View.GONE
-//        binding.vacancyContactsTv.visibility = View.GONE
-//        binding.vacancyContactsCommentTv.visibility = View.GONE
-//        binding.emailVD.visibility = View.GONE
-//        binding.phoneVD.visibility = View.GONE
-//    }
-//
-//    private fun showMockContacts(binding: ItemVacancyDetailsViewBinding) {
-//        binding.contacts.visibility = View.VISIBLE
-//        setName(binding, getString(R.string.name_mock))
-//        setEmail(binding, getString(R.string.email_mock))
-//        binding.phoneVD.visibility = View.VISIBLE
-//        binding.phoneVD.text = getString(R.string.phone_mock)
-//        binding.phoneVD.setOnClickListener {
-//            // Слушатель нажатия на телефон
-//        }
-//        binding.emailVD.setOnClickListener {
-//            // Слушатель нажатия на почту
-//        }
-//    }
-//
-//    private fun showContactViews(binding: ItemVacancyDetailsViewBinding, contacts: Contacts) {
-//        binding.contacts.visibility = View.VISIBLE
-//        setName(binding, contacts.name)
-//        setEmail(binding, contacts.email)
-//        setPhone(binding, contacts.phone)
-//    }
-//
-//    private fun setName(binding: ItemVacancyDetailsViewBinding, name: String?) {
-//        if (name.isNullOrEmpty()) {
-//            binding.vacancyContactsTv.visibility = View.GONE
-//        } else {
-//            binding.vacancyContactsTv.visibility = View.VISIBLE
-//            binding.vacancyContactsTv.text = name
-//        }
-//    }
-//
-//    private fun setEmail(binding: ItemVacancyDetailsViewBinding, email: String?) {
-//        if (email.isNullOrEmpty()) {
-//            binding.emailVD.visibility = View.GONE
-//        } else {
-//            binding.emailVD.visibility = View.VISIBLE
-//            binding.emailVD.text = email
-//            binding.emailVD.setOnClickListener {
-//                // Слушатель нажатия на почту
-//            }
-//        }
-//    }
-//
-//    private fun setPhone(binding: ItemVacancyDetailsViewBinding, phoneList: List<Phone>?) {
-//        if (phoneList.isNullOrEmpty()) {
-//            binding.phoneVD.visibility = View.GONE
-//        } else {
-//            binding.phoneVD.visibility = View.VISIBLE
-//            val phoneInfo = phoneList.joinToString("\n") { phone ->
-//                "${phone.formatted} (${phone.comment ?: "Нет комментария"})"
-//            }
-//            binding.phoneVD.text = phoneInfo
-//            binding.phoneVD.setOnClickListener {
-//                // Слушатель нажатия на телефон
-//            }
-//        }
-//    }
 
     private fun setCompanyLogo(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val placeHolderCornerRadius: Int = resources.getDimensionPixelSize(R.dimen.logo_corner_radius)

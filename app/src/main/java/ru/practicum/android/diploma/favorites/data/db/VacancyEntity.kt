@@ -27,12 +27,5 @@ data class VacancyEntity(
     val scheduleName: String?,
     val description: String,
     val keySkills: String,
-    val contactEmail: String?,
-    val contactName: String?,
-    val contactPhoneCity: String?,
-    val contactPhoneComment: String?,
-    val contactPhoneCountry: String?,
-    val contactPhoneFormatted: String?,
-    val contactPhoneNumber: String?,
     val hhVacancyLink: String
 )

@@ -19,17 +19,14 @@ class VacancyDetails(
     employerInfo,
     salaryInfo
 )
-data class KeySkill(
-    val name: String
-)
+
 data class Details(
     val address: Address?,
     val experience: NameInfo?,
     val employment: NameInfo?,
     val schedule: NameInfo?,
     val description: String,
-    val keySkill: List<KeySkill>?,
-    val contacts: Contacts?,
+    val keySkills: List<NameInfo>,
     val hhVacancyLink: String,
 )
 
@@ -38,18 +35,4 @@ data class Address(
     val building: String?,
     val street: String?,
     val description: String?,
-)
-
-data class Contacts(
-    val email: String?,
-    val name: String?,
-    val phone: List<Phone>?,
-)
-
-data class Phone(
-    val city: String,
-    val comment: String?,
-    val country: String,
-    val formatted: String,
-    val number: String,
 )
