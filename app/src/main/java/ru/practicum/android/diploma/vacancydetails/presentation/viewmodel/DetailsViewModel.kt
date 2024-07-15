@@ -54,7 +54,7 @@ class DetailsViewModel(
             withContext(Dispatchers.IO) {
                 favouriteVacancyInteractor
                     .getAllFavouritesVacanciesId()
-                    .collect() {
+                    .collect {
                         favouriteTracksId = it
                     }
             }

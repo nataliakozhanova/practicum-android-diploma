@@ -7,6 +7,8 @@ sealed interface SearchState {
 
     data object Loading : SearchState
     data object Empty : SearchState
+    data object Default : SearchState
+    data object AtBottom : SearchState
     data class Content(val vacancies: MutableList<VacancyBase>, val found: Int, val pages: Int, val page: Int) :
         SearchState
 

@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,86 +24,130 @@ class SearchViewModel(
         const val ITEMS_PER_PAGE = 20
     }
 
+    private var vacanciesList = mutableListOf<VacancyBase>()
+    private var pages: Int = 0
+    private var page: Int = 0
     private var latestSearchText: String? = null
-    private var latestPage: Int? = null
+    private var isNextPageLoading: Boolean = false
     private var searchJob: Job? = null
 
     private val _toast = SingleLiveEvent<String>()
     fun observeToast(): LiveData<String> = _toast
 
     private val _state = MutableLiveData<SearchState>()
+    private val _nextPageState = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = _state
+    fun observeNextPageState(): LiveData<SearchState> = _nextPageState
 
-    fun stopSearch() {
-        latestPage = null
+    init {
+        _state.value = SearchState.Default
+    }
+
+    fun setSearchMask(newMask: String) {
+        if (latestSearchText != newMask) {
+            initSearch()
+        }
+        latestSearchText = newMask
+    }
+
+    fun initSearch() {
+        page = 0
+        pages = 0
+        latestSearchText = null
+        vacanciesList = mutableListOf<VacancyBase>()
         if (searchJob != null && searchJob!!.isActive) {
             searchJob?.cancel()
         }
     }
 
-    fun searchDebounce(changedText: String, page: Int) {
-        Log.d("mine", "page $page/$latestPage")
+    fun clearSearch() {
+        initSearch()
+        renderState(SearchState.Default, _state)
+    }
 
-        if (changedText.trim().isEmpty() || page == latestPage) {
+    fun nextPageSearch() {
+        if (pages > 0 && page + 2 > pages) {
+            renderState(SearchState.AtBottom, _nextPageState)
+        } else if (latestSearchText != null) {
+            page++
+            searchDebounce(latestSearchText.toString())
+        }
+    }
+
+    fun searchDebounce(changedText: String) {
+        if (isNextPageLoading || changedText.trim().isEmpty()) {
             return
         }
-        Log.d("mine", "search($changedText, $page)")
-
-        latestPage = page
         latestSearchText = changedText
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
-            searchRequest(changedText, page)
+            searchRequest(changedText)
         }
     }
 
-    private fun searchRequest(newSearchText: String, page: Int) {
+    private fun searchRequest(newSearchText: String) {
+        // отгружаем в livedata для начального поиска или следующей страницы
+        val stateSwitch = if (page > 0) {
+            _nextPageState
+        } else {
+            _state
+        }
+        isNextPageLoading = page > 0
         if (newSearchText.trim().isNotEmpty()) {
-            if (page == 0) {
-                renderState(SearchState.Loading)
-            }
+            // загрузка
+            renderState(SearchState.Loading, stateSwitch)
+            // корутина на поиск
             viewModelScope.launch {
                 interactor.findVacancies(newSearchText, page, ITEMS_PER_PAGE)
                     .collect { pair ->
-                        processResult(pair.first, pair.second)
+                        processResult(pair.first, pair.second, stateSwitch)
                     }
             }
         }
     }
 
-    private fun processResult(searchResult: SearchResult?, errorType: ErrorType) {
-        val vacancies = mutableListOf<VacancyBase>()
+    private fun saveVacancies(vacancyList: List<VacancyBase>) {
+        // только уникальные вакансии
+        for (newVac in vacancyList) {
+            if (!vacanciesList.contains(newVac)) {
+                vacanciesList.add(newVac)
+            }
+        }
+    }
 
-        Log.d("mine", "errorType=${errorType.javaClass}")
-
+    private fun processResult(
+        searchResult: SearchResult?,
+        errorType: ErrorType,
+        stateSwitch: MutableLiveData<SearchState>
+    ) {
+        pages = searchResult?.pages ?: 0
+        page = searchResult?.page ?: 0
+        isNextPageLoading = false
         when (errorType) {
             is Success -> {
                 if (searchResult != null) {
-                    vacancies.addAll(searchResult.vacancies)
+                    saveVacancies(searchResult.vacancies)
                     renderState(
-                        SearchState.Content(vacancies, searchResult.found, searchResult.pages, searchResult.page)
+                        SearchState.Content(vacanciesList, searchResult.found, searchResult.pages, searchResult.page),
+                        stateSwitch
                     )
                 }
             }
 
             is VacanciesNotFoundType -> {
-                renderState(
-                    SearchState.Empty
-                )
+                renderState(SearchState.Empty, stateSwitch)
             }
 
             else -> {
-                renderState(
-                    SearchState.Error(errorType)
-                )
+                renderState(SearchState.Error(errorType), stateSwitch)
             }
 
         }
     }
 
-    private fun renderState(state: SearchState) {
-        _state.postValue(state)
+    private fun renderState(state: SearchState, liveData: MutableLiveData<SearchState>) {
+        liveData.postValue(state)
     }
 
     fun searchByClick(searchText: String) {
@@ -112,7 +155,7 @@ class SearchViewModel(
             return
         }
         this.latestSearchText = searchText
-
-        searchRequest(searchText, 0)
+        page = 0
+        searchRequest(searchText)
     }
 }
