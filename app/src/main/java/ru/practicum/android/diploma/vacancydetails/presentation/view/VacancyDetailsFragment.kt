@@ -20,8 +20,8 @@ import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyDetailsViewBinding
 import ru.practicum.android.diploma.util.Formatter
-import ru.practicum.android.diploma.vacancydetails.domain.models.DetailsNotFoundType
 import ru.practicum.android.diploma.vacancydetails.domain.models.Contacts
+import ru.practicum.android.diploma.vacancydetails.domain.models.DetailsNotFoundType
 import ru.practicum.android.diploma.vacancydetails.domain.models.Phone
 import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 import ru.practicum.android.diploma.vacancydetails.presentation.models.DetailsState
@@ -50,6 +50,7 @@ class VacancyDetailsFragment : Fragment() {
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is DetailsState.Content -> {
+                    vacancy = state.vacancy
                     showVacancyContent(state)
                 }
 
@@ -64,7 +65,9 @@ class VacancyDetailsFragment : Fragment() {
                 is DetailsState.Loading -> {
                     showLoading()
                 }
-               else -> {}
+
+                is DetailsState.isFavourite -> checkFavouriteIcon(state.isFav)
+                else -> {}
             }
             binding.detailsProgressBar.isVisible = false
             binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = true
