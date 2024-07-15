@@ -18,5 +18,5 @@ interface VacancyDao {
     @Query("SELECT hhID FROM vacancy_table")
     fun getAllFavouritesVacanciesId(): List<String>
     @Query("SELECT * FROM vacancy_table WHERE hhID = :id LIMIT 1")
-    fun getVacancyById(id: String): VacancyEntity
+    fun getVacancyById(id: String): VacancyEntity?
 }

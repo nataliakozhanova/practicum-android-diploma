@@ -17,10 +17,9 @@ import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.favorites.presentation.models.FavouritesStates
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavouritesViewModel
-import ru.practicum.android.diploma.util.isConnected
 import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
 
-private const val CLICK_DEBOUNCE_DELAY = 1000L
+private const val CLICK_DEBOUNCE_DELAY = 200L
 
 class FavoriteFragment : Fragment() {
 
