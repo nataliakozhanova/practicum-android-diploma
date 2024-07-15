@@ -116,6 +116,7 @@ class VacancyDetailsFragment : Fragment() {
         binding.detailsProgressBar.isVisible = true
         binding.errorPlaceholderIv.isVisible = false
         binding.errorPlaceholderTv.isVisible = false
+    }
 
     private fun showVacancyContent(state: DetailsState.Content) {
         val vacancyDetailsBinding = ItemVacancyDetailsViewBinding.bind(binding.root)

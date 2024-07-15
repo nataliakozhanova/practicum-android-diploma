@@ -133,7 +133,7 @@
         </ScrollView>
 
         <ProgressBar
-            android:id="@+id/detailsProgressBar"
+            android:id="@+id/detailsProgressBar2"
             android:layout_width="@dimen/dp_36"
             android:layout_height="0dp"
             android:indeterminateTint="@color/blue"
