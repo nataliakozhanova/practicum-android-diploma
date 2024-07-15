@@ -5,6 +5,7 @@
     <string name="vacancy">Вакансия</string>
     <string name="enter_your_request">Введите запрос</string>
     <string name="no_internet">Нет интернета</string>
+    <string name="no_internet_next_page">Проверьте подключение к интернету</string>
     <string name="failed_to_get_vacancies">Не удалось получить\nсписок вакансий</string>
     <string name="failed_to_get_list">Не удалось получить список</string>
     <string name="no_vacancies">Таких вакансий нет</string>
@@ -49,6 +50,7 @@
     <string name="salary_not_set">Зарплата не указана</string>
     <string name="not_found_or_deleted_vacancy">Вакансия не найдена или удалена</string>
     <string name="server_error">Ошибка сервера</string>
+    <string name="server_error_next_page">Произошла ошибка</string>
     <string name="favorites">Избранное</string>
     <string name="empty_list">Список пуст</string>
     <string name="bottom_of_list">Вы достигли конца списка</string>

@@ -45,10 +45,6 @@ class SearchFragment : Fragment() {
 
     private var onVacancyClickDebounce: (VacancyBase) -> Unit = { _ -> }
     private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> onVacancyClickDebounce(vacancy) }
-
-    private var currentPage = 0
-    private var totalPages = 0
-    private var isNextPageLoading = false
     private var searchMask = SEARCH_MASK
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -59,7 +55,6 @@ class SearchFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.searchResultsRV.adapter = vacancySearchAdapter
         onVacancyClickDebounce = debounce<VacancyBase>(
             CLICK_DEBOUNCE_DELAY_MILLIS,
@@ -69,41 +64,79 @@ class SearchFragment : Fragment() {
             openVacancy(track)
         }
 
-        // показать стартовую выборку только с 0-й страницей
-        // иначе при переходе между фрагментами выборка теряется
-        // (между фрагментами сохраняется currentPage)
-        if (currentPage == 0) {
-            showStartPage()
-        }
-
-        // подпишемся на результаты поиска
+        // подпишемся на результаты поиска первой страницы
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
-
-            Log.d("mine", "STATE=${state.javaClass}")
-
-            when (state) {
-                is SearchState.Content -> {
-                    isNextPageLoading = false
-                    showContent(state)
-                }
-
-                is SearchState.Loading -> {
-                    showLoading()
-                }
-
-                is SearchState.Empty -> {
-                    isNextPageLoading = false
-                    showErrorOrEmptySearch(VacanciesNotFoundType())
-                }
-
-                is SearchState.Error -> {
-                    isNextPageLoading = false
-                    showErrorOrEmptySearch(state.errorType)
-                }
-            }
+            searchStateCheck(state)
         }
+        // подпишемся на результаты поиска следующих страниц
+        viewModel.observeNextPageState().observe(viewLifecycleOwner) { state ->
+            nextPageStateCheck(state)
+        }
+        // подпишемся на тост
+        viewModel.observeToast().observe(viewLifecycleOwner) {
+            showToast(it, true)
+        }
+
         // настроим слежение за объектами фрагмента
         setBindings()
+    }
+
+    // обработка состояний поиска первой страницы
+    private fun searchStateCheck(state: SearchState) {
+        Log.d("mine", "STATE=${state.javaClass}")
+        when (state) {
+            SearchState.Default -> showStartPage()
+
+            is SearchState.Loading -> {
+                showLoading()
+            }
+
+            is SearchState.Content -> {
+                showContent(state)
+            }
+
+            is SearchState.Empty -> {
+                showErrorOrEmptySearch(VacanciesNotFoundType())
+            }
+
+            is SearchState.Error -> {
+                showErrorOrEmptySearch(state.errorType)
+            }
+
+            else -> {}
+        }
+    }
+
+    // обработка состояний поиска следующих страниц
+    private fun nextPageStateCheck(state: SearchState) {
+        when (state) {
+            SearchState.Default -> {
+                nextPagePreloaderToggle(false)
+            }
+
+            is SearchState.AtBottom -> {
+                nextPagePreloaderToggle(false, getString(R.string.bottom_of_list))
+                // чтобы снова не сработало событие "прокрутка до конца" уменьшим скролл
+                binding.idNestedSV.scrollTo(0, binding.idNestedSV.scrollY - 1)
+            }
+
+            is SearchState.Loading -> {}
+
+            is SearchState.Content -> {
+                nextPagePreloaderToggle(false)
+                loadVacancies(state.vacancies)
+            }
+
+            is SearchState.Empty -> {
+                nextPagePreloaderToggle(false)
+                showErrorOrEmptySearch(VacanciesNotFoundType())
+            }
+
+            is SearchState.Error -> {
+                val errorMessage = getErrorMessage(state.errorType)
+                nextPagePreloaderToggle(false, errorMessage)
+            }
+        }
     }
 
     // обработка изменений в поле для поиска
@@ -111,14 +144,15 @@ class SearchFragment : Fragment() {
         with(binding.editTextSearch) {
             // изменение текста
             doOnTextChanged { text, start, before, count ->
-                // любое изменение сбрасывает текущий поиск
-                resetSearchParams()
                 searchMask = text.toString().trim()
                 // иконка в поле поиска
                 setEditTextIconBySearchMask()
-                // запуск поискового запроса
-                if (binding.editTextSearch.hasFocus() && searchMask.isNotEmpty()) {
-                    viewModel.searchDebounce(searchMask, currentPage)
+                if (searchMask.trim().isEmpty()) {
+                    viewModel.clearSearch()
+                } else if (binding.editTextSearch.hasFocus()) {
+                    viewModel.setSearchMask(searchMask)
+                    // запуск поискового запроса
+                    viewModel.searchDebounce(searchMask)
                 }
             }
             // обработка нажатия на поле (кнопка стереть)
@@ -128,12 +162,10 @@ class SearchFragment : Fragment() {
                     && event.rawX >= binding.editTextSearch.right
                     - binding.editTextSearch.compoundDrawables[2].bounds.width()
                 ) {
-                    // сбросим параметры для нового поиска
-                    resetSearchParams()
                     searchMask = ""
                     setEditTextIconBySearchMask()
                     binding.editTextSearch.setText(searchMask)
-                    showStartPage()
+                    viewModel.clearSearch()
                     true
                 }
                 false
@@ -161,11 +193,18 @@ class SearchFragment : Fragment() {
                 val scrolledTo = v.getChildAt(0).measuredHeight - v.measuredHeight
                 val deltaScroll = scrollY - oldScrollY
                 // поэтому если сразу проскроллилось от самого верха до низа (дельта скроллинга = всей высоте элемента), то подгружать не надо
-                if (!isNextPageLoading && deltaScroll < scrollY && scrolledTo == scrollY) {
+                if (deltaScroll < scrollY && scrolledTo == scrollY) {
+                    nextPagePreloaderToggle(true)
                     loadNextPage()
                 }
             }
         )
+    }
+
+    private fun loadVacancies(vacancies: MutableList<VacancyBase>) {
+        vacancySearchAdapter.vacancies.clear()
+        vacancySearchAdapter.vacancies.addAll(vacancies)
+        vacancySearchAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
@@ -196,7 +235,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showStartPage() {
-        Log.d("mine", "showStartPage")
         with(binding) {
             placeHolderImage.isVisible = true
             placeHolderImage.setImageResource(R.drawable.image_search_empty)
@@ -205,17 +243,9 @@ class SearchFragment : Fragment() {
             searchResultsRV.isVisible = false
             vacanciesCountText.isVisible = false
         }
-        val adapterListSize = vacancySearchAdapter.vacancies.size
-        if (adapterListSize > 0) {
-            vacancySearchAdapter.vacancies.clear()
-            vacancySearchAdapter.notifyItemRangeRemoved(0, adapterListSize)
-        }
     }
 
     private fun showContent(state: SearchState.Content) {
-        currentPage = state.page
-        totalPages = state.pages
-        val vacancies = state.vacancies
         with(binding) {
             searchProgressBar.isVisible = false
             vacanciesCountText.isVisible = true
@@ -224,90 +254,60 @@ class SearchFragment : Fragment() {
             placeHolderText.isVisible = false
             searchResultsRV.isVisible = true
         }
-        if (currentPage > 0) {
-            nextPagePreloaderToggle(false)
-            for (newVac in vacancies) {
-                // при перезагрузке фрагмента придет последний state с вакансиями - добавлять их снова не надо
-                if (!vacancySearchAdapter.vacancies.contains(newVac)) {
-                    vacancySearchAdapter.vacancies.add(newVac)
-                    vacancySearchAdapter.notifyItemInserted(vacancySearchAdapter.vacancies.size - 1)
-                }
-            }
-        } else {
-            vacancySearchAdapter.vacancies.clear()
-            vacancySearchAdapter.vacancies.addAll(vacancies)
-            vacancySearchAdapter.notifyDataSetChanged()
-        }
-
-        binding.vacanciesCountText.append(" (${vacancySearchAdapter.vacancies.size})")
-    }
-
-    private fun resetSearchParams() {
-        viewModel.stopSearch()
-        currentPage = 0
+        loadVacancies(state.vacancies)
     }
 
     private fun loadNextPage() {
-        Log.d("mine", "loadNextPage(${currentPage + 2})")
-        if (isNextPageLoading) {
-            return
-        }
-        if (currentPage + 1 == totalPages) {
-            showToast(getString(R.string.bottom_of_list))
-        } else {
-            isNextPageLoading = true
-            nextPagePreloaderToggle(show = true)
-            viewModel.searchDebounce(searchMask, currentPage + 1)
-        }
+        viewModel.nextPageSearch()
     }
 
-    private fun getErrorMessage(type: ErrorType): String {
-        return when (type) {
-            is VacanciesNotFoundType -> getString(R.string.no_vacancies)
-            is NoInternetError -> getString(R.string.no_internet)
-            else -> getString(R.string.server_error)
+    private fun getErrorMessage(type: ErrorType, isNextPage: Boolean = false): String {
+        return if (isNextPage) {
+            when (type) {
+                is NoInternetError -> getString(R.string.no_internet_next_page)
+                else -> getString(R.string.server_error_next_page)
+            }
+        } else {
+            when (type) {
+                is VacanciesNotFoundType -> getString(R.string.no_vacancies)
+                is NoInternetError -> getString(R.string.no_internet)
+                else -> getString(R.string.server_error)
+            }
         }
     }
 
     private fun showErrorOrEmptySearch(type: ErrorType) {
-        Log.d("mine", "size=${vacancySearchAdapter.vacancies.size}")
         hideKeyboard()
-        val errorMessage = getErrorMessage(type)
-        if (vacancySearchAdapter.vacancies.size > 0) {
-            nextPagePreloaderToggle(false, errorMessage)
-        } else {
-            when (type) {
-                is VacanciesNotFoundType -> {
-                    with(binding) {
-                        vacanciesCountText.isVisible = true
-                        vacanciesCountText.text = getString(R.string.no_vacancies)
-                        placeHolderImage.setImageResource(R.drawable.image_nothing_found)
-                    }
-                }
-
-                is NoInternetError -> {
-                    with(binding) {
-                        vacanciesCountText.isVisible = false
-                        placeHolderImage.setImageResource(R.drawable.image_no_internet_error)
-                    }
-                }
-
-                else -> {
-                    with(binding) {
-                        vacanciesCountText.isVisible = false
-                        placeHolderImage.setImageResource(R.drawable.image_search_server_error)
-                    }
+        when (type) {
+            is VacanciesNotFoundType -> {
+                with(binding) {
+                    vacanciesCountText.isVisible = true
+                    vacanciesCountText.text = getString(R.string.no_vacancies)
+                    placeHolderImage.setImageResource(R.drawable.image_nothing_found)
                 }
             }
-            with(binding) {
-                placeHolderText.text = errorMessage
-                searchResultsRV.isVisible = false
-                searchProgressBar.isVisible = false
-                placeHolderImage.isVisible = true
-                placeHolderText.isVisible = true
+
+            is NoInternetError -> {
+                with(binding) {
+                    vacanciesCountText.isVisible = false
+                    placeHolderImage.setImageResource(R.drawable.image_no_internet_error)
+                }
+            }
+
+            else -> {
+                with(binding) {
+                    vacanciesCountText.isVisible = false
+                    placeHolderImage.setImageResource(R.drawable.image_search_server_error)
+                }
             }
         }
-
+        with(binding) {
+            placeHolderText.text = getErrorMessage(type)
+            searchResultsRV.isVisible = false
+            searchProgressBar.isVisible = false
+            placeHolderImage.isVisible = true
+            placeHolderText.isVisible = true
+        }
     }
 
     // на основе поля searchMask покажем нужную иконку

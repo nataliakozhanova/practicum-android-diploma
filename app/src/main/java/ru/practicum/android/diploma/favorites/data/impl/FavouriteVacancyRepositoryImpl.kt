@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.favorites.data.impl
 
-
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
