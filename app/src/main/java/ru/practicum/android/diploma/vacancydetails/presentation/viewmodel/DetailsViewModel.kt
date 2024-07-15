@@ -27,26 +27,29 @@ class DetailsViewModel(
     private val vacancyState = MutableLiveData<DetailsState>()
     fun observeVacancyState(): LiveData<DetailsState> = vacancyState
     private var favouriteTracksId: List<String>? = null
+    var vacancy: VacancyDetails? = null
 
     fun addToFavById(vacancyId: VacancyDetails) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 favouriteVacancyInteractor.addVacancyToFavourite(vacancyId)
             }
+            isFavourite = true
+            vacancyState.postValue(DetailsState.isFavourite(isFavourite))
         }
-        vacancyId.isFavorite = false
     }
 
-    fun deleteFavouriteVacancy(vacancyId: VacancyDetails) {
+    fun deleteFavouriteVacancy(vacancyId: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 favouriteVacancyInteractor.deleteVacancyFromFavourite(vacancyId)
             }
+            isFavourite = false
+            vacancyState.postValue(DetailsState.isFavourite(isFavourite))
         }
-        vacancyId.isFavorite = true
     }
 
-    fun isFavourite(vacancyId: VacancyDetails) {
+    fun isFavourite(vacancyId: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 favouriteVacancyInteractor
@@ -55,10 +58,12 @@ class DetailsViewModel(
                         favouriteTracksId = it
                     }
             }
-            if (favouriteTracksId.contains(vacancyId.hhID)) {
-                vacancyId.isFavorite = true
+            if (favouriteTracksId!!.contains(vacancyId)) {
+                isFavourite = true
+                vacancyState.postValue(DetailsState.isFavourite(isFavourite))
             } else {
-                vacancyId.isFavorite = false
+                isFavourite = false
+                vacancyState.postValue(DetailsState.isFavourite(isFavourite))
             }
         }
     }
@@ -105,7 +110,7 @@ class DetailsViewModel(
     }
 
     fun getFavouriteState(): Boolean {
-        return false//isFavourite
+        return isFavourite
     }
 
 }
