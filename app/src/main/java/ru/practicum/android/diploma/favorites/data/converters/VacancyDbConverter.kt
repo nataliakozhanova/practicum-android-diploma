@@ -136,7 +136,7 @@ class VacancyDbConverter {
     fun mapKeySkill(keySkill: KeySkillDto): String = keySkill.name
 
     private fun mapKeySkills(keySkills: String): List<KeySkill> {
-        return Gson().fromJson(keySkills, object : TypeToken<List<KeySkill>>() {}.type)
+        return Gson().fromJson(keySkills, object : TypeToken<List<KeySkill>>() {}.type) ?: emptyList()
     }
 
     private fun mapContacts(vacancy: VacancyEntity): Contacts {
