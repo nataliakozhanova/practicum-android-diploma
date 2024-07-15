@@ -39,6 +39,30 @@ class DetailsViewModel(
         }
     }
 
+    fun checkVacancyInDatabase(vacancyId: String, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val exists = withContext(Dispatchers.IO) {
+                favouriteVacancyInteractor.getVacancyById(vacancyId) != null
+            }
+            callback(exists)
+        }
+    }
+
+    fun getVacancyDatabase(vacancyId: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val vacancy = favouriteVacancyInteractor.getVacancyById(vacancyId)
+                withContext(Dispatchers.Main) {
+                    vacancy?.let {
+                        vacancyState.postValue(DetailsState.Content(it))
+                    } ?: run {
+                        vacancyState.postValue(DetailsState.Empty)
+                    }
+                }
+            }
+        }
+    }
+
     fun deleteFavouriteVacancy(vacancyId: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
