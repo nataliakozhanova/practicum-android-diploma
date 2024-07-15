@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.favorites.presentation.models.FavouritesStates
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavouritesViewModel
+import ru.practicum.android.diploma.util.isConnected
 import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
 
 private const val CLICK_DEBOUNCE_DELAY = 1000L
@@ -100,23 +101,12 @@ class FavoriteFragment : Fragment() {
 
     private fun openDetailsFragment(vacancy: VacancyBase) {
         val context = requireContext()
-        if (clickDebounce() && isInternetAvailable(context)) {
+        if (clickDebounce() && isConnected(context)) {
             findNavController().navigate(
                 R.id.action_favoritesFragment_to_vacancyDetailsFragment,
                 VacancyDetailsFragment.createArgs(vacancy.hhID)
             )
         }
-    }
-
-    private fun isInternetAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork
-        val activeNetwork = network?.let { connectivityManager.getNetworkCapabilities(it) }
-        return activeNetwork?.run {
-            hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-        } ?: false
     }
 
     private fun clickDebounce(): Boolean {
