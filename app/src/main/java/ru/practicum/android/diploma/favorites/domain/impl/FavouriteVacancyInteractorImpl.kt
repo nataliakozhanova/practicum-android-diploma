@@ -22,4 +22,5 @@ class FavouriteVacancyInteractorImpl(private val favouriteVacancyRepository: Fav
     override fun getAllFavouritesVacanciesId(): Flow<List<String>> {
         return favouriteVacancyRepository.getAllFavouritesVacanciesId()
     }
+
 }
