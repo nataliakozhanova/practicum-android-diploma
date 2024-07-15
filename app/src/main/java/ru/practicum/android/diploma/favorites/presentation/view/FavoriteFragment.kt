@@ -4,9 +4,11 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -46,7 +48,10 @@ class FavoriteFragment : Fragment() {
         initRecycle()
         viewModelFavourites.getAllFavouriteVacanciesView()
         viewModelFavourites.state.observe(viewLifecycleOwner) { state ->
+
+            Log.d("mine", "STATE = $state")
             when (state) {
+
                 is FavouritesStates.NotEmpty -> {
                     favoriteAdapter.favoriteItems = state.vacancies
                     favoriteAdapter.notifyDataSetChanged()
@@ -56,6 +61,7 @@ class FavoriteFragment : Fragment() {
 
                 FavouritesStates.Empty -> {
                     showEmptyPlaceholders()
+                    hideFavouriteVacancies()
                 }
 
                 is FavouritesStates.Error -> {
@@ -84,6 +90,10 @@ class FavoriteFragment : Fragment() {
 
     private fun showFavouriteVacancies() {
         binding.favoriteRV.visibility = View.VISIBLE
+    }
+
+    private fun hideFavouriteVacancies() {
+        binding.favoriteRV.isVisible = false
     }
 
     private fun initRecycle() {
@@ -117,7 +127,7 @@ class FavoriteFragment : Fragment() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            viewLifecycleOwner.lifecycleScope.launch {
+            lifecycleScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY)
                 isClickAllowed = true
             }
