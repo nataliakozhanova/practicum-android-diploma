@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.vacancydetails.presentation.viewmodel
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -81,6 +82,7 @@ class DetailsViewModel(
         when (errorType) {
             is Success -> {
                 if (vacancyDetails != null) {
+                    vacancy = vacancyDetails
                     renderState(
                         DetailsState.Content(vacancyDetails)
                     )
@@ -111,6 +113,14 @@ class DetailsViewModel(
 
     fun getFavouriteState(): Boolean {
         return isFavourite
+    }
+
+    fun getSharingIntent() : Intent? {
+        return if(vacancy!=null) {
+            vacancyInteractor.shareVacancy(vacancy!!.details.hhVacancyLink)
+        } else {
+            null
+        }
     }
 
 }
