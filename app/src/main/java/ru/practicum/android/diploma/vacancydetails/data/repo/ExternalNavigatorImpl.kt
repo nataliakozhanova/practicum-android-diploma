@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.vacancydetails.data.repo
 
 import android.content.Intent
-import android.net.Uri
 import ru.practicum.android.diploma.vacancydetails.domain.api.ExternalNavigator
 
 class ExternalNavigatorImpl : ExternalNavigator {
