@@ -15,22 +15,13 @@ data class VacancyDetailsResponse(
     val schedule: NameInfoDto?,
     val description: String,
     @SerializedName("key_skills")
-    val keySkill: List<KeySkillDto>?,
-    val contacts: ContactsDto?,
+    val keySkills: List<NameInfoDto>,
     @SerializedName("alternate_url")
     val hhVacancyLink: String,
-    // @SerializedName("show_logo_in_search")
-    // val employerLogoUrl: Boolean?
 ) : ResponseBase()
 
-data class KeySkillDto(
-    val name: String,
-)
-
 data class AreaDto(
-    // val id: String,
     val name: String,
-    // val url: String
 )
 
 data class AddressDto(
@@ -38,20 +29,6 @@ data class AddressDto(
     val building: String?,
     val street: String?,
     val description: String?
-)
-
-data class ContactsDto(
-    val email: String?,
-    val name: String?,
-    val phones: List<PhoneDto>?
-)
-
-data class PhoneDto(
-    val city: String,
-    val comment: String?,
-    val country: String,
-    val formatted: String,
-    val number: String
 )
 
 data class EmployerDto(

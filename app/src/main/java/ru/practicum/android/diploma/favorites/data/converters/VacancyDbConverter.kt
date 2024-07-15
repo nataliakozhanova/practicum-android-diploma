@@ -6,12 +6,8 @@ import ru.practicum.android.diploma.common.domain.EmployerInfo
 import ru.practicum.android.diploma.common.domain.NameInfo
 import ru.practicum.android.diploma.common.domain.SalaryInfo
 import ru.practicum.android.diploma.favorites.data.db.VacancyEntity
-import ru.practicum.android.diploma.vacancydetails.data.dto.KeySkillDto
 import ru.practicum.android.diploma.vacancydetails.domain.models.Address
-import ru.practicum.android.diploma.vacancydetails.domain.models.Contacts
 import ru.practicum.android.diploma.vacancydetails.domain.models.Details
-import ru.practicum.android.diploma.vacancydetails.domain.models.KeySkill
-import ru.practicum.android.diploma.vacancydetails.domain.models.Phone
 import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 
 class VacancyDbConverter {
@@ -37,31 +33,14 @@ class VacancyDbConverter {
             scheduleId = vacancy.details.schedule?.id,
             scheduleName = vacancy.details.schedule?.name,
             description = vacancy.details.description,
-            keySkills = mapKeySkills(vacancy.details.keySkill),
-            contactEmail = vacancy.details.contacts?.email,
-            contactName = vacancy.details.contacts?.name,
-            contactPhoneCity = mapContactPhoneCity(vacancy.details.contacts?.phone),
-            contactPhoneComment = mapContactPhoneComment(vacancy.details.contacts?.phone),
-            contactPhoneCountry = mapContactPhoneCountry(vacancy.details.contacts?.phone),
-            contactPhoneFormatted = mapContactPhoneFormatted(vacancy.details.contacts?.phone),
-            contactPhoneNumber = mapContactPhoneNumber(vacancy.details.contacts?.phone),
+            keySkills = mapKeySkills(vacancy.details.keySkills),
             hhVacancyLink = vacancy.details.hhVacancyLink
         )
     }
 
-    private fun mapKeySkills(keySkills: List<KeySkill>?): String {
+    private fun mapKeySkills(keySkills: List<NameInfo>): String {
         return Gson().toJson(keySkills)
     }
-
-    private fun mapContactPhoneCity(phone: List<Phone>?) = phone?.firstOrNull()?.city
-
-    private fun mapContactPhoneComment(phone: List<Phone>?) = phone?.firstOrNull()?.comment
-
-    private fun mapContactPhoneCountry(phone: List<Phone>?) = phone?.firstOrNull()?.country
-
-    private fun mapContactPhoneFormatted(phone: List<Phone>?) = phone?.firstOrNull()?.formatted
-
-    private fun mapContactPhoneNumber(phone: List<Phone>?) = phone?.firstOrNull()?.number
 
     fun map(vacancy: VacancyEntity): VacancyDetails {
         return VacancyDetails(
@@ -97,8 +76,7 @@ class VacancyDbConverter {
             employment = mapEmployment(vacancy),
             schedule = mapSchedule(vacancy),
             description = vacancy.description,
-            keySkill = mapKeySkills(vacancy.keySkills),
-            contacts = mapContacts(vacancy),
+            keySkills = mapKeySkills(vacancy.keySkills),
             hhVacancyLink = vacancy.hhVacancyLink
         )
     }
@@ -133,25 +111,8 @@ class VacancyDbConverter {
         )
     }
 
-    fun mapKeySkill(keySkill: KeySkillDto): String = keySkill.name
-
-    private fun mapKeySkills(keySkills: String): List<KeySkill> {
-        return Gson().fromJson(keySkills, object : TypeToken<List<KeySkill>>() {}.type) ?: emptyList()
+    private fun mapKeySkills(keySkills: String): List<NameInfo> {
+        return Gson().fromJson(keySkills, object : TypeToken<List<NameInfo>>() {}.type) ?: emptyList()
     }
 
-    private fun mapContacts(vacancy: VacancyEntity): Contacts {
-        return Contacts(
-            email = vacancy.contactEmail,
-            name = vacancy.contactName,
-            phone = listOf(
-                Phone(
-                    city = vacancy.contactPhoneCity ?: "",
-                    comment = vacancy.contactPhoneComment,
-                    country = vacancy.contactPhoneCountry ?: "",
-                    formatted = vacancy.contactPhoneFormatted ?: "",
-                    number = vacancy.contactPhoneNumber ?: ""
-                )
-            )
-        )
-    }
 }
