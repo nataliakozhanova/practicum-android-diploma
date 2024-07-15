@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.vacancydetails.presentation.view
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
@@ -22,6 +20,7 @@ import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyDetailsViewBinding
 import ru.practicum.android.diploma.util.Formatter
+import ru.practicum.android.diploma.util.isConnected
 import ru.practicum.android.diploma.vacancydetails.domain.models.DetailsNotFoundType
 import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 import ru.practicum.android.diploma.vacancydetails.presentation.models.DetailsState
@@ -43,7 +42,7 @@ class VacancyDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val vacancyId = requireArguments().getString(ARGS_VACANCY_ID)
         if (vacancyId != null) {
-            if (isNetworkAvailable()) {
+            if (isConnected(requireContext())) {
                 viewModel.getVacancy(vacancyId)
             } else {
                 viewModel.checkVacancyInDatabase(vacancyId) { exists ->
@@ -88,16 +87,24 @@ class VacancyDetailsFragment : Fragment() {
         binding.favoriteVacansyIv.setOnClickListener {
             checkIsFavourite(viewModel.getFavouriteState())
         }
+
+        binding.shareVacansyIv.setOnClickListener {
+            val intent = viewModel.getSharingIntent()
+            if (intent != null) {
+                startActivity(intent)
+            }
+        }
+
         binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
         }
     }
-
-    private fun isNetworkAvailable(): Boolean {
-        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = connectivityManager.activeNetworkInfo
-        return activeNetwork != null && activeNetwork.isConnected
-    }
+//
+//    private fun isNetworkAvailable(): Boolean {
+//        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//        val activeNetwork = connectivityManager.activeNetworkInfo
+//        return activeNetwork != null && activeNetwork.isConnected
+//    }
 
     private fun checkFavouriteIcon(isFavorite: Boolean) {
         if (isFavorite) {
@@ -187,7 +194,7 @@ class VacancyDetailsFragment : Fragment() {
             val addressParts = listOfNotNull(address.street, address.building, address.city).filter { it.isNotBlank() }
             val addressText = addressParts.joinToString(", ")
             binding.adressCompanyTv.text =
-                if (addressText.isNotBlank()) addressText else state.vacancy.employerInfo.areaName
+                addressText.ifBlank { state.vacancy.employerInfo.areaName }
         } else {
             binding.adressCompanyTv.text = state.vacancy.employerInfo.areaName
         }
@@ -200,7 +207,7 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun setKeySkills(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val keySkills = state.vacancy.details.keySkills
-        if (keySkills.isNullOrEmpty()) {
+        if (keySkills.isEmpty()) {
             binding.keySkills.visibility = View.GONE
             binding.vacancyKeySkillsTv.visibility = View.GONE
         } else {

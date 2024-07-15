@@ -5,8 +5,6 @@ import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyInteract
 import ru.practicum.android.diploma.favorites.domain.impl.FavouriteVacancyInteractorImpl
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.impl.SearchInteractorImpl
-import ru.practicum.android.diploma.sharingandcontactvacancy.domain.api.SharingContactInteractor
-import ru.practicum.android.diploma.sharingandcontactvacancy.domain.impl.SharingContactInteractorImpl
 import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsInteractor
 import ru.practicum.android.diploma.vacancydetails.domain.impl.DetailsInteractorImpl
 
@@ -18,10 +16,6 @@ val interactorModule = module {
         FavouriteVacancyInteractorImpl(get())
     }
     single<DetailsInteractor> {
-        DetailsInteractorImpl(get())
+        DetailsInteractorImpl(get(), get())
     }
-    factory<SharingContactInteractor> { (hhVacancyLink: String, phone: String, email: String) ->
-        SharingContactInteractorImpl(get(), hhVacancyLink, phone, email)
-    }
-
 }
