@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.common.data.ErrorType
+import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyInteractor
 import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsInteractor
@@ -22,7 +23,7 @@ class DetailsViewModel(
 ) : ViewModel() {
 
     private var isFavourite: Boolean = false
-    private var isFavorite = MutableLiveData<Boolean>()
+    // private var isFavorite = MutableLiveData<Boolean>()
     // fun observeFavoriteState(): LiveData<Boolean> = isFavorite
 
     private val vacancyState = MutableLiveData<DetailsState>()
@@ -120,6 +121,12 @@ class DetailsViewModel(
             is DetailsNotFoundType -> {
                 renderState(
                     DetailsState.Empty
+                )
+            }
+
+            is NoInternetError -> {
+                renderState(
+                    DetailsState.NoInternet
                 )
             }
 

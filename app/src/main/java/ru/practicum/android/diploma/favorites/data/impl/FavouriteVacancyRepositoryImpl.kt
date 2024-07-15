@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 
 class FavouriteVacancyRepositoryImpl(
     private val vacancyDatabase: VacancyDatabase,
-    private val vacancyDbConverter: VacancyDbConverter
+    private val vacancyDbConverter: VacancyDbConverter,
 ) : FavouriteVacancyRepository {
     override suspend fun addVacancyToFavourite(vacancyId: VacancyDetails) {
         val vacancyEntity = convertToVacancyEntity(vacancyId)
@@ -32,8 +32,9 @@ class FavouriteVacancyRepositoryImpl(
         emit(vacancyId)
     }
 
-    override suspend fun getVacancyById(id: String): VacancyDetails {
-        val vacancyEntity = vacancyDatabase.vacancyDao().getVacancyById(id)
+    override suspend fun getVacancyById(id: String): VacancyDetails? {
+        val vacancyEntity = vacancyDatabase.vacancyDao().getVacancyById(id) ?: return null
+
         return vacancyEntity.let { vacancyDbConverter.map(it) }
     }
 

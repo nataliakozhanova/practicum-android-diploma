@@ -20,7 +20,6 @@ import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyDetailsViewBinding
 import ru.practicum.android.diploma.util.Formatter
-import ru.practicum.android.diploma.util.isConnected
 import ru.practicum.android.diploma.vacancydetails.domain.models.DetailsNotFoundType
 import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 import ru.practicum.android.diploma.vacancydetails.presentation.models.DetailsState
@@ -32,6 +31,7 @@ class VacancyDetailsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<DetailsViewModel>()
     private var vacancy: VacancyDetails? = null
+    private var vacancyID: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
@@ -40,23 +40,6 @@ class VacancyDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val vacancyId = requireArguments().getString(ARGS_VACANCY_ID)
-        if (vacancyId != null) {
-            if (isConnected(requireContext())) {
-                viewModel.getVacancy(vacancyId)
-            } else {
-                viewModel.checkVacancyInDatabase(vacancyId) { exists ->
-                    if (exists) {
-                        viewModel.getVacancyDatabase(vacancyId)
-                        binding.favoriteVacansyIv.setImageResource(R.drawable.favorites_on_24px_button)
-                    } else {
-                        showTypeErrorOrEmpty(NoInternetError())
-                    }
-                }
-            }
-            viewModel.isFavourite(vacancyId)
-        }
-
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is DetailsState.Content -> {
@@ -64,6 +47,18 @@ class VacancyDetailsFragment : Fragment() {
                     hideErrorsAndLoading()
                     showVacancyContent(state)
                     binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = true
+                    viewModel.isFavourite(vacancy!!.hhID)
+                }
+
+                is DetailsState.NoInternet -> {
+                    viewModel.checkVacancyInDatabase(vacancyID!!) { exists ->
+                        if (exists) {
+                            viewModel.getVacancyDatabase(vacancyID!!)
+                            binding.favoriteVacansyIv.setImageResource(R.drawable.favorites_on_24px_button)
+                        } else {
+                            showTypeErrorOrEmpty(NoInternetError())
+                        }
+                    }
                 }
 
                 is DetailsState.Error -> {
@@ -72,6 +67,7 @@ class VacancyDetailsFragment : Fragment() {
 
                 is DetailsState.Empty -> {
                     showTypeErrorOrEmpty(DetailsNotFoundType())
+                    viewModel.deleteFavouriteVacancy(vacancyID!!)
                 }
 
                 is DetailsState.Loading -> {
@@ -98,13 +94,12 @@ class VacancyDetailsFragment : Fragment() {
         binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        vacancyID = requireArguments().getString(ARGS_VACANCY_ID)
+        if (vacancyID != null) {
+            viewModel.getVacancy(vacancyID!!)
+        }
     }
-//
-//    private fun isNetworkAvailable(): Boolean {
-//        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//        val activeNetwork = connectivityManager.activeNetworkInfo
-//        return activeNetwork != null && activeNetwork.isConnected
-//    }
 
     private fun checkFavouriteIcon(isFavorite: Boolean) {
         if (isFavorite) {
@@ -194,7 +189,7 @@ class VacancyDetailsFragment : Fragment() {
             val addressParts = listOfNotNull(address.street, address.building, address.city).filter { it.isNotBlank() }
             val addressText = addressParts.joinToString(", ")
             binding.adressCompanyTv.text =
-                addressText.ifBlank { state.vacancy.employerInfo.areaName }
+                if (addressText.isNotBlank()) addressText else state.vacancy.employerInfo.areaName
         } else {
             binding.adressCompanyTv.text = state.vacancy.employerInfo.areaName
         }
@@ -207,7 +202,7 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun setKeySkills(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val keySkills = state.vacancy.details.keySkills
-        if (keySkills.isEmpty()) {
+        if (keySkills.isNullOrEmpty()) {
             binding.keySkills.visibility = View.GONE
             binding.vacancyKeySkillsTv.visibility = View.GONE
         } else {
