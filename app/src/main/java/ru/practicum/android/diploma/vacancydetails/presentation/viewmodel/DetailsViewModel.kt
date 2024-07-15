@@ -20,10 +20,13 @@ class DetailsViewModel(
     private val favouriteVacancyInteractor: FavouriteVacancyInteractor
 ) : ViewModel() {
 
-private val vacancyState = MutableLiveData<DetailsState>()
-    fun observeVacancyState(): LiveData<DetailsState> = vacancyState
-    private lateinit var favouriteTracksId: List<String>
+    private var isFavourite: Boolean = false
+    private var isFavorite = MutableLiveData<Boolean>()
+    fun observeFavoriteState(): LiveData<Boolean> = isFavorite
 
+    private val vacancyState = MutableLiveData<DetailsState>()
+    fun observeVacancyState(): LiveData<DetailsState> = vacancyState
+    private var favouriteTracksId: List<String>? = null
 
     fun addToFavById(vacancyId: VacancyDetails) {
         viewModelScope.launch {
