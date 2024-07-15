@@ -44,7 +44,7 @@ class VacancyDetailsFragment : Fragment() {
         val vacancyId = requireArguments().getString(ARGS_VACANCY_ID)
         if (vacancyId != null) {
             viewModel.getVacancy(vacancyId)
-            //viewModel.isFavourite(vacancyId)
+            viewModel.isFavourite(vacancyId)
         }
 
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
@@ -71,7 +71,7 @@ class VacancyDetailsFragment : Fragment() {
         }
 
         binding.favoriteVacansyIv.setOnClickListener {
-            //checkIsFavourite(viewModel.getFavouriteState())
+            checkIsFavourite(viewModel.getFavouriteState())
         }
         binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
