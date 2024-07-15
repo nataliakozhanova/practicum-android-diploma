@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,10 +47,7 @@ class FavoriteFragment : Fragment() {
         initRecycle()
         viewModelFavourites.getAllFavouriteVacanciesView()
         viewModelFavourites.state.observe(viewLifecycleOwner) { state ->
-
-            Log.d("mine", "STATE = $state")
             when (state) {
-
                 is FavouritesStates.NotEmpty -> {
                     favoriteAdapter.favoriteItems = state.vacancies
                     favoriteAdapter.notifyDataSetChanged()
@@ -72,24 +68,24 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun showErrorPlaceholders() {
-        binding.failedToGetVacancies.visibility = View.VISIBLE
-        binding.imageNothingFoundFavorite.visibility = View.VISIBLE
+        binding.failedToGetVacancies.isVisible = true
+        binding.imageNothingFoundFavorite.isVisible = true
     }
 
     private fun showEmptyPlaceholders() {
-        binding.imageEmptyFavorite.visibility = View.VISIBLE
-        binding.emptyListFavorite.visibility = View.VISIBLE
+        binding.imageEmptyFavorite.isVisible = true
+        binding.emptyListFavorite.isVisible = true
     }
 
     private fun hidePlaceholders() {
-        binding.imageEmptyFavorite.visibility = View.GONE
-        binding.emptyListFavorite.visibility = View.GONE
-        binding.failedToGetVacancies.visibility = View.GONE
-        binding.imageNothingFoundFavorite.visibility = View.GONE
+        binding.imageEmptyFavorite.isVisible = false
+        binding.emptyListFavorite.isVisible = false
+        binding.failedToGetVacancies.isVisible = false
+        binding.imageNothingFoundFavorite.isVisible = false
     }
 
     private fun showFavouriteVacancies() {
-        binding.favoriteRV.visibility = View.VISIBLE
+        binding.favoriteRV.isVisible = true
     }
 
     private fun hideFavouriteVacancies() {
