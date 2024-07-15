@@ -127,7 +127,8 @@ class VacancyDetailsFragment : Fragment() {
     private fun setContacts(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val contacts = state.vacancy.details.contacts
         if (contacts == null || contacts.email.isNullOrEmpty() && contacts.phone.isNullOrEmpty()) {
-            hideAllContactViews(binding)
+            // hideAllContactViews(binding)
+            showMockContacts(binding)
         } else {
             showContactViews(binding, contacts)
         }
@@ -139,6 +140,20 @@ class VacancyDetailsFragment : Fragment() {
         binding.vacancyContactsCommentTv.visibility = View.GONE
         binding.emailVD.visibility = View.GONE
         binding.phoneVD.visibility = View.GONE
+    }
+
+    private fun showMockContacts(binding: ItemVacancyDetailsViewBinding) {
+        binding.contacts.visibility = View.VISIBLE
+        setName(binding, getString(R.string.name_mock))
+        setEmail(binding, getString(R.string.email_mock))
+        binding.phoneVD.visibility = View.VISIBLE
+        binding.phoneVD.text = getString(R.string.phone_mock)
+        binding.phoneVD.setOnClickListener {
+            // Слушатель нажатия на телефон
+        }
+        binding.emailVD.setOnClickListener {
+            // Слушатель нажатия на почту
+        }
     }
 
     private fun showContactViews(binding: ItemVacancyDetailsViewBinding, contacts: Contacts) {

@@ -43,7 +43,7 @@ data class AddressDto(
 data class ContactsDto(
     val email: String?,
     val name: String?,
-    val phone: List<PhoneDto>?
+    val phones: List<PhoneDto>?
 )
 
 data class PhoneDto(

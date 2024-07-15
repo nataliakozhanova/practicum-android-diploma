@@ -61,9 +61,12 @@
     <string name="best_android_developers_4">Зыкова Ангелина</string>
     <string name="best_android_developers_5">Заруба Никита</string>
     <string name="eat">Еда</string>
-    <string name="Email">Email</string>
-    <string name="Phone">Телефон</string>
-    <string name="Name">Имя</string>
+    <string name="email">Email</string>
+    <string name="email_mock">JohnDoe@foo.com</string>
+    <string name="phone">Телефон</string>
+    <string name="phone_mock">+71234567</string>
+    <string name="name">Имя</string>
+    <string name="name_mock">JohnDoe</string>
     <string name="android_developer">Android-разработчик, Москва</string>
 
     <plurals name="vacancies_counter">
