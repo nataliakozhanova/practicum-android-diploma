@@ -23,4 +23,7 @@ class FavouriteVacancyInteractorImpl(private val favouriteVacancyRepository: Fav
         return favouriteVacancyRepository.getAllFavouritesVacanciesId()
     }
 
+    override suspend fun getVacancyById(id: String): VacancyDetails? {
+        return favouriteVacancyRepository.getVacancyById(id)
+    }
 }

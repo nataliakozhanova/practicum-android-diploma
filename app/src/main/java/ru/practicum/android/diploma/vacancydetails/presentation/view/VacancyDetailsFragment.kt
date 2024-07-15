@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.vacancydetails.presentation.view
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
@@ -41,7 +43,18 @@ class VacancyDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val vacancyId = requireArguments().getString(ARGS_VACANCY_ID)
         if (vacancyId != null) {
-            viewModel.getVacancy(vacancyId)
+            if (isNetworkAvailable()) {
+                viewModel.getVacancy(vacancyId)
+            } else {
+                viewModel.checkVacancyInDatabase(vacancyId) { exists ->
+                    if (exists) {
+                        viewModel.getVacancyDatabase(vacancyId)
+                        binding.favoriteVacansyIv.setImageResource(R.drawable.favorites_on_24px_button)
+                    } else {
+                        showTypeErrorOrEmpty(NoInternetError())
+                    }
+                }
+            }
             viewModel.isFavourite(vacancyId)
         }
 
@@ -78,6 +91,12 @@ class VacancyDetailsFragment : Fragment() {
         binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnected
     }
 
     private fun checkFavouriteIcon(isFavorite: Boolean) {
