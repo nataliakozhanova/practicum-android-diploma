@@ -19,9 +19,8 @@ class FavouriteVacancyRepositoryImpl(
         vacancyDatabase.vacancyDao().addVacancyToFavourite(vacancyEntity)
     }
 
-    override suspend fun deleteVacancyFromFavourite(vacancyId: VacancyDetails) {
-        val vacancyEntity = convertToVacancyEntity(vacancyId)
-        vacancyDatabase.vacancyDao().deleteVacancyFromFavourite(vacancyEntity.hhID)
+    override suspend fun deleteVacancyFromFavourite(vacancyId: String) {
+        vacancyDatabase.vacancyDao().deleteVacancyFromFavourite(vacancyId)
     }
 
     override fun getAllFavouritesVacancies(): Flow<ArrayList<VacancyDetails>> {
