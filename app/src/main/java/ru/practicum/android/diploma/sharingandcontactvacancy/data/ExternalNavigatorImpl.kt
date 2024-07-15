@@ -4,12 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import ru.practicum.android.diploma.sharingandcontactvacancy.domain.api.ExternalNavigator
 
-class ExternalNavigatorImpl() : ExternalNavigator {
+class ExternalNavigatorImpl: ExternalNavigator {
     override fun shareVacancy(link: String): Intent {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.setType("text/plain")
         shareIntent.putExtra(Intent.EXTRA_TEXT, link)
-        return (Intent.createChooser(shareIntent, ""))
+        return Intent.createChooser(shareIntent, "")
     }
 
     override fun contactVacancyByPhone(phone: String): Intent {
