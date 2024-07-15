@@ -101,4 +101,8 @@ private val vacancyState = MutableLiveData<DetailsState>()
         vacancyState.postValue(state)
     }
 
+    fun getFavouriteState(): Boolean {
+        return false//isFavourite
+    }
+
 }
