@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.vacancydetails.presentation.view
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
@@ -41,7 +43,18 @@ class VacancyDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val vacancyId = requireArguments().getString(ARGS_VACANCY_ID)
         if (vacancyId != null) {
-            viewModel.getVacancy(vacancyId)
+            if (isNetworkAvailable()) {
+                viewModel.getVacancy(vacancyId)
+            } else {
+                viewModel.checkVacancyInDatabase(vacancyId) { exists ->
+                    if (exists) {
+                        viewModel.getVacancyDatabase(vacancyId)
+                        binding.favoriteVacansyIv.setImageResource(R.drawable.favorites_on_24px_button)
+                    } else {
+                        showTypeErrorOrEmpty(NoInternetError())
+                    }
+                }
+            }
             viewModel.isFavourite(vacancyId)
         }
 
@@ -86,6 +99,12 @@ class VacancyDetailsFragment : Fragment() {
         binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnected
     }
 
     private fun checkFavouriteIcon(isFavorite: Boolean) {
@@ -161,10 +180,13 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun setVacancyTitle(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.nameVacancyTv.text = "${state.vacancy.name}, ${state.vacancy.employerInfo.areaName}"
+        binding.cardInfoCompanyCv.visibility = View.VISIBLE
+        binding.nameVacancyTv.visibility = View.VISIBLE
     }
 
     private fun setCompanyDetails(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.nameCompanyTv.text = state.vacancy.employerInfo.employerName
+        binding.nameCompanyTv.visibility = View.VISIBLE
     }
 
     private fun setAddress(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
@@ -202,14 +224,18 @@ class VacancyDetailsFragment : Fragment() {
             state.vacancy.details.description,
             Html.FROM_HTML_MODE_LEGACY
         )
+        binding.descriptionVacancy.visibility = View.VISIBLE
     }
 
     private fun setExperience(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.valueExperienceTv.text = state.vacancy.details.experience?.name
+        binding.valueExperienceTv.visibility = View.VISIBLE
     }
 
     private fun setEmployment(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-        binding.formatWorkTv.text = state.vacancy.details.employment?.name
+        val employment = state.vacancy.details.employment?.name ?: ""
+        val schedule = state.vacancy.details.schedule?.name ?: ""
+        binding.formatWorkTv.text = "$employment, $schedule"
     }
 
     private fun setCompanyLogo(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {

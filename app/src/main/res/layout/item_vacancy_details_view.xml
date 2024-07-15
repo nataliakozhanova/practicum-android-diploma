@@ -12,9 +12,13 @@
         style="@style/Bold32TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Название вакансии" />
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="@string/job_title"/>
 
     <TextView
         android:id="@+id/vacancySalaryTv"
@@ -22,9 +26,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameVacancyTv"
-        tools:text="от 100 000 Р" />
+        tools:text="@string/salary_from" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardInfoCompanyCv"
@@ -33,6 +39,8 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/background_light_gray_rounded"
         android:padding="16dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vacancySalaryTv">
@@ -49,25 +57,26 @@
         <TextView
             android:id="@+id/nameCompanyTv"
             style="@style/Medium22TextStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/dp_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/logoCompanyIv"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Еда" />
+            tools:text="@string/eat" />
 
         <TextView
             android:id="@+id/adressCompanyTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/dp_8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/logoCompanyIv"
             app:layout_constraintTop_toBottomOf="@+id/nameCompanyTv"
-            tools:text="Москва"
-            android:maxLines="2"
-            android:ellipsize="end"/>
+            tools:text="@string/Moscow"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -77,6 +86,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/required_experience"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardInfoCompanyCv" />
 
@@ -85,20 +96,20 @@
         style="@style/Regular16TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/experienceTv"
-        tools:text="От 1 года до 3 лет" />
+        tools:text="@string/from_1_to_3" />
 
     <TextView
         android:id="@+id/formatWorkTv"
         style="@style/Regular16TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/valueExperienceTv"
-        tools:text="Полная занятость, Удаленная работа" />
+        tools:text="@string/full_time_remote_work"/>
 
     <TextView
         android:id="@+id/vacancyDescriptionTv"
@@ -107,6 +118,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/vacancy_description"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/formatWorkTv" />
 
@@ -116,6 +129,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:text="@string/descriptionVacancy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vacancyDescriptionTv" />
@@ -125,76 +140,24 @@
         style="@style/Medium22TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/key_skills"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionVacancy" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionVacancy"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/vacancyKeySkillsTv"
         style="@style/Regular16TextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:text="@string/key_skills"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/key_skills"
-        tools:text="•  Знание классических алгоритмов и структуры данных, Программирование для Android больше одного года, Знание WebRTC" />
-
-    <TextView
-        android:id="@+id/contacts"
-        style="@style/Medium22TextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/contacts"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vacancyKeySkillsTv" />
-
-    <TextView
-        android:id="@+id/vacancyContactsTv"
-        style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contacts" />
-
-    <TextView
-        android:id="@+id/vacancyContactsCommentTv"
-        style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Комментарий к информации о контактах"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vacancyContactsTv" />
-
-    <TextView
-        android:id="@+id/emailVD"
-        style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vacancyContactsCommentTv" />
-
-    <TextView
-        android:id="@+id/phoneVD"
-        style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/phone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailVD" />
+        tools:text="@string/list_of_key_skills"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

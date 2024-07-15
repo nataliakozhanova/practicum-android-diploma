@@ -1,8 +1,5 @@
 package ru.practicum.android.diploma.favorites.presentation.view
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -100,8 +97,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun openDetailsFragment(vacancy: VacancyBase) {
-        val context = requireContext()
-        if (clickDebounce() && isConnected(context)) {
+        if (clickDebounce()) {
             findNavController().navigate(
                 R.id.action_favoritesFragment_to_vacancyDetailsFragment,
                 VacancyDetailsFragment.createArgs(vacancy.hhID)

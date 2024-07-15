@@ -32,6 +32,11 @@ class FavouriteVacancyRepositoryImpl(
         emit(vacancyId)
     }
 
+    override suspend fun getVacancyById(id: String): VacancyDetails {
+        val vacancyEntity = vacancyDatabase.vacancyDao().getVacancyById(id)
+        return vacancyEntity.let { vacancyDbConverter.map(it) }
+    }
+
     private fun convertToVacancyEntity(track: VacancyDetails): VacancyEntity {
         return vacancyDbConverter.map(track)
     }
