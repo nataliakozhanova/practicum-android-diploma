@@ -8,5 +8,5 @@ sealed interface DetailsState {
     data object Empty : DetailsState
     data class Error(val errorType: ErrorType) : DetailsState
     data class Content(val vacancy: VacancyDetails) : DetailsState
-    data class isFavourite(val isFav: Boolean) : DetailsState
+    data class isFavorite(val isFav: Boolean) : DetailsState
 }
