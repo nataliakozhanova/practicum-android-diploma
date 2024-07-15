@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.favorites.data.db
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -12,8 +11,8 @@ interface VacancyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addVacancyToFavourite(vacancy: VacancyEntity)
 
-    @Delete(entity = VacancyEntity::class)
-    fun deleteVacancyFromFavourite(vacancy: VacancyEntity)
+    @Query("DELETE FROM vacancy_table WHERE hhID = :vacancy")
+    fun deleteVacancyFromFavourite(vacancy: String)
 
     @Query("SELECT * FROM vacancy_table")
     fun getAllFavouritesVacancies(): Flow<List<VacancyEntity>>

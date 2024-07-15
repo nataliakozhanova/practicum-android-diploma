@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 
 interface FavouriteVacancyInteractor {
     suspend fun addVacancyToFavourite(vacancyId: VacancyDetails)
-    suspend fun deleteVacancyFromFavourite(vacancyId: VacancyDetails)
+    suspend fun deleteVacancyFromFavourite(vacancyId: String)
     fun getAllFavouritesVacancies(): Flow<ArrayList<VacancyDetails>>
     fun getAllFavouritesVacanciesId(): Flow<List<String>>
 }

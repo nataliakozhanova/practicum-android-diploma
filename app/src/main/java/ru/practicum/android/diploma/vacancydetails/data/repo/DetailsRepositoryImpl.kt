@@ -66,7 +66,7 @@ class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsR
                     contacts = if (it.contacts != null) {
                         transformContacts(it.contacts)
                     } else {
-                        null
+                        Contacts("", "", mutableListOf())
                     },
                     hhVacancyLink = it.hhVacancyLink
                 )
@@ -89,7 +89,7 @@ class DetailsRepositoryImpl(private val networkClient: NetworkClient) : DetailsR
             Contacts(
                 email = contacts.email,
                 name = contacts.name,
-                phone = contacts.phone?.map { phoneDto ->
+                phone = contacts.phones?.map { phoneDto ->
                     Phone(
                         city = phoneDto.city,
                         comment = phoneDto.comment,
