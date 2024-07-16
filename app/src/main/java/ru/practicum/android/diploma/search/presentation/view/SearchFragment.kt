@@ -225,12 +225,12 @@ class SearchFragment : Fragment() {
 
     // переключить видимость прелоадера следующей страницы и может показать тост
     private fun showNextPagePreloader(show: Boolean, message: String? = null) {
-        //if (binding.searchNewItemsProgressBar.isVisible != show) {
+        if (binding.searchNewItemsProgressBar.isVisible != show) {
             binding.searchNewItemsProgressBar.isVisible = show
             if (message != null) {
                 showToast(message)
             }
-        //}
+        }
     }
 
     // показать прелоадер первой страницы

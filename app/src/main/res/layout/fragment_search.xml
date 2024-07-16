@@ -190,7 +190,7 @@
                         android:layout_height="@dimen/dp_36"
                         android:layout_gravity="center"
                         android:layout_marginVertical="@dimen/dp_36"
-                        android:indeterminateTint="@color/light_grey"
+                        android:indeterminateTint="@color/blue"
                         android:visibility="gone"
                         tools:visibility="visible" />
 
