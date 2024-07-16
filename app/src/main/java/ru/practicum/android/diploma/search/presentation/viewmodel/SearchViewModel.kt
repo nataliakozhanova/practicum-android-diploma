@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,8 +16,10 @@ import ru.practicum.android.diploma.search.domain.models.SearchResult
 import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
+import ru.practicum.android.diploma.util.isConnected
 
 class SearchViewModel(
+    private val context: Context,
     private val interactor: SearchInteractor,
 ) : ViewModel() {
     companion object {
@@ -66,7 +69,7 @@ class SearchViewModel(
     }
 
     fun nextPageSearch() {
-        if (pages > 0 && page + 2 > pages) {
+        if (isConnected(context) && page + 2 > pages) {
             renderState(SearchState.AtBottom, _nextPageState)
         } else if (latestSearchText != null) {
             page++

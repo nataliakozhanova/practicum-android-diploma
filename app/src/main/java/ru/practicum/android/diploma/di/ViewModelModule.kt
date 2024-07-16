@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.di
 
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavouritesViewModel
@@ -8,7 +9,7 @@ import ru.practicum.android.diploma.vacancydetails.presentation.viewmodel.Detail
 
 val viewModelModule = module {
     viewModel {
-        SearchViewModel(get())
+        SearchViewModel(androidContext(), get())
     }
     viewModel {
         FavouritesViewModel(get())
