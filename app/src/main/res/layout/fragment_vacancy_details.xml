@@ -67,7 +67,7 @@
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"
             android:clickable="true"
-            android:src="@drawable/favorites_on_24px_button"
+            android:src="@drawable/favorites_off_24px_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

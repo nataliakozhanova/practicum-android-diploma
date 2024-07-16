@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.favorites.presentation.models.FavouritesStates
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavouritesViewModel
+import ru.practicum.android.diploma.search.presentation.view.VacancySearchAdapter
 import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
 
 private const val CLICK_DEBOUNCE_DELAY = 200L
@@ -27,7 +28,7 @@ class FavoriteFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModelFavourites: FavouritesViewModel by viewModel()
     private var isClickAllowed = true
-    private val favoriteAdapter = FavoriteAdapter { vacancy -> openDetailsFragment(vacancy) }
+    private val favoriteAdapter = VacancySearchAdapter { vacancy -> openDetailsFragment(vacancy) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
@@ -46,7 +47,7 @@ class FavoriteFragment : Fragment() {
         viewModelFavourites.state.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is FavouritesStates.NotEmpty -> {
-                    favoriteAdapter.favoriteItems = state.vacancies
+                    favoriteAdapter.vacancies = state.vacancies
                     favoriteAdapter.notifyDataSetChanged()
                     showFavouriteVacancies()
                     hidePlaceholders()
