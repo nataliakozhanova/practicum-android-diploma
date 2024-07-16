@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.search.presentation.view
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -116,12 +115,12 @@ class SearchFragment : Fragment() {
     private fun nextPageStateCheck(state: SearchState) {
         when (state) {
             SearchState.Default -> {
-                nextPagePreloaderToggle(false)
+                showNextPagePreloader(false)
                 nextPageRequestSending = false
             }
 
             is SearchState.AtBottom -> {
-                nextPagePreloaderToggle(false, getString(R.string.bottom_of_list))
+                showNextPagePreloader(false, getString(R.string.bottom_of_list))
                 // чтобы снова не сработало событие "прокрутка до конца" уменьшим скролл
                 binding.idNestedSV.scrollTo(0, binding.idNestedSV.scrollY - 1)
             }
@@ -129,64 +128,68 @@ class SearchFragment : Fragment() {
             is SearchState.Loading -> {}
 
             is SearchState.Content -> {
-                nextPagePreloaderToggle(false)
+                showNextPagePreloader(false)
                 loadVacancies(state.vacancies)
                 nextPageRequestSending = false
             }
 
             is SearchState.Empty -> {
-                nextPagePreloaderToggle(false)
+                showNextPagePreloader(false)
                 showErrorOrEmptySearch(VacanciesNotFoundType())
                 nextPageRequestSending = false
             }
 
             is SearchState.Error -> {
                 val errorMessage = getErrorMessage(state.errorType)
-                nextPagePreloaderToggle(false, errorMessage)
+                showNextPagePreloader(false, errorMessage)
                 nextPageRequestSending = false
             }
         }
     }
 
-    // обработка изменений в поле для поиска
-    private fun bindEditTextSearch() {
-        with(binding.editTextSearch) {
-            // изменение текста
-            doOnTextChanged { text, start, before, count ->
-                searchMask = text.toString().trim()
-                // иконка в поле поиска
-                setEditTextIconBySearchMask()
-                if (searchMask.trim().isEmpty()) {
-                    viewModel.clearSearch()
-                } else if (binding.editTextSearch.hasFocus()) {
-                    viewModel.setSearchMask(searchMask)
-                    // запуск поискового запроса
-                    viewModel.searchDebounce(searchMask)
+    // изменения в поле поиска
+    private fun bindEditSearch() {
+        // следим за изменением в поисковой строке
+        binding.editTextSearchLayout.editText?.doOnTextChanged { text, _, _, _ ->
+            searchMask = text.toString().trim()
+            // иконка в поле поиска
+            binding.editTextSearchLayout.endIconDrawable = ContextCompat.getDrawable(
+                requireContext(),
+                if (searchMask.isEmpty()) {
+                    EditTextSearchIcon.SEARCH_ICON.drawableId
+                } else {
+                    EditTextSearchIcon.CLEAR_ICON.drawableId
                 }
+            )
+            if (searchMask.trim().isEmpty()) {
+                viewModel.clearSearch()
+                showNextPagePreloader(false)
+                nextPageRequestSending = true
+            } else if (binding.editTextSearchLayout.hasFocus()) {
+                viewModel.setSearchMask(searchMask)
+                // запуск поискового запроса
+                viewModel.searchDebounce(searchMask)
             }
-            // обработка нажатия на поле (кнопка стереть)
-            setOnTouchListener { v, event ->
-                v.performClick()
-                if (event.action == MotionEvent.ACTION_UP
-                    && event.rawX >= binding.editTextSearch.right
-                    - binding.editTextSearch.compoundDrawables[2].bounds.width()
-                ) {
-                    searchMask = ""
-                    setEditTextIconBySearchMask()
-                    binding.editTextSearch.setText(searchMask)
-                    viewModel.clearSearch()
-                    true
-                }
-                false
+        }
+
+        // очистка поискового запроса кнопкой
+        binding.editTextSearchLayout.setEndIconOnClickListener {
+            searchMask = ""
+            // иконка в поле поиска
+            binding.editTextSearchLayout.endIconDrawable =
+                ContextCompat.getDrawable(requireContext(), EditTextSearchIcon.SEARCH_ICON.drawableId)
+            binding.editTextSearchLayout.editText?.setText(searchMask)
+            viewModel.clearSearch()
+            showNextPagePreloader(false)
+            nextPageRequestSending = true
+        }
+
+        binding.editTextSearchLayout.editText?.setOnEditorActionListener { _, actionId, _ ->
+            // поиск по нажатию Done на клавиатуре
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.searchByClick(binding.tietSearchMask.text.toString())
             }
-            setOnEditorActionListener { _, actionId, _ ->
-                // поиск по нажатию Done на клавиатуре
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    viewModel.searchByClick(binding.editTextSearch.text.toString())
-                    true
-                }
-                false
-            }
+            false
         }
     }
 
@@ -194,15 +197,15 @@ class SearchFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setBindings() {
         // обработка изменений в строке поиска
-        bindEditTextSearch()
+        bindEditSearch()
         // мониторим скроллинг списка вакансий для загрузки новой страницы
         binding.idNestedSV.setOnScrollChangeListener(
             NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                // если вернулись с другого фрагмента кнопкой назад NestedView скроллится на ту же позицию
-                val scrolledTo = v.getChildAt(0).measuredHeight - v.measuredHeight
-                val deltaScroll = scrollY - oldScrollY
-                // поэтому если сразу проскроллилось от самого верха до низа (дельта скроллинга = всей высоте элемента), то подгружать не надо
-                if (deltaScroll < scrollY && scrolledTo == scrollY) {
+                val visibleHeight = binding.idNestedSV.height
+                val totalHeight = binding.idNestedSV.getChildAt(0).height
+                val diff = totalHeight - visibleHeight
+
+                if (scrollY >= diff) {
                     loadNextPage()
                 }
             }
@@ -221,7 +224,7 @@ class SearchFragment : Fragment() {
     }
 
     // переключить видимость прелоадера следующей страницы и может показать тост
-    private fun nextPagePreloaderToggle(show: Boolean, message: String? = null) {
+    private fun showNextPagePreloader(show: Boolean, message: String? = null) {
         if (binding.searchNewItemsProgressBar.isVisible != show) {
             binding.searchNewItemsProgressBar.isVisible = show
             if (message != null) {
@@ -267,7 +270,7 @@ class SearchFragment : Fragment() {
 
     private fun loadNextPage() {
         if (!nextPageRequestSending) {
-            nextPagePreloaderToggle(true)
+            showNextPagePreloader(true)
             nextPageRequestSending = true
             viewModel.nextPageSearch()
         }
@@ -320,20 +323,6 @@ class SearchFragment : Fragment() {
             placeHolderImage.isVisible = true
             placeHolderText.isVisible = true
         }
-    }
-
-    // на основе поля searchMask покажем нужную иконку
-    private fun setEditTextIconBySearchMask() {
-        val icon = if (searchMask.isNotEmpty()) {
-            // стереть
-            EditTextSearchIcon.CLEAR_ICON
-        } else {
-            // поиск (пустая маска)
-            EditTextSearchIcon.SEARCH_ICON
-        }
-        val newIcon = ContextCompat.getDrawable(requireContext(), icon.drawableId)
-        newIcon?.setBounds(0, 0, newIcon.intrinsicWidth, newIcon.intrinsicHeight)
-        binding.editTextSearch.setCompoundDrawables(null, null, newIcon, null)
     }
 
     private fun openVacancy(vacancy: VacancyBase) {
