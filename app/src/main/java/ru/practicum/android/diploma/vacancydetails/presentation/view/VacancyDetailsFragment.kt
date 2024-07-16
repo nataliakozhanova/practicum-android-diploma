@@ -54,7 +54,6 @@ class VacancyDetailsFragment : Fragment() {
                     viewModel.checkVacancyInDatabase(vacancyID!!) { exists ->
                         if (exists) {
                             viewModel.getVacancyDatabase(vacancyID!!)
-                            binding.favoriteVacansyIv.setImageResource(R.drawable.favorites_on_24px_button)
                         } else {
                             showTypeErrorOrEmpty(NoInternetError())
                         }
