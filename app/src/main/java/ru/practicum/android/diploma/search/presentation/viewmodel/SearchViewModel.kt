@@ -29,6 +29,7 @@ class SearchViewModel(
     }
 
     private var vacanciesList = mutableListOf<VacancyBase>()
+    private var vacanciesCheck = mutableListOf<String>()
     private var pages: Int = 0
     private var page: Int = 0
     private var latestSearchText: String? = null
@@ -51,7 +52,8 @@ class SearchViewModel(
         page = 0
         pages = 0
         latestSearchText = null
-        vacanciesList = mutableListOf<VacancyBase>()
+        vacanciesList.clear()
+        vacanciesCheck.clear()
         if (searchJob != null && searchJob!!.isActive) {
             searchJob?.cancel()
         }
@@ -117,11 +119,18 @@ class SearchViewModel(
         }
     }
 
-    private fun saveVacancies(vacancyList: List<VacancyBase>) {
+    private fun vacancyHash(vacancy: VacancyBase): String {
+        return "${vacancy.name},${vacancy.employerInfo.areaName}," +
+            "${vacancy.employerInfo.employerName},${vacancy.salaryInfo}"
+    }
+
+    private fun saveVacancies(vacancies: List<VacancyBase>) {
         // только уникальные вакансии
-        for (newVac in vacancyList) {
-            if (!vacanciesList.contains(newVac)) {
-                vacanciesList.add(newVac)
+        for (newVacancy in vacancies) {
+            var vacHash = vacancyHash(newVacancy)
+            if (!vacanciesCheck.contains(vacHash)) {
+                vacanciesList.add(newVacancy)
+                vacanciesCheck.add(vacHash)
             }
         }
     }

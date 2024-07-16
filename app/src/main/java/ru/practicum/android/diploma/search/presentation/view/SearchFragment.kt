@@ -165,7 +165,8 @@ class SearchFragment : Fragment() {
                 viewModel.clearSearch()
                 showNextPagePreloader(false)
                 nextPageRequestSending = true
-            } else if (binding.editTextSearchLayout.hasFocus()) {
+            } // без условия hasFocus срабатывает при возврате на фрагмент
+            else if (binding.editTextSearchLayout.hasFocus()) {
                 viewModel.initSearch()
                 // запуск поискового запроса
                 viewModel.searchDebounce(searchMask)
