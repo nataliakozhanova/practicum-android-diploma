@@ -45,6 +45,7 @@
     <string name="key_skills">Ключевые навыки</string>
     <string name="contacts">Контакты</string>
     <string name="text_for_description_vacancy">Знание классических алгоритмов и структуры данных</string>
+    <string name="salary_exact">%s %s</string>
     <string name="salary_from">от %s %s</string>
     <string name="salary_to">до %s %s</string>
     <string name="salary_from_to">от %s до %s %s</string>

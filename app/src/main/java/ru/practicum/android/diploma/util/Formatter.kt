@@ -22,6 +22,12 @@ object Formatter {
         with(context) {
             val currency = currencyFromStr(salaryInfo?.salaryCurrency)
             return when {
+                salaryFrom > 0 && salaryTo == salaryFrom -> getString(
+                    R.string.salary_exact,
+                    moneyFormat(salaryFrom),
+                    currency
+                )
+
                 salaryFrom > 0 && salaryTo > 0 -> getString(
                     R.string.salary_from_to,
                     moneyFormat(salaryFrom),
