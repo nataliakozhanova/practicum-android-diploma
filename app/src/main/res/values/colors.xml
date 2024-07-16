@@ -6,6 +6,7 @@
     <color name="light_grey">#E6E8EB</color>
     <color name="dark_grey">#AEAFB4</color>
     <color name="white_day">#FDFDFD</color>
-    <color name="edit_text_grey_light">#E6E8EB</color>
     <color name="red">#F56B6C</color>
+    <color name="icon_tint_color">@color/black</color>
+    <color name="bottom_nav_top_border">@color/white_day</color>
 </resources>

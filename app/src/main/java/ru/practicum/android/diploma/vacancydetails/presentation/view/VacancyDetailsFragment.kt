@@ -217,11 +217,13 @@ class VacancyDetailsFragment : Fragment() {
             state.vacancy.details.description,
             Html.FROM_HTML_MODE_LEGACY
         )
+        binding.vacancyDescriptionTv.isVisible = true
         binding.descriptionVacancy.isVisible = true
     }
 
     private fun setExperience(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.valueExperienceTv.text = state.vacancy.details.experience?.name
+        binding.experienceTv.isVisible = true
         binding.valueExperienceTv.isVisible = true
     }
 

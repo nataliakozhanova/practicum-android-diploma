@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Medium22TextStyleAlwaysBlack" parent="Medium22TextStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="AlwaysBlack">
+        <item name="android:textColor">@color/black</item>
+    </style>
+</resources>
