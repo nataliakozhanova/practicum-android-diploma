@@ -33,7 +33,7 @@ class VacancyDetailsFragment : Fragment() {
     private var vacancy: VacancyDetails? = null
     private var vacancyID: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -187,8 +187,7 @@ class VacancyDetailsFragment : Fragment() {
         if (address != null) {
             val addressParts = listOfNotNull(address.street, address.building, address.city).filter { it.isNotBlank() }
             val addressText = addressParts.joinToString(", ")
-            binding.adressCompanyTv.text =
-                if (addressText.isNotBlank()) addressText else state.vacancy.employerInfo.areaName
+            binding.adressCompanyTv.text = addressText.ifBlank { state.vacancy.employerInfo.areaName }
         } else {
             binding.adressCompanyTv.text = state.vacancy.employerInfo.areaName
         }
@@ -196,17 +195,13 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun setSalary(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val salary = Formatter.formatSalary(requireContext(), state.vacancy.salaryInfo)
-        if (salary.isNotEmpty()) {
-            binding.vacancySalaryTv.text = salary
-            binding.vacancySalaryTv.isVisible = true
-        } else {
-            binding.vacancySalaryTv.isVisible = false
-        }
+        binding.vacancySalaryTv.text = salary
+        binding.vacancySalaryTv.isVisible = true
     }
 
     private fun setKeySkills(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val keySkills = state.vacancy.details.keySkills
-        if (keySkills.isNullOrEmpty()) {
+        if (keySkills.isEmpty()) {
             binding.keySkills.isVisible = false
             binding.vacancyKeySkillsTv.isVisible = false
         } else {
