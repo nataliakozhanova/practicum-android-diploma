@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.search.presentation.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -198,11 +197,11 @@ class SearchFragment : Fragment() {
         // мониторим скроллинг списка вакансий для загрузки новой страницы
         binding.idNestedSV.setOnScrollChangeListener(
             NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                // если вернулись с другого фрагмента кнопкой назад NestedView скроллится на ту же позицию
-                val scrolledTo = v.getChildAt(0).measuredHeight - v.measuredHeight
-                val deltaScroll = scrollY - oldScrollY
-                // поэтому если сразу проскроллилось от самого верха до низа (дельта скроллинга = всей высоте элемента), то подгружать не надо
-                if (deltaScroll < scrollY && scrolledTo == scrollY) {
+                val visibleHeight = binding.idNestedSV.height
+                val totalHeight = binding.idNestedSV.getChildAt(0).height
+                val diff = totalHeight - visibleHeight
+
+                if (scrollY >= diff) {
                     loadNextPage()
                 }
             }
