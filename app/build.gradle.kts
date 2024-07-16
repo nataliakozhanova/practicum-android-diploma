@@ -41,6 +41,7 @@ android {
         buildConfig = true
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -102,4 +103,6 @@ dependencies {
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    // обработка Html
+    implementation("org.sufficientlysecure:html-textview:4.0")
 }

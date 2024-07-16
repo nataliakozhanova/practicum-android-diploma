@@ -125,23 +125,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/formatWorkTv" />
 
-    <TextView
+    <org.sufficientlysecure.htmltextview.HtmlTextView
         android:id="@+id/descriptionVacancy"
-        style="@style/Regular16TextStyle"
-        android:layout_width="wrap_content"
+        style="@style/Medium16TextStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_16"
         android:visibility="gone"
-        tools:visibility="visible"
-        android:text="@string/descriptionVacancy"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vacancyDescriptionTv" />
+        app:layout_constraintTop_toBottomOf="@+id/vacancyDescriptionTv"
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/key_skills"
         style="@style/Medium22TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/key_skills"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,12 +157,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_24"
         android:text="@string/key_skills"
         android:visibility="gone"
-        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/key_skills"
-        tools:text="@string/list_of_key_skills"/>
+        tools:text="@string/list_of_key_skills"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
