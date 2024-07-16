@@ -160,7 +160,6 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun showVacancyContent(state: DetailsState.Content) {
         val vacancyDetailsBinding = ItemVacancyDetailsViewBinding.bind(binding.root)
-
         setVacancyTitle(vacancyDetailsBinding, state)
         setCompanyDetails(vacancyDetailsBinding, state)
         setAddress(vacancyDetailsBinding, state)
@@ -196,8 +195,13 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun setSalary(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-        binding.vacancySalaryTv.text =
-            Formatter.formatSalary(requireContext(), state.vacancy.salaryInfo)
+        val salary = Formatter.formatSalary(requireContext(), state.vacancy.salaryInfo)
+        if (salary.isNotEmpty()) {
+            binding.vacancySalaryTv.text = salary
+            binding.vacancySalaryTv.isVisible = true
+        } else {
+            binding.vacancySalaryTv.isVisible = false
+        }
     }
 
     private fun setKeySkills(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
