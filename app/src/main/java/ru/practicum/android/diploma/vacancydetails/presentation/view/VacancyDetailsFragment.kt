@@ -213,10 +213,8 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun setDescription(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-        binding.descriptionVacancy.text = Html.fromHtml(
-            state.vacancy.details.description,
-            Html.FROM_HTML_MODE_LEGACY
-        )
+        val htmlDescription = state.vacancy.details.description
+        binding.descriptionVacancy.setHtml(htmlDescription)
         binding.vacancyDescriptionTv.isVisible = true
         binding.descriptionVacancy.isVisible = true
     }
