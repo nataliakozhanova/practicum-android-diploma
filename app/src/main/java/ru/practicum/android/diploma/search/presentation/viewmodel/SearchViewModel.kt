@@ -24,7 +24,7 @@ class SearchViewModel(
     private val interactor: SearchInteractor,
 ) : ViewModel() {
     companion object {
-        const val SEARCH_DEBOUNCE_DELAY = 2000L
+        const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         const val ITEMS_PER_PAGE = 20
     }
 
@@ -47,14 +47,7 @@ class SearchViewModel(
         _state.value = SearchState.Default
     }
 
-    fun setSearchMask(newMask: String) {
-        if (latestSearchText != newMask) {
-            initSearch()
-        }
-        latestSearchText = newMask
-    }
-
-    private fun initSearch() {
+    fun initSearch() {
         page = 0
         pages = 0
         latestSearchText = null
@@ -76,7 +69,7 @@ class SearchViewModel(
             } else {
                 if (page + 1 < pages) {
                     page += 1
-                    searchDebounce(latestSearchText.toString())
+                    searchDebounce(latestSearchText.toString(), instantStart = true)
                 } else {
                     renderState(SearchState.AtBottom, _nextPageState)
                 }
@@ -84,15 +77,22 @@ class SearchViewModel(
         }
     }
 
-    fun searchDebounce(changedText: String) {
-        if (isNextPageLoading || changedText.trim().isEmpty()) {
+    private fun badSearchConditions(newSearchText: String, instantStart: Boolean): Boolean {
+        return isNextPageLoading || newSearchText.trim()
+            .isEmpty() || !instantStart && page == 0 && latestSearchText == newSearchText.trim()
+    }
+
+    fun searchDebounce(changedText: String, instantStart: Boolean = false) {
+        if (badSearchConditions(changedText, instantStart)) {
             return
         }
-        latestSearchText = changedText
+        latestSearchText = changedText.trim()
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
-            searchRequest(changedText)
+            if (!instantStart) {
+                delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
+            }
+            searchRequest(changedText.trim())
         }
     }
 
@@ -161,11 +161,7 @@ class SearchViewModel(
     }
 
     fun searchByClick(searchText: String) {
-        if (latestSearchText == searchText && _state.value !is SearchState.Error) {
-            return
-        }
-        this.latestSearchText = searchText
-        page = 0
-        searchRequest(searchText)
+        initSearch()
+        searchDebounce(searchText, instantStart = true)
     }
 }
