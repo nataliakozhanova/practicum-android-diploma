@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.search.presentation.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -45,6 +44,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
+    private var nextPageRequestSending = false
     private var showToastAllowed = true
     private var onVacancyClickDebounce: (VacancyBase) -> Unit = { _ -> }
     private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> onVacancyClickDebounce(vacancy) }
@@ -86,7 +86,6 @@ class SearchFragment : Fragment() {
 
     // обработка состояний поиска первой страницы
     private fun searchStateCheck(state: SearchState) {
-        Log.d("mine", "STATE=${state.javaClass}")
         when (state) {
             SearchState.Default -> showStartPage()
 
@@ -96,14 +95,17 @@ class SearchFragment : Fragment() {
 
             is SearchState.Content -> {
                 showContent(state)
+                nextPageRequestSending = false
             }
 
             is SearchState.Empty -> {
                 showErrorOrEmptySearch(VacanciesNotFoundType())
+                nextPageRequestSending = false
             }
 
             is SearchState.Error -> {
                 showErrorOrEmptySearch(state.errorType)
+                nextPageRequestSending = false
             }
 
             else -> {}
@@ -115,6 +117,7 @@ class SearchFragment : Fragment() {
         when (state) {
             SearchState.Default -> {
                 nextPagePreloaderToggle(false)
+                nextPageRequestSending = false
             }
 
             is SearchState.AtBottom -> {
@@ -128,16 +131,19 @@ class SearchFragment : Fragment() {
             is SearchState.Content -> {
                 nextPagePreloaderToggle(false)
                 loadVacancies(state.vacancies)
+                nextPageRequestSending = false
             }
 
             is SearchState.Empty -> {
                 nextPagePreloaderToggle(false)
                 showErrorOrEmptySearch(VacanciesNotFoundType())
+                nextPageRequestSending = false
             }
 
             is SearchState.Error -> {
                 val errorMessage = getErrorMessage(state.errorType)
                 nextPagePreloaderToggle(false, errorMessage)
+                nextPageRequestSending = false
             }
         }
     }
@@ -197,7 +203,6 @@ class SearchFragment : Fragment() {
                 val deltaScroll = scrollY - oldScrollY
                 // поэтому если сразу проскроллилось от самого верха до низа (дельта скроллинга = всей высоте элемента), то подгружать не надо
                 if (deltaScroll < scrollY && scrolledTo == scrollY) {
-                    nextPagePreloaderToggle(true)
                     loadNextPage()
                 }
             }
@@ -261,7 +266,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun loadNextPage() {
-        viewModel.nextPageSearch()
+        if (!nextPageRequestSending) {
+            nextPagePreloaderToggle(true)
+            nextPageRequestSending = true
+            viewModel.nextPageSearch()
+        }
     }
 
     private fun getErrorMessage(type: ErrorType, isNextPage: Boolean = false): String {
@@ -348,7 +357,6 @@ class SearchFragment : Fragment() {
 
     private fun showToast(tostMessage: String) {
         if (showToastDebounce()) {
-            Log.d("mine", "showToast($tostMessage)")
             Toast.makeText(requireContext(), tostMessage, Toast.LENGTH_SHORT).show()
         }
     }

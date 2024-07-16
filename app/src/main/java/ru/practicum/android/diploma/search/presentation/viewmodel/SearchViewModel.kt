@@ -9,6 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.data.ErrorType
+import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
@@ -53,7 +54,7 @@ class SearchViewModel(
         latestSearchText = newMask
     }
 
-    fun initSearch() {
+    private fun initSearch() {
         page = 0
         pages = 0
         latestSearchText = null
@@ -69,11 +70,17 @@ class SearchViewModel(
     }
 
     fun nextPageSearch() {
-        if (isConnected(context) && page + 2 > pages) {
-            renderState(SearchState.AtBottom, _nextPageState)
-        } else if (latestSearchText != null) {
-            page++
-            searchDebounce(latestSearchText.toString())
+        if (!isNextPageLoading && latestSearchText != null) {
+            if (!isConnected(context)) {
+                renderState(SearchState.Error(NoInternetError()), _nextPageState)
+            } else {
+                if (page + 1 < pages) {
+                    page += 1
+                    searchDebounce(latestSearchText.toString())
+                } else {
+                    renderState(SearchState.AtBottom, _nextPageState)
+                }
+            }
         }
     }
 
