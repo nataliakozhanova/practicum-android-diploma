@@ -105,6 +105,5 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
 
     //обработка Html
-    implementation ("org.sufficientlysecure:html-textview:4.0")
-
+    implementation("org.sufficientlysecure:html-textview:4.0")
 }
