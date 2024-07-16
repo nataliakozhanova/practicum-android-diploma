@@ -33,7 +33,7 @@ class VacancyDetailsFragment : Fragment() {
     private var vacancy: VacancyDetails? = null
     private var vacancyID: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -160,7 +160,6 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun showVacancyContent(state: DetailsState.Content) {
         val vacancyDetailsBinding = ItemVacancyDetailsViewBinding.bind(binding.root)
-
         setVacancyTitle(vacancyDetailsBinding, state)
         setCompanyDetails(vacancyDetailsBinding, state)
         setAddress(vacancyDetailsBinding, state)
@@ -174,13 +173,13 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun setVacancyTitle(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.nameVacancyTv.text = "${state.vacancy.name}, ${state.vacancy.employerInfo.areaName}"
-        binding.cardInfoCompanyCv.visibility = View.VISIBLE
-        binding.nameVacancyTv.visibility = View.VISIBLE
+        binding.cardInfoCompanyCv.isVisible = true
+        binding.nameVacancyTv.isVisible = true
     }
 
     private fun setCompanyDetails(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.nameCompanyTv.text = state.vacancy.employerInfo.employerName
-        binding.nameCompanyTv.visibility = View.VISIBLE
+        binding.nameCompanyTv.isVisible = true
     }
 
     private fun setAddress(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
@@ -188,26 +187,26 @@ class VacancyDetailsFragment : Fragment() {
         if (address != null) {
             val addressParts = listOfNotNull(address.street, address.building, address.city).filter { it.isNotBlank() }
             val addressText = addressParts.joinToString(", ")
-            binding.adressCompanyTv.text =
-                if (addressText.isNotBlank()) addressText else state.vacancy.employerInfo.areaName
+            binding.adressCompanyTv.text = addressText.ifBlank { state.vacancy.employerInfo.areaName }
         } else {
             binding.adressCompanyTv.text = state.vacancy.employerInfo.areaName
         }
     }
 
     private fun setSalary(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-        binding.vacancySalaryTv.text =
-            Formatter.formatSalary(requireContext(), state.vacancy.salaryInfo)
+        val salary = Formatter.formatSalary(requireContext(), state.vacancy.salaryInfo)
+        binding.vacancySalaryTv.text = salary
+        binding.vacancySalaryTv.isVisible = true
     }
 
     private fun setKeySkills(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val keySkills = state.vacancy.details.keySkills
-        if (keySkills.isNullOrEmpty()) {
-            binding.keySkills.visibility = View.GONE
-            binding.vacancyKeySkillsTv.visibility = View.GONE
+        if (keySkills.isEmpty()) {
+            binding.keySkills.isVisible = false
+            binding.vacancyKeySkillsTv.isVisible = false
         } else {
-            binding.keySkills.visibility = View.VISIBLE
-            binding.vacancyKeySkillsTv.visibility = View.VISIBLE
+            binding.keySkills.isVisible = true
+            binding.vacancyKeySkillsTv.isVisible = true
             val skillsText = keySkills.joinToString(separator = "\n") { "•  ${it.name}" }
             binding.vacancyKeySkillsTv.text = skillsText
         }
@@ -218,12 +217,12 @@ class VacancyDetailsFragment : Fragment() {
             state.vacancy.details.description,
             Html.FROM_HTML_MODE_LEGACY
         )
-        binding.descriptionVacancy.visibility = View.VISIBLE
+        binding.descriptionVacancy.isVisible = true
     }
 
     private fun setExperience(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         binding.valueExperienceTv.text = state.vacancy.details.experience?.name
-        binding.valueExperienceTv.visibility = View.VISIBLE
+        binding.valueExperienceTv.isVisible = true
     }
 
     private fun setEmployment(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
