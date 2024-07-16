@@ -42,7 +42,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilSearchTracksField"
+                android:id="@+id/editTextSearchLayout"
                 style="@style/search_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_56"
@@ -51,12 +51,14 @@
                 android:layout_marginRight="@dimen/dp_16"
                 app:endIconDrawable="@drawable/search_24px_input_edittext_icon"
                 app:endIconMode="custom"
+                app:cursorColor="@color/blue"
                 app:hintEnabled="false">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tiet_search_mask"
                     style="@style/search_input_field"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    tools:text="Swift"
                     android:hint="@string/enter_your_request" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -188,7 +190,7 @@
                         android:layout_height="@dimen/dp_36"
                         android:layout_gravity="center"
                         android:layout_marginVertical="@dimen/dp_36"
-                        android:indeterminateTint="@color/blue"
+                        android:indeterminateTint="@color/light_grey"
                         android:visibility="gone"
                         tools:visibility="visible" />
 

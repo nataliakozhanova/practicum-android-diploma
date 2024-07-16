@@ -115,12 +115,12 @@ class SearchFragment : Fragment() {
     private fun nextPageStateCheck(state: SearchState) {
         when (state) {
             SearchState.Default -> {
-                nextPagePreloaderToggle(false)
+                showNextPagePreloader(false)
                 nextPageRequestSending = false
             }
 
             is SearchState.AtBottom -> {
-                nextPagePreloaderToggle(false, getString(R.string.bottom_of_list))
+                showNextPagePreloader(false, getString(R.string.bottom_of_list))
                 // чтобы снова не сработало событие "прокрутка до конца" уменьшим скролл
                 binding.idNestedSV.scrollTo(0, binding.idNestedSV.scrollY - 1)
             }
@@ -128,20 +128,20 @@ class SearchFragment : Fragment() {
             is SearchState.Loading -> {}
 
             is SearchState.Content -> {
-                nextPagePreloaderToggle(false)
+                showNextPagePreloader(false)
                 loadVacancies(state.vacancies)
                 nextPageRequestSending = false
             }
 
             is SearchState.Empty -> {
-                nextPagePreloaderToggle(false)
+                showNextPagePreloader(false)
                 showErrorOrEmptySearch(VacanciesNotFoundType())
                 nextPageRequestSending = false
             }
 
             is SearchState.Error -> {
                 val errorMessage = getErrorMessage(state.errorType)
-                nextPagePreloaderToggle(false, errorMessage)
+                showNextPagePreloader(false, errorMessage)
                 nextPageRequestSending = false
             }
         }
@@ -150,10 +150,10 @@ class SearchFragment : Fragment() {
     // изменения в поле поиска
     private fun bindEditSearch() {
         // следим за изменением в поисковой строке
-        binding.tilSearchTracksField.editText?.doOnTextChanged { text, _, _, _ ->
+        binding.editTextSearchLayout.editText?.doOnTextChanged { text, _, _, _ ->
             searchMask = text.toString().trim()
             // иконка в поле поиска
-            binding.tilSearchTracksField.endIconDrawable = ContextCompat.getDrawable(
+            binding.editTextSearchLayout.endIconDrawable = ContextCompat.getDrawable(
                 requireContext(),
                 if (searchMask.isEmpty()) {
                     EditTextSearchIcon.SEARCH_ICON.drawableId
@@ -163,7 +163,9 @@ class SearchFragment : Fragment() {
             )
             if (searchMask.trim().isEmpty()) {
                 viewModel.clearSearch()
-            } else if (binding.tilSearchTracksField.hasFocus()) {
+                showNextPagePreloader(false)
+                nextPageRequestSending = true
+            } else if (binding.editTextSearchLayout.hasFocus()) {
                 viewModel.setSearchMask(searchMask)
                 // запуск поискового запроса
                 viewModel.searchDebounce(searchMask)
@@ -171,16 +173,18 @@ class SearchFragment : Fragment() {
         }
 
         // очистка поискового запроса кнопкой
-        binding.tilSearchTracksField.setEndIconOnClickListener {
+        binding.editTextSearchLayout.setEndIconOnClickListener {
             searchMask = ""
             // иконка в поле поиска
-            binding.tilSearchTracksField.endIconDrawable =
+            binding.editTextSearchLayout.endIconDrawable =
                 ContextCompat.getDrawable(requireContext(), EditTextSearchIcon.SEARCH_ICON.drawableId)
-            binding.tilSearchTracksField.editText?.setText(searchMask)
+            binding.editTextSearchLayout.editText?.setText(searchMask)
             viewModel.clearSearch()
+            showNextPagePreloader(false)
+            nextPageRequestSending = true
         }
 
-        binding.tilSearchTracksField.editText?.setOnEditorActionListener { _, actionId, _ ->
+        binding.editTextSearchLayout.editText?.setOnEditorActionListener { _, actionId, _ ->
             // поиск по нажатию Done на клавиатуре
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.searchByClick(binding.tietSearchMask.text.toString())
@@ -220,13 +224,13 @@ class SearchFragment : Fragment() {
     }
 
     // переключить видимость прелоадера следующей страницы и может показать тост
-    private fun nextPagePreloaderToggle(show: Boolean, message: String? = null) {
-        if (binding.searchNewItemsProgressBar.isVisible != show) {
+    private fun showNextPagePreloader(show: Boolean, message: String? = null) {
+        //if (binding.searchNewItemsProgressBar.isVisible != show) {
             binding.searchNewItemsProgressBar.isVisible = show
             if (message != null) {
                 showToast(message)
             }
-        }
+        //}
     }
 
     // показать прелоадер первой страницы
@@ -266,7 +270,7 @@ class SearchFragment : Fragment() {
 
     private fun loadNextPage() {
         if (!nextPageRequestSending) {
-            nextPagePreloaderToggle(true)
+            showNextPagePreloader(true)
             nextPageRequestSending = true
             viewModel.nextPageSearch()
         }
