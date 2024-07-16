@@ -18,6 +18,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.data.ErrorType
@@ -37,12 +39,13 @@ class SearchFragment : Fragment() {
     companion object {
         private const val SEARCH_MASK = ""
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 200L
+        private const val TOAST_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
-
+    private var showToastAllowed = true
     private var onVacancyClickDebounce: (VacancyBase) -> Unit = { _ -> }
     private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> onVacancyClickDebounce(vacancy) }
     private var searchMask = SEARCH_MASK
@@ -74,7 +77,7 @@ class SearchFragment : Fragment() {
         }
         // подпишемся на тост
         viewModel.observeToast().observe(viewLifecycleOwner) {
-            showToast(it, true)
+            showToast(it)
         }
 
         // настроим слежение за объектами фрагмента
@@ -217,7 +220,7 @@ class SearchFragment : Fragment() {
         if (binding.searchNewItemsProgressBar.isVisible != show) {
             binding.searchNewItemsProgressBar.isVisible = show
             if (message != null) {
-                showToast(message, short = true)
+                showToast(message)
             }
         }
     }
@@ -331,8 +334,23 @@ class SearchFragment : Fragment() {
         )
     }
 
-    private fun showToast(additionalMessage: String, short: Boolean = false) {
-        Toast.makeText(requireContext(), additionalMessage, if (short) Toast.LENGTH_SHORT else Toast.LENGTH_LONG).show()
+    private fun showToastDebounce(): Boolean {
+        val current = showToastAllowed
+        if (showToastAllowed) {
+            showToastAllowed = false
+            lifecycleScope.launch {
+                delay(TOAST_DEBOUNCE_DELAY_MILLIS)
+                showToastAllowed = true
+            }
+        }
+        return current
+    }
+
+    private fun showToast(tostMessage: String) {
+        if (showToastDebounce()) {
+            Log.d("mine", "showToast($tostMessage)")
+            Toast.makeText(requireContext(), tostMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun hideKeyboard() {
