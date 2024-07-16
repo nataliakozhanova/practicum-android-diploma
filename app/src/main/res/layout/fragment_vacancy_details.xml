@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/screenNameVacancy"
-            style="@style/VacancyViewCard22TextStyle"
+            style="@style/VacancyViewCardHeader22TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
@@ -67,7 +67,7 @@
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"
             android:clickable="true"
-            android:src="@drawable/favorites_off_24px_button"
+            android:src="@drawable/favorites_on_24px_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

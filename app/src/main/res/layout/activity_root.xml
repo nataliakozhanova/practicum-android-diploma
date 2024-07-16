@@ -19,24 +19,17 @@
             android:layout_height="0dp"
             android:background="?attr/backgroundColor"
             app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@id/bottomNavigationViewLine"
+            app:layout_constraintBottom_toTopOf="@id/menuBNV"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/nav_graph" />
 
-        <View
-            android:id="@+id/bottomNavigationViewLine"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:background="@color/light_grey"
-            app:layout_constraintBottom_toTopOf="@+id/menuBNV" />
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/menuBNV"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:itemBackground="?attr/backgroundColor"
+            android:background="@drawable/bottom_nav_background"
             app:itemIconTint="@color/bottom_navigation_selector"
             app:itemRippleColor="@null"
             app:itemTextColor="@color/bottom_navigation_selector"

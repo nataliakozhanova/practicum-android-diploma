@@ -52,11 +52,12 @@
             android:src="@drawable/logo_placeholder_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/nameCompanyTv"
-            style="@style/Medium22TextStyle"
+            style="@style/Medium22TextStyleAlwaysBlack"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
@@ -68,6 +69,7 @@
 
         <TextView
             android:id="@+id/adressCompanyTv"
+            style="@style/AlwaysBlack"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
