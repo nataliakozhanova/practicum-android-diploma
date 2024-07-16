@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.search.presentation.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -18,6 +17,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.data.ErrorType
@@ -37,12 +38,14 @@ class SearchFragment : Fragment() {
     companion object {
         private const val SEARCH_MASK = ""
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 200L
+        private const val TOAST_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
-
+    private var nextPageRequestSending = false
+    private var showToastAllowed = true
     private var onVacancyClickDebounce: (VacancyBase) -> Unit = { _ -> }
     private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> onVacancyClickDebounce(vacancy) }
     private var searchMask = SEARCH_MASK
@@ -74,7 +77,7 @@ class SearchFragment : Fragment() {
         }
         // подпишемся на тост
         viewModel.observeToast().observe(viewLifecycleOwner) {
-            showToast(it, true)
+            showToast(it)
         }
 
         // настроим слежение за объектами фрагмента
@@ -83,7 +86,6 @@ class SearchFragment : Fragment() {
 
     // обработка состояний поиска первой страницы
     private fun searchStateCheck(state: SearchState) {
-        Log.d("mine", "STATE=${state.javaClass}")
         when (state) {
             SearchState.Default -> showStartPage()
 
@@ -93,14 +95,17 @@ class SearchFragment : Fragment() {
 
             is SearchState.Content -> {
                 showContent(state)
+                nextPageRequestSending = false
             }
 
             is SearchState.Empty -> {
                 showErrorOrEmptySearch(VacanciesNotFoundType())
+                nextPageRequestSending = false
             }
 
             is SearchState.Error -> {
                 showErrorOrEmptySearch(state.errorType)
+                nextPageRequestSending = false
             }
 
             else -> {}
@@ -112,6 +117,7 @@ class SearchFragment : Fragment() {
         when (state) {
             SearchState.Default -> {
                 nextPagePreloaderToggle(false)
+                nextPageRequestSending = false
             }
 
             is SearchState.AtBottom -> {
@@ -125,16 +131,19 @@ class SearchFragment : Fragment() {
             is SearchState.Content -> {
                 nextPagePreloaderToggle(false)
                 loadVacancies(state.vacancies)
+                nextPageRequestSending = false
             }
 
             is SearchState.Empty -> {
                 nextPagePreloaderToggle(false)
                 showErrorOrEmptySearch(VacanciesNotFoundType())
+                nextPageRequestSending = false
             }
 
             is SearchState.Error -> {
                 val errorMessage = getErrorMessage(state.errorType)
                 nextPagePreloaderToggle(false, errorMessage)
+                nextPageRequestSending = false
             }
         }
     }
@@ -194,7 +203,6 @@ class SearchFragment : Fragment() {
                 val deltaScroll = scrollY - oldScrollY
                 // поэтому если сразу проскроллилось от самого верха до низа (дельта скроллинга = всей высоте элемента), то подгружать не надо
                 if (deltaScroll < scrollY && scrolledTo == scrollY) {
-                    nextPagePreloaderToggle(true)
                     loadNextPage()
                 }
             }
@@ -217,7 +225,7 @@ class SearchFragment : Fragment() {
         if (binding.searchNewItemsProgressBar.isVisible != show) {
             binding.searchNewItemsProgressBar.isVisible = show
             if (message != null) {
-                showToast(message, short = true)
+                showToast(message)
             }
         }
     }
@@ -258,7 +266,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun loadNextPage() {
-        viewModel.nextPageSearch()
+        if (!nextPageRequestSending) {
+            nextPagePreloaderToggle(true)
+            nextPageRequestSending = true
+            viewModel.nextPageSearch()
+        }
     }
 
     private fun getErrorMessage(type: ErrorType, isNextPage: Boolean = false): String {
@@ -331,8 +343,22 @@ class SearchFragment : Fragment() {
         )
     }
 
-    private fun showToast(additionalMessage: String, short: Boolean = false) {
-        Toast.makeText(requireContext(), additionalMessage, if (short) Toast.LENGTH_SHORT else Toast.LENGTH_LONG).show()
+    private fun showToastDebounce(): Boolean {
+        val current = showToastAllowed
+        if (showToastAllowed) {
+            showToastAllowed = false
+            lifecycleScope.launch {
+                delay(TOAST_DEBOUNCE_DELAY_MILLIS)
+                showToastAllowed = true
+            }
+        }
+        return current
+    }
+
+    private fun showToast(tostMessage: String) {
+        if (showToastDebounce()) {
+            Toast.makeText(requireContext(), tostMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun hideKeyboard() {

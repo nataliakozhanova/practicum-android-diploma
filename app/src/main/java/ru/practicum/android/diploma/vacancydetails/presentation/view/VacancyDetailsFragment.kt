@@ -172,7 +172,7 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun setVacancyTitle(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
-        binding.nameVacancyTv.text = "${state.vacancy.name}, ${state.vacancy.employerInfo.areaName}"
+        binding.nameVacancyTv.text = "${state.vacancy.name}"
         binding.cardInfoCompanyCv.isVisible = true
         binding.nameVacancyTv.isVisible = true
     }
