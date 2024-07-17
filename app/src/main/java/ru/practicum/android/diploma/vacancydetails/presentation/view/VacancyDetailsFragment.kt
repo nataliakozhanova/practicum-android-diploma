@@ -41,14 +41,16 @@ class VacancyDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        vacancyID = requireArguments().getString(ARGS_VACANCY_ID)
+        if (vacancyID != null) {
+            viewModel.getVacancy(vacancyID!!)
+        }
+
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is DetailsState.Content -> {
-                    vacancy = state.vacancy
-                    hideErrorsAndLoading()
-                    showVacancyContent(state)
-                    binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = true
-                    viewModel.isFavourite(vacancy!!.hhID)
+                    showContent(state)
                 }
 
                 is DetailsState.NoInternet -> {
@@ -80,6 +82,20 @@ class VacancyDetailsFragment : Fragment() {
 
         }
 
+        setBindings()
+
+
+    }
+
+    private fun showContent(state: DetailsState.Content) {
+        vacancy = state.vacancy
+        hideErrorsAndLoading()
+        showVacancyContent(state)
+        binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = true
+        viewModel.isFavourite(vacancy!!.hhID)
+    }
+
+    private fun setBindings() {
         binding.favoriteVacansyIv.setOnClickListener {
             checkIsFavourite(viewModel.getFavouriteState())
         }
@@ -93,11 +109,6 @@ class VacancyDetailsFragment : Fragment() {
 
         binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
-        }
-
-        vacancyID = requireArguments().getString(ARGS_VACANCY_ID)
-        if (vacancyID != null) {
-            viewModel.getVacancy(vacancyID!!)
         }
     }
 
