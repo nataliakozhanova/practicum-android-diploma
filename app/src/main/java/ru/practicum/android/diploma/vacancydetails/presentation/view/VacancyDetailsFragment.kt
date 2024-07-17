@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.vacancydetails.presentation.view
 
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,10 +80,7 @@ class VacancyDetailsFragment : Fragment() {
             }
 
         }
-
         setBindings()
-
-
     }
 
     private fun showContent(state: DetailsState.Content) {
