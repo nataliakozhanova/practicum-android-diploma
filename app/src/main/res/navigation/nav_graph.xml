@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/filterFragment"
-        android:name="ru.practicum.android.diploma.filters.settingsFilters.ui.SettingsFiltersFragment"
+        android:name="ru.practicum.android.diploma.filters.settingsfilters.ui.SettingsFiltersFragment"
         tools:layout="@layout/fragment_filters" />
 
     <fragment

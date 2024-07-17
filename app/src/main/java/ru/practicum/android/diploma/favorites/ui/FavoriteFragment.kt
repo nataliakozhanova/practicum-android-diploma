@@ -20,7 +20,6 @@ import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavouritesV
 import ru.practicum.android.diploma.search.ui.VacancySearchAdapter
 import ru.practicum.android.diploma.vacancydetails.ui.VacancyDetailsFragment
 
-
 class FavoriteFragment : Fragment() {
 
     companion object {

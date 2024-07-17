@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filters.chooseArea.ui
+package ru.practicum.android.diploma.filters.choosearea.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
