@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.favorites.presentation.view
+package ru.practicum.android.diploma.favorites.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,12 +17,14 @@ import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.favorites.presentation.models.FavouritesStates
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavouritesViewModel
-import ru.practicum.android.diploma.search.presentation.view.VacancySearchAdapter
-import ru.practicum.android.diploma.vacancydetails.presentation.view.VacancyDetailsFragment
-
-private const val CLICK_DEBOUNCE_DELAY = 200L
+import ru.practicum.android.diploma.search.ui.VacancySearchAdapter
+import ru.practicum.android.diploma.vacancydetails.ui.VacancyDetailsFragment
 
 class FavoriteFragment : Fragment() {
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 200L
+    }
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
@@ -93,7 +95,8 @@ class FavoriteFragment : Fragment() {
     private fun initRecycle() {
         val recycleFavourites = binding.favoriteRV
         recycleFavourites.adapter = favoriteAdapter
-        recycleFavourites.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recycleFavourites.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
     private fun openDetailsFragment(vacancy: VacancyBase) {

@@ -1,7 +1,6 @@
-package ru.practicum.android.diploma.vacancydetails.presentation.view
+package ru.practicum.android.diploma.vacancydetails.ui
 
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
