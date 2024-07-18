@@ -51,7 +51,8 @@ class VacancyDetailsFragment : Fragment() {
                 }
 
                 is DetailsState.NoInternet -> {
-                    viewModel.checkVacancyInDatabase(vacancyID!!) { exists ->
+                    viewModel.checkVacancyInDatabase(vacancyID!!)
+                    viewModel.vacancyExists.observe(viewLifecycleOwner) { exists ->
                         if (exists) {
                             viewModel.getVacancyDatabase(vacancyID!!)
                         } else {
