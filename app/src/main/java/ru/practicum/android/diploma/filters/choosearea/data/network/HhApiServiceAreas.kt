@@ -12,5 +12,5 @@ interface HhApiServiceAreas {
         "HH-User-Agent: PracticumHHCareerCompass (natalia.v.kozhanova@gmail.com)"
     )
     @GET("/areas")
-    suspend fun getAreas() : Response<AreasCatalogResponse>
+    suspend fun getAreas(): Response<AreasCatalogResponse>
 }
