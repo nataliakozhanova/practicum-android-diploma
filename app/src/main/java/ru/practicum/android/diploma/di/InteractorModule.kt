@@ -12,10 +12,10 @@ val interactorModule = module {
     factory<SearchInteractor> {
         SearchInteractorImpl(get())
     }
-    single<FavouriteVacancyInteractor> {
+    factory<FavouriteVacancyInteractor> {
         FavouriteVacancyInteractorImpl(get())
     }
-    single<DetailsInteractor> {
+    factory<DetailsInteractor> {
         DetailsInteractorImpl(get(), get())
     }
 }
