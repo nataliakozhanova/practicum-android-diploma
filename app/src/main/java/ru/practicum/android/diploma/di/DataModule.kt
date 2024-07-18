@@ -12,6 +12,8 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.data.NetworkClient
 import ru.practicum.android.diploma.favorites.data.converters.VacancyDbConverter
 import ru.practicum.android.diploma.favorites.data.db.VacancyDatabase
+import ru.practicum.android.diploma.filters.choosearea.data.network.AreasRetrofitNetworkClient
+import ru.practicum.android.diploma.filters.choosearea.data.network.HhApiServiceAreas
 import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.vacancydetails.data.network.HhApiServiceDetails
@@ -34,6 +36,14 @@ val dataModule = module {
             .create(HhApiServiceDetails::class.java)
     }
 
+    single<HhApiServiceAreas> {
+        Retrofit.Builder()
+            .baseUrl("https://api.hh.ru")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(HhApiServiceAreas::class.java)
+    }
+
     single {
         Room.databaseBuilder(androidContext(), VacancyDatabase::class.java, "database.db")
             .fallbackToDestructiveMigration()
@@ -50,11 +60,15 @@ val dataModule = module {
 
     factory { Gson() }
 
-    single<NetworkClient>(named("search")) {
+    single<NetworkClient>(named(DiConstants.SEARCH)) {
         RetrofitNetworkClient(get(), androidContext())
     }
-    single<NetworkClient>(named("details")) {
+    single<NetworkClient>(named(DiConstants.DETAILS)) {
         RetrofitNetworkClientDetails(get(), androidContext())
+    }
+
+    single<NetworkClient>(named(DiConstants.AREAS)) {
+        AreasRetrofitNetworkClient(get(), androidContext())
     }
 
 }

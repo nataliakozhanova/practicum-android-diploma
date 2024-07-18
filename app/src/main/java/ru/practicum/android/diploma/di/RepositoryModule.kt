@@ -13,13 +13,13 @@ import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsRepository
 
 val repositoryModule = module {
     single<SearchRepository> {
-        SearchRepositoryImpl(get(named("search")))
+        SearchRepositoryImpl(get(named(DiConstants.SEARCH)))
     }
     single<FavouriteVacancyRepository> {
         FavouriteVacancyRepositoryImpl(get(), get())
     }
     single<DetailsRepository> {
-        DetailsRepositoryImpl(get(named("details")))
+        DetailsRepositoryImpl(get(named(DiConstants.DETAILS)))
     }
     single<ExternalNavigator> {
         ExternalNavigatorImpl()
