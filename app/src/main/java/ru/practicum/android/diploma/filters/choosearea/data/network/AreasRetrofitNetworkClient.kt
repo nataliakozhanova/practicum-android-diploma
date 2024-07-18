@@ -10,7 +10,10 @@ import ru.practicum.android.diploma.common.data.NetworkClient
 import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.data.ResponseBase
 import ru.practicum.android.diploma.common.data.ServerInternalError
+import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogDto
+import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogRequest
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogResponse
+import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasRequest
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasNotFoundType
 import ru.practicum.android.diploma.util.isConnected
 import java.io.IOException
@@ -26,10 +29,25 @@ class AreasRetrofitNetworkClient(
         }
         return withContext(Dispatchers.IO) {
             try {
-                val response = hhApiServiceAreas.getAreas()
-                when (response.code()) {
-                    HttpURLConnection.HTTP_OK -> convertAreasCatalogResponse(response.body())
-                    HttpURLConnection.HTTP_BAD_REQUEST -> ResponseBase(BadRequestError())
+                when (dto) {
+                    is AreasCatalogRequest -> {
+                        val response = hhApiServiceAreas.getAreasByParentId(dto.areaId)
+                        when (response.code()) {
+                            HttpURLConnection.HTTP_OK -> convertAreasCatalogDto(response.body())
+                            HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(AreasNotFoundType())
+                            else -> ResponseBase(BadRequestError())
+                        }
+                    }
+
+                    is AreasRequest -> {
+                        val response = hhApiServiceAreas.getAreas()
+                        when (response.code()) {
+                            HttpURLConnection.HTTP_OK -> convertAreasCatalogResponse(response.body())
+                            HttpURLConnection.HTTP_BAD_REQUEST -> ResponseBase(AreasNotFoundType())
+                            else -> ResponseBase(BadRequestError())
+                        }
+                    }
+
                     else -> ResponseBase(BadRequestError())
                 }
 
@@ -53,4 +71,6 @@ class AreasRetrofitNetworkClient(
                 responseBody.areasCatalog
             )
         }
+    private fun convertAreasCatalogDto(responseBody: AreasCatalogDto?): ResponseBase =
+        responseBody ?: ResponseBase(AreasNotFoundType())
 }
