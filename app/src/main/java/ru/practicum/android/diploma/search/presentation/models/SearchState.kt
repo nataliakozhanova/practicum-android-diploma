@@ -1,11 +1,16 @@
 package ru.practicum.android.diploma.search.presentation.models
 
-import ru.practicum.android.diploma.vacancydetails.presentation.models.Vacancy
+import ru.practicum.android.diploma.common.data.ErrorType
+import ru.practicum.android.diploma.common.domain.VacancyBase
 
 sealed interface SearchState {
 
     data object Loading : SearchState
-    data class Content(val vacancies: List<Vacancy>) : SearchState
-    data class Empty(val message: String) : SearchState
-    data class Error(val errorMessage: String) : SearchState
+    data object Empty : SearchState
+    data object Default : SearchState
+    data object AtBottom : SearchState
+    data class Content(val vacancies: MutableList<VacancyBase>, val found: Int, val pages: Int, val page: Int) :
+        SearchState
+
+    data class Error(val errorType: ErrorType) : SearchState
 }

@@ -1,15 +1,21 @@
 package ru.practicum.android.diploma.search.data.network
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.search.data.NetworkClient
-import ru.practicum.android.diploma.search.data.dto.Response
+import ru.practicum.android.diploma.common.data.BadRequestError
+import ru.practicum.android.diploma.common.data.NetworkClient
+import ru.practicum.android.diploma.common.data.NoInternetError
+import ru.practicum.android.diploma.common.data.ResponseBase
+import ru.practicum.android.diploma.common.data.ServerInternalError
+import ru.practicum.android.diploma.search.data.HhQueryOptions
 import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
+import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
+import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
+import ru.practicum.android.diploma.util.isConnected
+import java.io.IOException
 import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(
@@ -17,49 +23,64 @@ class RetrofitNetworkClient(
     private val context: Context,
 ) : NetworkClient {
 
-    private fun isConnected(): Boolean {
-        val connectivityManager = context.getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager
-        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-
-        return capabilities != null
-            && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
-    }
-
-    private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
-        val options: HashMap<String, String> = HashMap()
-        options["search_field"] = "name"
-        options["text"] = dto.expression
-        if (dto.page != null) {
-            options["page"] = dto.page.toString()
-        }
-        if (dto.perPage != null) {
-            options["per_page"] = dto.perPage.toString()
-        }
-        return options
-    }
-
-    override suspend fun doRequest(dto: Any): Response {
-        if (!isConnected()) {
-            return Response().apply { resultCode = -1 }
+    override suspend fun doRequest(dto: Any): ResponseBase {
+        if (!isConnected(context)) {
+            return ResponseBase(NoInternetError())
         }
         return withContext(Dispatchers.IO) {
             try {
                 when (dto) {
                     is VacancySearchRequest -> {
                         val options = searchOptions(dto)
-                        apiService.findVacancies(options).apply { resultCode = HttpURLConnection.HTTP_OK }
+
+                        val response = apiService.findVacancies(options)
+                        when (response.code()) {
+                            HttpURLConnection.HTTP_OK -> convertVacancySearchResponse(response.body())
+                            HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(VacanciesNotFoundType())
+                            else -> ResponseBase(BadRequestError())
+                        }
+
                     }
 
-                    else -> Response().apply { resultCode = HttpURLConnection.HTTP_BAD_REQUEST }
+                    else -> ResponseBase(BadRequestError())
                 }
+
             } catch (e: HttpException) {
                 e.message?.let { Log.e("Http", it) }
-                Response().apply { resultCode = HttpURLConnection.HTTP_INTERNAL_ERROR }
+                ResponseBase(ServerInternalError())
+            }
+            // выполняется, если в эмуляторе интернет смартфона включен, а на компьютере интернет отпал
+            catch (e: IOException) {
+                e.message?.let { Log.e("IO", it) }
+                ResponseBase(ServerInternalError())
             }
         }
     }
+
+    private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
+        val options: HashMap<String, String> = HashMap()
+        options[HhQueryOptions.TEXT.key] = dto.expression
+        options[HhQueryOptions.SEARCH_FIELD.key] = "name" // поиск только по названию вакансии
+        if (dto.page != null) {
+            options[HhQueryOptions.PAGE.key] = dto.page.toString()
+        }
+        if (dto.perPage != null) {
+            options[HhQueryOptions.PER_PAGE.key] = dto.perPage.toString()
+        }
+        return options
+    }
+
+    private fun convertVacancySearchResponse(responseBody: VacancySearchResponse?): ResponseBase =
+        if (responseBody == null || responseBody.items.isEmpty()) {
+            ResponseBase(VacanciesNotFoundType())
+        } else {
+            VacancySearchResponse(
+                responseBody.found,
+                responseBody.page,
+                responseBody.pages,
+                responseBody.perPage,
+                responseBody.items,
+            )
+        }
+
 }

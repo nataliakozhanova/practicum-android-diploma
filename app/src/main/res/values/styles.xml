@@ -7,6 +7,7 @@
         <item name="android:textColor">@color/bottom_navigation_selector</item>
     </style>
     <style name="EditTextStyle">
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
         <item name="android:textColorHint">?attr/android:textColorHint</item>
         <item name="android:drawableTint">@color/black</item>
         <item name="fontFamily">@font/ys_display_regular</item>
@@ -16,6 +17,12 @@
     <style name="Medium22TextStyle">
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/sp_22</item>
+    </style>
+    <style name="Medium22TextStyleAlwaysBlack" parent="Medium22TextStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="AlwaysBlack">
+        <item name="android:textColor">@color/black</item>
     </style>
     <style name="Bold32TextStyle">
         <item name="android:textSize">@dimen/sp_32</item>
@@ -29,8 +36,7 @@
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/sp_16</item>
     </style>
-    <style name="VacancyViewCard22TextStyle">
-        <item name="android:textColor">@color/black</item>
+    <style name="VacancyViewCardHeader22TextStyle">
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/sp_22</item>
     </style>
@@ -72,5 +78,31 @@
         <item name="android:fontFamily">@font/ys_text_medium</item>
         <item name="android:textColor">?attr/colorPrimary</item>
         <item name="android:textSize">@dimen/sp_16</item>
+    </style>
+    <style name="search_input_layout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:background">@drawable/edit_text_background</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="android:paddingVertical">0dp</item>
+        <item name="android:paddingRight">@dimen/dp_16</item>
+        <item name="startIconMinSize">@dimen/dp_24</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="endIconScaleType">fitCenter</item>
+        <item name="endIconDrawable">@drawable/search_24px_input_edittext_icon</item>
+        <item name="endIconMinSize">24dp</item>
+        <item name="hintEnabled">false</item>
+        <item name="hintAnimationEnabled">false</item>
+        <item name="endIconTint">@color/black</item>
+    </style>
+    <style name="search_input_field">
+        <item name="android:background">@null</item>
+        <item name="android:lines">1</item>
+        <item name="android:maxLength">100</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColorHint">?attr/android:textColorHint</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
     </style>
 </resources>

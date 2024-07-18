@@ -5,7 +5,8 @@
     <string name="vacancy">Вакансия</string>
     <string name="enter_your_request">Введите запрос</string>
     <string name="no_internet">Нет интернета</string>
-    <string name="failed_to_get_vacancies">Не удалось получить список вакансий</string>
+    <string name="no_internet_next_page">Проверьте подключение к интернету</string>
+    <string name="failed_to_get_vacancies">Не удалось получить\nсписок вакансий</string>
     <string name="failed_to_get_list">Не удалось получить список</string>
     <string name="no_vacancies">Таких вакансий нет</string>
     <string name="no_region">Такого региона нет</string>
@@ -23,6 +24,7 @@
     <string name="select_country">Выбор страны</string>
     <string name="select_region">Выбор региона</string>
     <string name="select_industry">Выбор отрасли</string>
+    <string name="Moscow">Москва</string>
     <string name="Russia">Россия</string>
     <string name="Ukraine">Украина</string>
     <string name="Kazakhstan">Казахстан</string>
@@ -37,16 +39,26 @@
     <string name="job_title">Название вакансии</string>
     <string name="required_experience">Требуемый опыт</string>
     <string name="vacancy_description">Описание вакансии</string>
-    <string name="responsibilities">Обязанности</string>
-    <string name="requirements">Требование</string>
+    <string name="descriptionVacancy">Детальное описание вакансии с требованиями, условиями </string>
+    <string name="requirements">Требования</string>
     <string name="conditions">Условия</string>
     <string name="key_skills">Ключевые навыки</string>
+    <string name="contacts">Контакты</string>
     <string name="text_for_description_vacancy">Знание классических алгоритмов и структуры данных</string>
-    <string name="initial_salary_value">от $d ₽</string>
+    <string name="salary_exact">%s %s</string>
+    <string name="salary_from">от %s %s</string>
+    <string name="salary_to">до %s %s</string>
+    <string name="salary_from_to">от %s до %s %s</string>
+    <string name="from_1_to_3">От 1 года до 3 лет</string>
+    <string name="full_time_remote_work">Полная занятость, Удаленная работа</string>
+    <string name="list_of_key_skills">Список ключевых навыков</string>
+    <string name="salary_not_set">Зарплата не указана</string>
     <string name="not_found_or_deleted_vacancy">Вакансия не найдена или удалена</string>
     <string name="server_error">Ошибка сервера</string>
+    <string name="server_error_next_page">Произошла ошибка</string>
     <string name="favorites">Избранное</string>
     <string name="empty_list">Список пуст</string>
+    <string name="bottom_of_list">Вы достигли конца списка</string>
     <string name="main">Главная</string>
     <string name="team">Команда</string>
     <string name="developed_application">Над приложением работали</string>
@@ -55,13 +67,21 @@
     <string name="best_android_developers_3">Ерин Александр</string>
     <string name="best_android_developers_4">Зыкова Ангелина</string>
     <string name="best_android_developers_5">Заруба Никита</string>
+    <string name="eat">Еда</string>
+    <string name="email">Email</string>
+    <string name="email_mock">JohnDoe@foo.com</string>
+    <string name="phone">Телефон</string>
+    <string name="phone_mock">+71234567</string>
+    <string name="name">Имя</string>
+    <string name="name_mock">JohnDoe</string>
+    <string name="android_developer">Android-разработчик, Москва</string>
 
     <plurals name="vacancies_counter">
-        <item quantity="zero">Найдено $d вакансий</item>
-        <item quantity="one">Найдено $d вакансия</item>
-        <item quantity="two">Найдено $d вакансии</item>
-        <item quantity="few">Найдено $d вакансий</item>
-        <item quantity="many">Найдено $d вакансий</item>
-        <item quantity="other">Найдено $d вакансий</item>
+        <item quantity="zero">Найдено %d вакансий</item>
+        <item quantity="one">Найдено %d вакансия</item>
+        <item quantity="two">Найдено %d вакансии</item>
+        <item quantity="few">Найдено %d вакансии</item>
+        <item quantity="many">Найдено %d вакансий</item>
+        <item quantity="other">Найдено %d вакансий</item>
     </plurals>
 </resources>
