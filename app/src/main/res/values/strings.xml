@@ -75,6 +75,9 @@
     <string name="name">Имя</string>
     <string name="name_mock">JohnDoe</string>
     <string name="android_developer">Android-разработчик, Москва</string>
+    <string name="mock_rus_mos">Россия, Москва</string>
+    <string name="mock_IT">IT</string>
+    <string name="chose_area">Выбор места работы</string>
 
     <plurals name="vacancies_counter">
         <item quantity="zero">Найдено %d вакансий</item>
