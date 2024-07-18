@@ -4,6 +4,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import ru.practicum.android.diploma.favorites.data.impl.FavouriteVacancyRepositoryImpl
 import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyRepository
+import ru.practicum.android.diploma.filters.choosearea.data.repo.ChooseAreaRepositoryImpl
+import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaRepository
 import ru.practicum.android.diploma.search.data.repo.SearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.vacancydetails.data.repo.ExternalNavigatorImpl
@@ -23,5 +25,8 @@ val repositoryModule = module {
     }
     single<ExternalNavigator> {
         ExternalNavigatorImpl()
+    }
+    single<ChooseAreaRepository> {
+        ChooseAreaRepositoryImpl(get(named(DiConstants.AREAS)))
     }
 }
