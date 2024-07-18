@@ -25,6 +25,8 @@ class DetailsViewModel(
     private var isFavourite: Boolean = false
     // private var isFavorite = MutableLiveData<Boolean>()
     // fun observeFavoriteState(): LiveData<Boolean> = isFavorite
+    private val _vacancyExists = MutableLiveData<Boolean>()
+    val vacancyExists: LiveData<Boolean> get() = _vacancyExists
 
     private val vacancyState = MutableLiveData<DetailsState>()
     fun observeVacancyState(): LiveData<DetailsState> = vacancyState
@@ -41,12 +43,12 @@ class DetailsViewModel(
         }
     }
 
-    fun checkVacancyInDatabase(vacancyId: String, callback: (Boolean) -> Unit) {
+    fun checkVacancyInDatabase(vacancyId: String) {
         viewModelScope.launch {
             val exists = withContext(Dispatchers.IO) {
                 favouriteVacancyInteractor.getVacancyById(vacancyId) != null
             }
-            callback(exists)
+            _vacancyExists.postValue(exists)
         }
     }
 
