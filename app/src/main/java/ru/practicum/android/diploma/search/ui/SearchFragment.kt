@@ -209,12 +209,6 @@ class SearchFragment : Fragment() {
                 }
             }
         })
-        // откроем фильтр
-        binding.buttonFilters.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_searchFragment_to_filterFragment
-            )
-        }
     }
 
     private fun loadVacancies(vacancies: MutableList<VacancyBase>) {

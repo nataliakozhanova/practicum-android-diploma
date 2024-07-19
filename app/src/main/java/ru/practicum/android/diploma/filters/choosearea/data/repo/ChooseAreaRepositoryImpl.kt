@@ -8,8 +8,6 @@ import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogDto
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogRequest
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogResponse
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasRequest
-import ru.practicum.android.diploma.filters.choosearea.data.dto.CountriesRequest
-import ru.practicum.android.diploma.filters.choosearea.data.dto.CountriesResponce
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaRepository
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasResult
@@ -20,14 +18,18 @@ class ChooseAreaRepositoryImpl(
     private val networkClient: NetworkClient,
 ) : ChooseAreaRepository {
     override fun getCountries(): Flow<Resource<CountriesResult?>> = flow {
-        when (val response = networkClient.doRequest(CountriesRequest())) {
-            is CountriesResponce -> {
+        when (val response = networkClient.doRequest(AreasRequest())) {
+            is AreasCatalogResponse -> {
                 emit(
-                    Resource.Success(
-                        CountriesResult(response.countries)
-                    )
+                    Resource
+                        .Success(
+                            CountriesResult(
+                                countries = response.areasCatalog.map(::convertCountry)
+                            )
+                        )
                 )
             }
+
             else -> {
                 emit(Resource.Error(response.errorType))
             }

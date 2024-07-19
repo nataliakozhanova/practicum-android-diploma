@@ -5,8 +5,7 @@ enum class HhQueryOptions(val key: String, val value: String) {
     PAGE("page", ""),
     PER_PAGE("per_page", ""),
     SEARCH_FIELD("search_field", "name"),
+    DESCRIBE_ARGUMENTS("describe_arguments", ""),
     VACANCY_SEARCH_ORDER("vacancy_search_order", "publication_time"),
-    AREA("area", ""),
-    SALARY("salary", ""),
-    ONLY_WITH_SALARY("only_with_salary", "")
+    NO_MAGIC("no_magic", ""),
 }

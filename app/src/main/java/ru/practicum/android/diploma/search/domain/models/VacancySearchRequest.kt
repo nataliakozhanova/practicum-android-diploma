@@ -8,9 +8,8 @@ data class VacancySearchRequest(
 )
 
 data class Filters(
-    val countryId: String? = "5", // Россия
-    val areaId: String? = "1913", // Тульская область
-    val industryId: String? = null,
-    val salary: Int? = 80000,
-    val onlyWithSalary: Boolean = true,
+    val areaId: Int?,
+    val industryId: Int?,
+    val salary: Int?,
+    val onlyWithSalary: Boolean = false,
 )
