@@ -8,8 +8,8 @@ data class VacancySearchRequest(
 )
 
 data class FiltersDto(
-    val areaId: Int?,
-    val industryId: Int?,
+    val areaId: String?,
+    val industryId: String?,
     val salary: Int?,
     val onlyWithSalary: Boolean = false,
 )

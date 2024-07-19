@@ -27,37 +27,72 @@ class ChooseAreaViewModel(
     fun observeAreaWithCountryState(): LiveData<AreasWithCountryState> = _stateAreaWithCountry
 
     fun chooseCountry() {
-        renderState(CountriesState.Loading)
+        renderCountriesState(CountriesState.Loading)
         viewModelScope.launch {
             chooseAreaInteractor.getCountries().collect { pair ->
-                processResult(pair.first, pair.second)
+                processCountryResult(pair.first, pair.second)
             }
         }
     }
 
-    private fun processResult(countries: CountriesResult?, errorType: ErrorType) {
+    private fun processCountryResult(countries: CountriesResult?, errorType: ErrorType) {
         when (errorType) {
             is Success -> {
                 if (countries != null) {
-                    renderState(
+                    renderCountriesState(
                         CountriesState.Content(countries.countries)
                     )
                 } else {
-                    renderState(
+                    renderCountriesState(
                         CountriesState.Empty
                     )
                 }
             }
 
             else -> {
-                renderState(
+                renderCountriesState(
                     CountriesState.Error(errorType)
                 )
             }
         }
     }
 
-    private fun renderState(state: CountriesState) {
+    private fun renderCountriesState(state: CountriesState) {
+        _stateCountries.postValue(state)
+    }
+
+    fun chooseOnlyAreas() {
+        renderOnlyAreasState(CountriesState.Loading)
+        viewModelScope.launch {
+            chooseAreaInteractor.getCountries().collect { pair ->
+                processOnlyAreasResult(pair.first, pair.second)
+            }
+        }
+    }
+
+    private fun processOnlyAreasResult(countries: CountriesResult?, errorType: ErrorType) {
+        when (errorType) {
+            is Success -> {
+                if (countries != null) {
+                    renderOnlyAreasState(
+                        CountriesState.Content(countries.countries)
+                    )
+                } else {
+                    renderOnlyAreasState(
+                        CountriesState.Empty
+                    )
+                }
+            }
+
+            else -> {
+                renderOnlyAreasState(
+                    CountriesState.Error(errorType)
+                )
+            }
+        }
+    }
+
+    private fun renderOnlyAreasState(state: CountriesState) {
         _stateCountries.postValue(state)
     }
 }
