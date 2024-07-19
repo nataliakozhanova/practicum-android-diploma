@@ -34,6 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:clickable="true"
                     android:padding="@dimen/dp_16"
                     android:src="@drawable/filter_24px_button"
                     app:layout_constraintEnd_toEndOf="parent"

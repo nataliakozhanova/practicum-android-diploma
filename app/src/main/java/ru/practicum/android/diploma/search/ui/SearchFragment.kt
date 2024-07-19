@@ -66,6 +66,12 @@ class SearchFragment : Fragment() {
             openVacancy(track)
         }
 
+        binding.buttonFilters.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_searchFragment_to_filterFragment,
+            )
+        }
+
         // подпишемся на результаты поиска первой страницы
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             searchStateCheck(state)

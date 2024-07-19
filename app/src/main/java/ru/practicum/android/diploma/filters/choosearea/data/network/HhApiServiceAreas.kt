@@ -14,7 +14,7 @@ interface HhApiServiceAreas {
         "HH-User-Agent: PracticumHHCareerCompass (natalia.v.kozhanova@gmail.com)"
     )
     @GET("/areas")
-    suspend fun getAreas(): Response<AreasCatalogResponse>
+    suspend fun getAreas(): Response<List<AreasCatalogDto>>
 
     @GET("/areas/{area_id}")
     suspend fun getAreasByParentId(@Path("area_id") areaId: String?): Response<AreasCatalogDto>

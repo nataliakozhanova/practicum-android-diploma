@@ -29,65 +29,40 @@
         app:layout_constraintStart_toEndOf="@+id/arrowBackIv"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/countryName"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/countryTv"
+        style="@style/Regular16TextStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
-        android:hint="@string/country"
-        android:minHeight="60dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="4dp"
-        android:textColorHint="@color/dark_grey"
-        app:boxStrokeWidth="0dp"
-        app:endIconDrawable="@drawable/arrow_forward_24px_button"
-        app:endIconMode="custom"
-        app:endIconTint="?attr/colorPrimary"
+        android:layout_marginVertical="@dimen/dp_16"
+        android:clickable="true"
+        android:visibility="visible"
+        android:paddingVertical="@dimen/dp_16"
+        android:paddingStart="@dimen/dp_16"
+        android:text="Страна"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/screenPlaceWork">
+        app:layout_constraintTop_toBottomOf="@+id/screenPlaceWork"
+        tools:text="Страна" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/countryNameInput"
-            style="@style/SettingsFilterTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/backgroundColor"
-            android:cursorVisible="false"
-            android:enabled="false"
-            android:inputType="textNoSuggestions" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/areaName"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/regionTv"
+        style="@style/Regular16TextStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/region"
-        android:minHeight="60dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="4dp"
-        android:textColorHint="@color/dark_grey"
-        app:boxStrokeWidth="0dp"
-        app:endIconDrawable="@drawable/arrow_forward_24px_button"
-        app:endIconMode="custom"
-        app:endIconTint="?attr/colorPrimary"
+        android:layout_marginVertical="@dimen/dp_16"
+        android:clickable="true"
+        android:visibility="visible"
+        android:text="Регион"
+        android:paddingVertical="@dimen/dp_16"
+        android:paddingStart="@dimen/dp_16"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countryName">
+        app:layout_constraintTop_toBottomOf="@+id/countryTv"
+        tools:text="Регион" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/areaNameInput"
-            style="@style/SettingsFilterTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/backgroundColor"
-            android:cursorVisible="false"
-            android:enabled="false"
-            android:inputType="textNoSuggestions" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/applyBt"
@@ -98,7 +73,7 @@
         android:layout_marginEnd="17dp"
         android:layout_marginBottom="24dp"
         android:text="@string/enter_button"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

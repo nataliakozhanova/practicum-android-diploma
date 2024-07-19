@@ -1,10 +1,10 @@
 package ru.practicum.android.diploma.filters.choosearea.data.network
 
 import android.content.Context
+import android.net.http.HttpException
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import ru.practicum.android.diploma.common.data.BadRequestError
 import ru.practicum.android.diploma.common.data.NetworkClient
 import ru.practicum.android.diploma.common.data.NoInternetError
@@ -63,14 +63,15 @@ class AreasRetrofitNetworkClient(
         }
     }
 
-    private fun convertAreasCatalogResponse(responseBody: AreasCatalogResponse?): ResponseBase =
+    private fun convertAreasCatalogResponse(responseBody: List<AreasCatalogDto>?): ResponseBase =
         if (responseBody == null) {
             ResponseBase(AreasNotFoundType())
         } else {
             AreasCatalogResponse(
-                responseBody.areasCatalog
+                responseBody
             )
         }
+
     private fun convertAreasCatalogDto(responseBody: AreasCatalogDto?): ResponseBase =
         responseBody ?: ResponseBase(AreasNotFoundType())
 }

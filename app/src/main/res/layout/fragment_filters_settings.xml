@@ -54,9 +54,10 @@
         app:layout_constraintTop_toBottomOf="@+id/screenNameVacancy" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_place_to_work"
+        android:id="@+id/placeToWorkCl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/filter_arrow_forward_1"
         app:layout_constraintEnd_toStartOf="@+id/filter_arrow_forward_1"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
@@ -79,21 +80,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/place_to_work"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/place_to_work"
             tools:visibility="visible" />
 
         <TextView
-            android:id="@+id/place_to_work_big_dark"
+            android:id="@+id/placeToWorkTv"
             style="@style/FilterCheckBox16TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mock_rus_mos"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/place_to_work_dark"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:text="@string/mock_rus_mos"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
