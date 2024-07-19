@@ -8,10 +8,10 @@ import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.Ind
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryRepository
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesResult
 
-class IndustryInteractorImpl(private val repository: IndustryRepository): IndustryInteractor {
+class IndustryInteractorImpl(private val repository: IndustryRepository) : IndustryInteractor {
     override fun getIndustries(): Flow<Pair<IndustriesResult?, ErrorType>> {
         return repository.getIndustries().map { result ->
-            when(result) {
+            when (result) {
                 is Resource.Success -> {
                     Pair(result.data, result.error)
                 }

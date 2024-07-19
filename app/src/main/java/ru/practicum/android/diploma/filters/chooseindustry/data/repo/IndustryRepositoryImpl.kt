@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.Ind
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesResult
 
-class IndustryRepositoryImpl(private val networkClient: NetworkClient): IndustryRepository {
+class IndustryRepositoryImpl(private val networkClient: NetworkClient) : IndustryRepository {
     override fun getIndustries(): Flow<Resource<IndustriesResult>> = flow {
         when (val response = networkClient.doRequest(IndustrtesRequest())) {
             is IndustryResponse -> {
@@ -19,7 +19,7 @@ class IndustryRepositoryImpl(private val networkClient: NetworkClient): Industry
                     Resource
                         .Success(
                             IndustriesResult(
-                                industries = response.industries.map(::ConvertIndustry)
+                                industries = response.industries.map(::convertIndustry)
                             )
                         )
                 )
@@ -31,7 +31,7 @@ class IndustryRepositoryImpl(private val networkClient: NetworkClient): Industry
         }
     }
 
-    private fun ConvertIndustry(it: IndustryDto): IndustriesModel =
+    private fun convertIndustry(it: IndustryDto): IndustriesModel =
         IndustriesModel(
             it.id,
             it.name,
