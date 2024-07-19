@@ -125,12 +125,14 @@ class SearchViewModel(
     }
 
     private fun saveVacancies(vacancies: List<VacancyBase>) {
+        var newVacsCount = 0
         // только уникальные вакансии
         for (newVacancy in vacancies) {
             var vacHash = vacancyHash(newVacancy)
             if (!vacanciesCheck.contains(vacHash)) {
                 vacanciesList.add(newVacancy)
                 vacanciesCheck.add(vacHash)
+                newVacsCount += 1
             }
         }
     }

@@ -49,41 +49,19 @@
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginRight="@dimen/dp_16"
+                app:cursorColor="@color/blue"
                 app:endIconDrawable="@drawable/search_24px_input_edittext_icon"
                 app:endIconMode="custom"
-                app:cursorColor="@color/blue"
                 app:hintEnabled="false">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tiet_search_mask"
                     style="@style/search_input_field"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:text="Swift"
-                    android:hint="@string/enter_your_request" />
+                    android:hint="@string/enter_your_request"
+                    tools:text="Swift" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <!--<EditText
-                android:id="@+id/editTextSearch"
-                style="@style/EditTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_56"
-                android:layout_marginLeft="@dimen/dp_16"
-                android:layout_marginTop="@dimen/dp_8"
-                android:layout_marginRight="@dimen/dp_16"
-                android:background="@drawable/edit_text_background"
-                android:drawableEnd="@drawable/search_24px_input_edittext_icon"
-                android:drawablePadding="@dimen/dp_8"
-                android:hint="@string/enter_your_request"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:lines="1"
-                android:maxLength="50"
-                android:padding="@dimen/dp_16"
-                android:singleLine="true"
-                app:layout_constraintTop_toBottomOf="@+id/searchVacancyText"
-                app:layout_scrollFlags="scroll|enterAlways"
-                tools:text="" />-->
-
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -149,55 +127,35 @@
             tools:text="Найдено XXX вакансий"
             tools:visibility="visible" />
 
-
-        <LinearLayout
-            android:id="@+id/contentLayout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchResultsRV"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dp_8"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="28dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toTopOf="@id/searchNewItemsProgressBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-            tools:visibility="visible">
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_vacancy_view"
+            tools:visibility="visible" />
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/idNestedSV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingVertical="@dimen/dp_12">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/searchResultsRV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="28dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                        tools:itemCount="3"
-                        tools:listitem="@layout/item_vacancy_view"
-                        tools:visibility="visible" />
-
-                    <ProgressBar
-                        android:id="@+id/searchNewItemsProgressBar"
-                        android:layout_width="@dimen/dp_36"
-                        android:layout_height="@dimen/dp_36"
-                        android:layout_gravity="center"
-                        android:layout_marginVertical="@dimen/dp_36"
-                        android:indeterminateTint="@color/blue"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
-
-        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/searchNewItemsProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
+            android:paddingVertical="@dimen/dp_16"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchResultsRV"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
