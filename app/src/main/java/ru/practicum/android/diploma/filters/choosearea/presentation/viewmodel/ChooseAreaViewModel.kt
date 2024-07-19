@@ -9,17 +9,12 @@ import ru.practicum.android.diploma.common.data.ErrorType
 import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasResult
-import ru.practicum.android.diploma.filters.choosearea.domain.models.CountriesResult
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasByParentIdState
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasWithCountriesState
-import ru.practicum.android.diploma.filters.choosearea.presentation.models.CountriesState
 
 class ChooseAreaViewModel(
     private val chooseAreaInteractor: ChooseAreaInteractor,
 ) : ViewModel() {
-
-    private val _stateCountries = MutableLiveData<CountriesState>()
-    fun observeCountriesState(): LiveData<CountriesState> = _stateCountries
 
     private val _stateAreaById = MutableLiveData<AreasByParentIdState>()
     fun observeAreaBiIdState(): LiveData<AreasByParentIdState> = _stateAreaById
@@ -27,41 +22,6 @@ class ChooseAreaViewModel(
     private val _stateAreaWithCountry = MutableLiveData<AreasWithCountriesState>()
     fun observeAreaWithCountryState(): LiveData<AreasWithCountriesState> = _stateAreaWithCountry
 
-    // Запрос списка стран
-    fun chooseCountry() {
-        renderCountriesState(CountriesState.Loading)
-        viewModelScope.launch {
-            chooseAreaInteractor.getCountries().collect { pair ->
-                processCountriesResult(pair.first, pair.second)
-            }
-        }
-    }
-
-    private fun processCountriesResult(countries: CountriesResult?, errorType: ErrorType) {
-        when (errorType) {
-            is Success -> {
-                if (countries != null) {
-                    renderCountriesState(
-                        CountriesState.Content(countries.countries)
-                    )
-                } else {
-                    renderCountriesState(
-                        CountriesState.Empty
-                    )
-                }
-            }
-
-            else -> {
-                renderCountriesState(
-                    CountriesState.Error(errorType)
-                )
-            }
-        }
-    }
-
-    private fun renderCountriesState(state: CountriesState) {
-        _stateCountries.postValue(state)
-    }
 
     // запрос списка регионов, когда страна не выбрана - страна для вывода в визуалку подтягивается из результатов запроса
     fun chooseOnlyArea() {
