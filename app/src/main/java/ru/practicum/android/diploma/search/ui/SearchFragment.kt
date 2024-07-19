@@ -114,7 +114,7 @@ class SearchFragment : Fragment() {
     // обработка состояний поиска следующих страниц
     private fun nextPageStateCheck(state: SearchState) {
         when (state) {
-            SearchState.Default -> {
+            is SearchState.Default -> {
                 showNextPagePreloader(false)
                 nextPageRequestSending = false
             }
