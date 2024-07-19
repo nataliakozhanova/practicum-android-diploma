@@ -19,7 +19,9 @@ class ChooseCountryFragment : Fragment() {
     private val countriesAdapter = CountriesAdapter { _ -> }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentChoosingCountryBinding.inflate(inflater, container, false)
         return binding.root
@@ -44,11 +46,11 @@ class ChooseCountryFragment : Fragment() {
                 }
 
                 is CountriesState.Error -> {
-                    //showTypeErrorOrEmpty(state.errorType) - дописать
+                    // showTypeErrorOrEmpty(state.errorType) - дописать
                 }
 
                 is CountriesState.Empty -> {
-                    //showTypeErrorOrEmpty(AreasNotFoundType()) - дописать
+                    // showTypeErrorOrEmpty(AreasNotFoundType()) - дописать
                 }
 
                 is CountriesState.Loading -> {

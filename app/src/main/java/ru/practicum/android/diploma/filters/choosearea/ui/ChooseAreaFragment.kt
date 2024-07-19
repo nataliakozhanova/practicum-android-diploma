@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentChoosingPlaceWorkBinding
-import ru.practicum.android.diploma.databinding.FragmentFiltersSettingsBinding
 
 class ChooseAreaFragment : Fragment() {
 
@@ -16,7 +15,9 @@ class ChooseAreaFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentChoosingPlaceWorkBinding.inflate(inflater, container, false)
         return binding.root
