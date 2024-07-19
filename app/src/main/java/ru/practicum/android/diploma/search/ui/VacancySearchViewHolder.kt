@@ -25,8 +25,6 @@ class VacancySearchViewHolder(
         Glide.with(itemView)
             .load(item.employerInfo.employerLogoUrl)
             .placeholder(R.drawable.logo_placeholder_image)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
             .transform(CenterCrop(), RoundedCorners(trackCornerRadius)).into(binding.vacancyLogo)
 
         itemView.setOnClickListener { clickListener.onVacancyClick(item) }
