@@ -6,21 +6,21 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.ItemVacancyViewBinding
 
-class VacancySearchAdapter(
+class VacancyAdapter(
     private val searchClickListener: SearchClickListener,
-) : RecyclerView.Adapter<VacancySearchViewHolder>() {
+) : RecyclerView.Adapter<VacancyViewHolder>() {
 
     var vacancies: ArrayList<VacancyBase> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancySearchViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
-        return VacancySearchViewHolder(
+        return VacancyViewHolder(
             searchClickListener,
             ItemVacancyViewBinding.inflate(layoutInspector, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: VacancySearchViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: VacancyViewHolder, position: Int) {
         holder.bind(vacancies[position])
     }
 

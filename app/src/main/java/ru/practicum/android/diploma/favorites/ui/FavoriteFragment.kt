@@ -17,7 +17,7 @@ import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.favorites.presentation.models.FavouritesStates
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavouritesViewModel
-import ru.practicum.android.diploma.search.ui.VacancySearchAdapter
+import ru.practicum.android.diploma.search.ui.VacancyAdapter
 import ru.practicum.android.diploma.vacancydetails.ui.VacancyDetailsFragment
 
 class FavoriteFragment : Fragment() {
@@ -30,7 +30,7 @@ class FavoriteFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModelFavourites: FavouritesViewModel by viewModel()
     private var isClickAllowed = true
-    private val favoriteAdapter = VacancySearchAdapter { vacancy -> openDetailsFragment(vacancy) }
+    private val favoriteAdapter = VacancyAdapter { vacancy -> openDetailsFragment(vacancy) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)

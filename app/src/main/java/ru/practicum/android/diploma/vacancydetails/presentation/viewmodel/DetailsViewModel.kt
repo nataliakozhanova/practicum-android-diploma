@@ -23,8 +23,6 @@ class DetailsViewModel(
 ) : ViewModel() {
 
     private var isFavourite: Boolean = false
-    // private var isFavorite = MutableLiveData<Boolean>()
-    // fun observeFavoriteState(): LiveData<Boolean> = isFavorite
     private val _vacancyExists = MutableLiveData<Boolean>()
     val vacancyExists: LiveData<Boolean> get() = _vacancyExists
 

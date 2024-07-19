@@ -46,7 +46,7 @@ class SearchFragment : Fragment() {
     private var nextPageRequestSending = false
     private var showToastAllowed = true
     private var onVacancyClickDebounce: (VacancyBase) -> Unit = { _ -> }
-    private val vacancySearchAdapter = VacancySearchAdapter { vacancy -> onVacancyClickDebounce(vacancy) }
+    private val vacancySearchAdapter = VacancyAdapter { vacancy -> onVacancyClickDebounce(vacancy) }
     private var searchMask = SEARCH_MASK
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
