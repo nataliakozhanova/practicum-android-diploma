@@ -5,6 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.filters.choosearea.data.dto.CountriesResponce
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 
 interface HhApiService {
@@ -14,4 +15,6 @@ interface HhApiService {
     )
     @GET("/vacancies")
     suspend fun findVacancies(@QueryMap options: Map<String, String>): Response<VacancySearchResponse>
+    @GET("/areas/countries")
+    suspend fun getCountries(): Response<CountriesResponce>
 }
