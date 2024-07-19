@@ -14,10 +14,7 @@ import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogDto
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogRequest
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogResponse
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasRequest
-import ru.practicum.android.diploma.filters.choosearea.data.dto.CountriesRequest
-import ru.practicum.android.diploma.filters.choosearea.data.dto.CountriesResponce
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasNotFoundType
-import ru.practicum.android.diploma.filters.choosearea.domain.models.CountryInfo
 import ru.practicum.android.diploma.util.isConnected
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -33,8 +30,6 @@ class AreasRetrofitNetworkClient(
         return withContext(Dispatchers.IO) {
             try {
                 when (dto) {
-                    is CountriesRequest -> requestCountries()
-
                     is AreasCatalogRequest -> {
                         val response = hhApiServiceAreas.getAreasByParentId(dto.areaId)
                         when (response.code()) {
@@ -68,23 +63,6 @@ class AreasRetrofitNetworkClient(
         }
     }
 
-    private suspend fun requestCountries(): ResponseBase {
-        val response = hhApiServiceAreas.getCountries()
-        return when (response.code()) {
-            HttpURLConnection.HTTP_OK -> CountriesResponce(
-                response.body()?.toList()?.map {
-                    CountryInfo(
-                        name = it.name,
-                        id = it.id
-                    )
-                }
-            )
-
-            HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(AreasNotFoundType())
-            else -> ResponseBase(BadRequestError())
-        }
-    }
-
     private fun convertAreasCatalogResponse(responseBody: AreasCatalogResponse?): ResponseBase =
         if (responseBody == null) {
             ResponseBase(AreasNotFoundType())
@@ -93,8 +71,6 @@ class AreasRetrofitNetworkClient(
                 responseBody.areasCatalog
             )
         }
-
     private fun convertAreasCatalogDto(responseBody: AreasCatalogDto?): ResponseBase =
         responseBody ?: ResponseBase(AreasNotFoundType())
-
 }

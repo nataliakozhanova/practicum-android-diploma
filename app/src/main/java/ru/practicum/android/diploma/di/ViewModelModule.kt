@@ -4,7 +4,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavouritesViewModel
-import ru.practicum.android.diploma.filters.choosearea.presentation.viewmodel.ChooseAreaViewModel
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.vacancydetails.presentation.viewmodel.DetailsViewModel
 
@@ -17,8 +16,5 @@ val viewModelModule = module {
     }
     viewModel {
         DetailsViewModel(get(), get())
-    }
-    viewModel {
-        ChooseAreaViewModel(get())
     }
 }

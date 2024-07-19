@@ -13,7 +13,6 @@ import ru.practicum.android.diploma.common.data.ServerInternalError
 import ru.practicum.android.diploma.search.data.HhQueryOptions
 import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
-import ru.practicum.android.diploma.search.domain.models.Filters
 import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
 import ru.practicum.android.diploma.util.isConnected
 import java.io.IOException
@@ -60,31 +59,15 @@ class RetrofitNetworkClient(
 
     private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
         val options: HashMap<String, String> = HashMap()
-        // маска поиска
         options[HhQueryOptions.TEXT.key] = dto.expression
-        // в каком поле искать
         options[HhQueryOptions.SEARCH_FIELD.key] = HhQueryOptions.SEARCH_FIELD.value
-        // сортировка результатов
         options[HhQueryOptions.VACANCY_SEARCH_ORDER.key] = HhQueryOptions.VACANCY_SEARCH_ORDER.value
-        // настройки страницы
         if (dto.page != null) {
             options[HhQueryOptions.PAGE.key] = dto.page.toString()
         }
         if (dto.perPage != null) {
             options[HhQueryOptions.PER_PAGE.key] = dto.perPage.toString()
         }
-        // фильтры
-        val filters = Filters()
-        if (filters.areaId != null) {
-            options[HhQueryOptions.AREA.key] = filters.areaId
-        }
-        if (filters.salary != null) {
-            options[HhQueryOptions.SALARY.key] = filters.salary.toString()
-        }
-        if (filters.onlyWithSalary) {
-            options[HhQueryOptions.ONLY_WITH_SALARY.key] = "true"
-        }
-
         return options
     }
 

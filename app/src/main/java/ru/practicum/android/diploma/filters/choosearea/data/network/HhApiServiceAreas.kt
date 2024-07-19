@@ -7,7 +7,6 @@ import retrofit2.http.Path
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogDto
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogResponse
-import ru.practicum.android.diploma.filters.choosearea.data.dto.CountryDto
 
 interface HhApiServiceAreas {
     @Headers(
@@ -16,9 +15,6 @@ interface HhApiServiceAreas {
     )
     @GET("/areas")
     suspend fun getAreas(): Response<AreasCatalogResponse>
-
-    @GET("/areas/countries")
-    suspend fun getCountries(): Response<Array<CountryDto>>
 
     @GET("/areas/{area_id}")
     suspend fun getAreasByParentId(@Path("area_id") areaId: String?): Response<AreasCatalogDto>
