@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.search.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
@@ -19,14 +18,12 @@ class VacancyViewHolder(
 
     fun bind(item: VacancyBase) {
         binding.vacancyNameAndCity.text =
-            "${item.name}, ${item.employerInfo.areaName}"
+            itemView.context.getString(R.string.vacancy_name, item.name, item.employerInfo.areaName)
         binding.companyName.text = item.employerInfo.employerName
         binding.salaryText.text = Formatter.formatSalary(itemView.context, item.salaryInfo)
         Glide.with(itemView)
             .load(item.employerInfo.employerLogoUrl)
             .placeholder(R.drawable.logo_placeholder_image)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
             .transform(CenterCrop(), RoundedCorners(trackCornerRadius)).into(binding.vacancyLogo)
 
         itemView.setOnClickListener { clickListener.onVacancyClick(item) }

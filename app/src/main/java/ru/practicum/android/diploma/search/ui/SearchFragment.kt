@@ -11,11 +11,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -114,15 +114,13 @@ class SearchFragment : Fragment() {
     // обработка состояний поиска следующих страниц
     private fun nextPageStateCheck(state: SearchState) {
         when (state) {
-            SearchState.Default -> {
+            is SearchState.Default -> {
                 showNextPagePreloader(false)
                 nextPageRequestSending = false
             }
 
             is SearchState.AtBottom -> {
                 showNextPagePreloader(false, getString(R.string.bottom_of_list))
-                // чтобы снова не сработало событие "прокрутка до конца" уменьшим скролл
-                binding.idNestedSV.scrollTo(0, binding.idNestedSV.scrollY - 1)
             }
 
             is SearchState.Loading -> {}
@@ -200,17 +198,17 @@ class SearchFragment : Fragment() {
         // обработка изменений в строке поиска
         bindEditSearch()
         // мониторим скроллинг списка вакансий для загрузки новой страницы
-        binding.idNestedSV.setOnScrollChangeListener(
-            NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                val visibleHeight = binding.idNestedSV.height
-                val totalHeight = binding.idNestedSV.getChildAt(0).height
-                val diff = totalHeight - visibleHeight
-
-                if (scrollY >= diff) {
+        binding.searchResultsRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && !nextPageRequestSending) {
+                    // отправим запрос следующей страницы
                     loadNextPage()
+                    // прокрутим адаптер вниз, иначе лоадер закрывает последнюю вакансию текущнй страницы
+                    binding.searchResultsRV.smoothScrollToPosition(vacancySearchAdapter.vacancies.size)
                 }
             }
-        )
+        })
     }
 
     private fun loadVacancies(vacancies: MutableList<VacancyBase>) {
@@ -226,11 +224,12 @@ class SearchFragment : Fragment() {
 
     // переключить видимость прелоадера следующей страницы и может показать тост
     private fun showNextPagePreloader(show: Boolean, message: String? = null) {
-        if (binding.searchNewItemsProgressBar.isVisible != show) {
-            binding.searchNewItemsProgressBar.isVisible = show
-            if (message != null) {
-                showToast(message)
-            }
+        binding.searchNewItemsProgressBar.isVisible = show
+        if (show) {
+            binding.searchResultsRV.scrollTo(0, binding.searchResultsRV.bottom)
+        }
+        if (message != null) {
+            showToast(message)
         }
     }
 

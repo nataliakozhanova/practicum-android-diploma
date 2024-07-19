@@ -22,7 +22,7 @@ import ru.practicum.android.diploma.vacancydetails.data.network.RetrofitNetworkC
 val dataModule = module {
     single<HhApiService> {
         Retrofit.Builder()
-            .baseUrl("https://api.hh.ru")
+            .baseUrl(DiConstants.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiService::class.java)
@@ -30,7 +30,7 @@ val dataModule = module {
 
     single<HhApiServiceDetails> {
         Retrofit.Builder()
-            .baseUrl("https://api.hh.ru")
+            .baseUrl(DiConstants.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiServiceDetails::class.java)
@@ -38,7 +38,7 @@ val dataModule = module {
 
     single<HhApiServiceAreas> {
         Retrofit.Builder()
-            .baseUrl("https://api.hh.ru")
+            .baseUrl(DiConstants.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiServiceAreas::class.java)
