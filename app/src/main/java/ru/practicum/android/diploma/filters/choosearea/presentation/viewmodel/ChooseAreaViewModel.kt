@@ -39,7 +39,6 @@ class ChooseAreaViewModel(
         when (errorType) {
             is Success -> {
                 if (countries != null) {
-
                     renderState(
                         CountriesState.Content(countries.countries)
                     )
