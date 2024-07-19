@@ -5,4 +5,5 @@ object DiConstants {
     const val DETAILS = "details"
     const val AREAS = "areas"
     const val INDUSTRY = "industry"
+    const val API_BASE_URL = "https://api.hh.ru"
 }

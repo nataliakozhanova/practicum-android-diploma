@@ -32,7 +32,6 @@ import ru.practicum.android.diploma.util.debounce
 import ru.practicum.android.diploma.util.getCountableVacancies
 import ru.practicum.android.diploma.vacancydetails.ui.VacancyDetailsFragment
 
-
 class SearchFragment : Fragment() {
 
     companion object {
