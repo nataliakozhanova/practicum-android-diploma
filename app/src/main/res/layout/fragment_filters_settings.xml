@@ -155,14 +155,18 @@
         style="@style/InputLayoutFilterSetting"
         android:layout_marginTop="@dimen/dp_48"
         android:hint="@string/expected_salary"
+        app:cursorColor="@color/blue"
+        app:endIconMode="custom"
+        android:focusable="true"
+        app:endIconDrawable="@drawable/clear_24px_input_edittext_button"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
+        app:endIconTint="@color/black"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
         app:layout_constraintTop_toBottomOf="@+id/constraint_industry">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/industry"
             style="@style/InputTextFilterSetting"
-            android:background="@drawable/edit_text_style"
+            android:background="@drawable/edit_text_background"
             android:inputType="number"
             android:text="@string/enter_amount" />
     </com.google.android.material.textfield.TextInputLayout>

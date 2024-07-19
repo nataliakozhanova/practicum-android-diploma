@@ -7,6 +7,16 @@
     android:background="?attr/backgroundColor"
     tools:context=".filters.choosearea.ui.ChooseCountryFragment">
 
+    <TextView
+        android:id="@+id/debugCountries"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/screenCountry"
+        app:layout_constraintBottom_toTopOf="@id/countryRv" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countryRv"
         android:layout_width="0dp"
@@ -16,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/screenCountry"
+        app:layout_constraintTop_toBottomOf="@+id/debugCountries"
         tools:listitem="@layout/item_choosing_area_country"
         tools:visibility="visible" />
 
