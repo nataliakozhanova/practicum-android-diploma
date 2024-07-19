@@ -38,7 +38,7 @@ class ChooseAreaViewModel(
     private fun processResult(countries: CountriesResult?, errorType: ErrorType) {
         when (errorType) {
             is Success -> {
-                if (countries != null) {
+                if (countries?.countries != null) {
                     renderState(
                         CountriesState.Content(countries.countries)
                     )
