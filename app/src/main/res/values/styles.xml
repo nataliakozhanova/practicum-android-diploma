@@ -57,9 +57,13 @@
     </style>
     <style name="BigBlueButtons">
         <item name="backgroundTint">@color/blue</item>
+        <item name="background">@drawable/background_blue_rounded</item>
         <item name="android:textColor">@color/white_day</item>
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/sp_16</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:paddingVertical">@dimen/dp_20</item>
+        <item name="android:gravity">center</item>
     </style>
     <style name="ButtonsStyle">
         <item name="tint">?attr/colorPrimary</item>
