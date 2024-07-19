@@ -60,7 +60,8 @@ class RetrofitNetworkClient(
     private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
         val options: HashMap<String, String> = HashMap()
         options[HhQueryOptions.TEXT.key] = dto.expression
-        options[HhQueryOptions.SEARCH_FIELD.key] = "name" // поиск только по названию вакансии
+        options[HhQueryOptions.SEARCH_FIELD.key] = HhQueryOptions.SEARCH_FIELD.value
+        options[HhQueryOptions.VACANCY_SEARCH_ORDER.key] = HhQueryOptions.VACANCY_SEARCH_ORDER.value
         if (dto.page != null) {
             options[HhQueryOptions.PAGE.key] = dto.page.toString()
         }
