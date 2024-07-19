@@ -8,9 +8,10 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.data.ErrorType
 import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
+import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasResult
 import ru.practicum.android.diploma.filters.choosearea.domain.models.CountriesResult
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasByParentIdState
-import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasWithCountryState
+import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasWithCountriesState
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.CountriesState
 
 class ChooseAreaViewModel(
@@ -23,41 +24,114 @@ class ChooseAreaViewModel(
     private val _stateAreaById = MutableLiveData<AreasByParentIdState>()
     fun observeAreaBiIdState(): LiveData<AreasByParentIdState> = _stateAreaById
 
-    private val _stateAreaWithCountry = MutableLiveData<AreasWithCountryState>()
-    fun observeAreaWithCountryState(): LiveData<AreasWithCountryState> = _stateAreaWithCountry
+    private val _stateAreaWithCountry = MutableLiveData<AreasWithCountriesState>()
+    fun observeAreaWithCountryState(): LiveData<AreasWithCountriesState> = _stateAreaWithCountry
 
+    // Запрос списка стран
     fun chooseCountry() {
-        renderState(CountriesState.Loading)
+        renderCountriesState(CountriesState.Loading)
         viewModelScope.launch {
             chooseAreaInteractor.getCountries().collect { pair ->
-                processResult(pair.first, pair.second)
+                processCountriesResult(pair.first, pair.second)
             }
         }
     }
 
-    private fun processResult(countries: CountriesResult?, errorType: ErrorType) {
+    private fun processCountriesResult(countries: CountriesResult?, errorType: ErrorType) {
         when (errorType) {
             is Success -> {
                 if (countries != null) {
-                    renderState(
+                    renderCountriesState(
                         CountriesState.Content(countries.countries)
                     )
                 } else {
-                    renderState(
+                    renderCountriesState(
                         CountriesState.Empty
                     )
                 }
             }
 
             else -> {
-                renderState(
+                renderCountriesState(
                     CountriesState.Error(errorType)
                 )
             }
         }
     }
 
-    private fun renderState(state: CountriesState) {
+    private fun renderCountriesState(state: CountriesState) {
         _stateCountries.postValue(state)
+    }
+
+    // запрос списка регионов, когда страна не выбрана - страна для вывода в визуалку подтягивается из результатов запроса
+    fun chooseOnlyArea() {
+        renderAreasWithCountriesState(AreasWithCountriesState.Loading)
+        viewModelScope.launch {
+            chooseAreaInteractor.getAreasWithCountries().collect { pair ->
+                processOnlyAreaResult(pair.first, pair.second)
+            }
+        }
+    }
+
+    private fun processOnlyAreaResult(areas: AreasResult?, errorType: ErrorType) {
+        when (errorType) {
+            is Success -> {
+                if (areas != null) {
+                    renderAreasWithCountriesState(
+                        AreasWithCountriesState.Content(areas.areas)
+                    )
+                } else {
+                    renderAreasWithCountriesState(
+                        AreasWithCountriesState.Empty
+                    )
+                }
+            }
+
+            else -> {
+                renderAreasWithCountriesState(
+                    AreasWithCountriesState.Error(errorType)
+                )
+            }
+        }
+    }
+
+    private fun renderAreasWithCountriesState(state: AreasWithCountriesState) {
+        _stateAreaWithCountry.postValue(state)
+    }
+
+    // запрос региона, когда страна уже выбрана ранее
+    fun chooseAreasByParentId(countryId: String) {
+        renderAreasByParentId(AreasByParentIdState.Loading)
+        viewModelScope.launch {
+            chooseAreaInteractor.getAreaByParentId(countryId).collect { pair ->
+                processAreasByParentIdResult(pair.first, pair.second)
+            }
+        }
+    }
+
+    private fun processAreasByParentIdResult(areas: AreasResult?, errorType: ErrorType) {
+        when (errorType) {
+            is Success -> {
+                if (areas != null) {
+                    renderAreasByParentId(
+                        AreasByParentIdState.Content(areas.areas)
+                    )
+                } else {
+                    renderAreasByParentId(
+                        AreasByParentIdState.Empty
+                    )
+                }
+            }
+
+            else -> {
+                renderAreasByParentId(
+                    AreasByParentIdState.Error(errorType)
+                )
+            }
+        }
+    }
+
+    private fun renderAreasByParentId(state: AreasByParentIdState) {
+        _stateAreaById.postValue(state)
     }
 }

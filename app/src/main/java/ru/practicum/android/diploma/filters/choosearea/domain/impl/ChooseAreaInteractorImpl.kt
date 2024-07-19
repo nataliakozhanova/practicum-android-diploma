@@ -28,8 +28,8 @@ class ChooseAreaInteractorImpl(private val repository: ChooseAreaRepository) : C
         return repository.getAreaByParentId(areaId).map { mapResult(it) }
     }
 
-    override fun getAreasWithCountry(): Flow<Pair<AreasResult?, ErrorType>> {
-        return repository.getAreasWithCountry().map { mapResult(it) }
+    override fun getAreasWithCountries(): Flow<Pair<AreasResult?, ErrorType>> {
+        return repository.getAreasWithCountries().map { mapResult(it) }
     }
 
     private fun mapResult(result: Resource<AreasResult?>): Pair<AreasResult?, ErrorType> {

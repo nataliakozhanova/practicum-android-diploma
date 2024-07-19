@@ -8,5 +8,5 @@ import ru.practicum.android.diploma.filters.choosearea.domain.models.CountriesRe
 interface ChooseAreaRepository {
     fun getCountries(): Flow<Resource<CountriesResult?>>
     fun getAreaByParentId(areaId: String): Flow<Resource<AreasResult?>>
-    fun getAreasWithCountry(): Flow<Resource<AreasResult?>>
+    fun getAreasWithCountries(): Flow<Resource<AreasResult?>>
 }
