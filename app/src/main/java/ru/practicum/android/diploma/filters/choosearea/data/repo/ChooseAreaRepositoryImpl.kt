@@ -55,7 +55,7 @@ class ChooseAreaRepositoryImpl(
         }
     }
 
-    override fun getAreasWithCountry(): Flow<Resource<AreasResult?>> = flow {
+    override fun getAreasWithCountries(): Flow<Resource<AreasResult?>> = flow {
         when (val response = networkClient.doRequest(AreasRequest())) {
             is AreasCatalogResponse -> {
                 val areas: MutableList<AreaInfo> = mutableListOf()
