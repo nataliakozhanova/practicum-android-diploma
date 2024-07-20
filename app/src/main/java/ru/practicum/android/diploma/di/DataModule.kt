@@ -18,6 +18,8 @@ import ru.practicum.android.diploma.filters.choosearea.data.storage.AreasStorage
 import ru.practicum.android.diploma.filters.choosearea.data.storage.AreasStorageImpl
 import ru.practicum.android.diploma.filters.chooseindustry.data.network.HhApiServiceIndustry
 import ru.practicum.android.diploma.filters.chooseindustry.data.network.IndustryRetrofitNetworkClient
+import ru.practicum.android.diploma.filters.settingsfilters.data.storage.SettingsStorageApi
+import ru.practicum.android.diploma.filters.settingsfilters.data.storage.SettingsStorageImpl
 import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.vacancydetails.data.network.HhApiServiceDetails
@@ -31,6 +33,10 @@ val dataModule = module {
 
     single<AreasStorageApi> {
         AreasStorageImpl(get())
+    }
+
+    single<SettingsStorageApi> {
+        SettingsStorageImpl(get())
     }
 
     single<HhApiService> {
