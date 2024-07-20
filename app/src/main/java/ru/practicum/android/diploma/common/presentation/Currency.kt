@@ -10,5 +10,15 @@ enum class Currency(val abbr: String, val curName: String) {
     RUR("₽", "Рубли"),
     UAH("₴", "Гривны"),
     USD("$", "Доллары"),
-    UZS("so'm", "Узбекский сум"),
+    UZS("so'm", "Узбекский сум");
+
+    companion object {
+        fun valueOrNull(abbr: String): Currency? {
+            return try {
+                valueOf(abbr)
+            } catch (e: IllegalArgumentException) {
+                null
+            }
+        }
+    }
 }
