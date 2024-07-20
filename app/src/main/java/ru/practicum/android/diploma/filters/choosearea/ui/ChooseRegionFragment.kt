@@ -53,16 +53,12 @@ class ChooseRegionFragment : Fragment() {
                     showContent(state.areasWithCountry)
                 }
 
-                is AreasWithCountriesState.Error -> {
-                    // showTypeErrorOrEmpty(state.errorType) - дописать
-                }
-
-                is AreasWithCountriesState.Empty -> {
-                    // showTypeErrorOrEmpty(AreasNotFoundType()) - дописать
-                }
-
                 is AreasWithCountriesState.Loading -> {
                     binding.regionProgressBar.isVisible = true
+                }
+
+                else -> {
+                    // showTypeErrorOrEmpty(state.errorType) и howTypeErrorOrEmpty(AreasNotFoundType()) - дописать
                 }
             }
         }
@@ -73,20 +69,14 @@ class ChooseRegionFragment : Fragment() {
                     showContent(state.areas)
                 }
 
-                is AreasByParentIdState.Error -> {
-                    // showTypeErrorOrEmpty(state.errorType) - дописать
-                }
-
-                is AreasByParentIdState.Empty -> {
-                    // showTypeErrorOrEmpty(AreasNotFoundType()) - дописать
-                }
-
                 is AreasByParentIdState.Loading -> {
                     binding.regionProgressBar.isVisible = true
                 }
 
+                else -> {
+                    // showTypeErrorOrEmpty(state.errorType) и howTypeErrorOrEmpty(AreasNotFoundType()) - дописать
+                }
             }
-
         }
 
         countryID = requireArguments().getString(ARGS_COUNTRY_ID)
@@ -94,7 +84,6 @@ class ChooseRegionFragment : Fragment() {
             viewModelChooseRegion.chooseAreasByParentId(countryID!!)
         } else {
             viewModelChooseRegion.chooseOnlyArea()
-
         }
     }
 
