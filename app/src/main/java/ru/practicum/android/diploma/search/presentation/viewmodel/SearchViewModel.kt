@@ -13,7 +13,10 @@ import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.common.presentation.ButtonFiltersMode
+import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
+import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
+import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.models.Filters
 import ru.practicum.android.diploma.search.domain.models.SearchResult
@@ -26,7 +29,8 @@ import ru.practicum.android.diploma.util.isConnected
 class SearchViewModel(
     private val context: Context,
     private val searchInteractor: SearchInteractor,
-    private val settingsInteractor: SettingsInteractor,
+    private val filterSalaryInteractor: SettingsInteractor,
+    private val filterAreaInteractor: ChooseAreaInteractor,
 ) : ViewModel() {
     companion object {
         const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
@@ -40,7 +44,8 @@ class SearchViewModel(
     private var latestSearchText: String? = null
     private var isNextPageLoading: Boolean = false
     private var searchJob: Job? = null
-    private var salaryFilters = settingsInteractor.getSalaryFilters()
+    private var salaryFilters: SalaryFilters? = null
+    private var areaFilters: AreaInfo? = null
 
     private val _toast = SingleLiveEvent<String>()
     fun observeToast(): LiveData<String> = _toast
@@ -110,9 +115,14 @@ class SearchViewModel(
         }
     }
 
+    private fun getFilters() {
+        salaryFilters = filterSalaryInteractor.getSalaryFilters()
+        areaFilters = filterAreaInteractor.getAreaSettings()
+    }
+
     // соберем запрос с фильтрами и параметрами
     private fun makeSearchRequest(expression: String): VacancySearchRequest {
-        salaryFilters = settingsInteractor.getSalaryFilters()
+        getFilters()
         return VacancySearchRequest(
             expression,
             page,
@@ -147,8 +157,17 @@ class SearchViewModel(
         }
     }
 
-    fun filtersApplied(): ButtonFiltersMode {
-        return if (true) {
+    private fun salaryFiltersOn(): Boolean {
+        return salaryFilters != null && (salaryFilters?.checkbox == true || salaryFilters?.salary != null)
+    }
+
+    private fun areaFiltersOn(): Boolean {
+        return areaFilters != null && areaFilters?.id?.isNotEmpty() == true
+    }
+
+    fun filtersOn(): ButtonFiltersMode {
+        getFilters()
+        return if (salaryFiltersOn() || areaFiltersOn()) {
             ButtonFiltersMode.ON
         } else {
             ButtonFiltersMode.OFF

@@ -216,7 +216,7 @@ class SearchFragment : Fragment() {
             }
         })
         // иконка кнопки фильтров
-        binding.buttonFilters.setImageResource(viewModel.filtersApplied().drawableId)
+        binding.buttonFilters.setImageResource(viewModel.filtersOn().drawableId)
     }
 
     private fun loadVacancies(vacancies: MutableList<VacancyBase>) {
