@@ -34,7 +34,7 @@ val viewModelModule = module {
     viewModel {
         SettingsFiltersViewModel(get())
     }
-    viewModel{
+    viewModel {
         ChooseIndustryViewModel(get())
     }
 }

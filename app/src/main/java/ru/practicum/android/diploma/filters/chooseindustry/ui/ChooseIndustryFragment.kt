@@ -17,8 +17,8 @@ class ChooseIndustryFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModelChooseIndustry: ChooseIndustryViewModel by viewModel()
     private val industriesAdapter = ChooseIndustryAdapter { industry ->
-        //viewModelChooseIndustry.save(industry) здесь будет сохранение
-        //findNavController().navigateUp()
+        // viewModelChooseIndustry.save(industry) здесь будет сохранение
+        // findNavController().navigateUp()
     }
 
 
