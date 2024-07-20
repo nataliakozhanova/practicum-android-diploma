@@ -17,4 +17,11 @@ class SettingsRepositoryImpl(private val settingsStorageApi: SettingsStorageApi)
         settingsStorageApi.removeSalaryFilters()
     }
 
+    // заполнены какие-то фильтры
+    override fun filtersApplied(): Boolean {
+        val filters = settingsStorageApi.readSalaryFilters()
+        return filters != null
+            && (filters.checkbox || filters.salary != null)
+    }
+
 }

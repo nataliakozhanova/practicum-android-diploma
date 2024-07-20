@@ -16,4 +16,8 @@ class SettingsInteractorImpl(private val repository: SettingsRepository) : Setti
     override fun deleteSalaryFilters() {
         repository.deleteSalaryFilters()
     }
+
+    override fun filtersApplied(): Boolean {
+        return repository.filtersApplied()
+    }
 }

@@ -6,4 +6,5 @@ interface SettingsRepository {
     fun getSalaryFilters(): SalaryFilters?
     fun saveSalaryFilters(salaryFilters: SalaryFilters)
     fun deleteSalaryFilters()
+    fun filtersApplied(): Boolean
 }

@@ -12,6 +12,7 @@ import ru.practicum.android.diploma.common.data.ErrorType
 import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.common.domain.VacancyBase
+import ru.practicum.android.diploma.common.presentation.ButtonFiltersMode
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.models.Filters
@@ -39,6 +40,7 @@ class SearchViewModel(
     private var latestSearchText: String? = null
     private var isNextPageLoading: Boolean = false
     private var searchJob: Job? = null
+    private var salaryFilters = settingsInteractor.getSalaryFilters()
 
     private val _toast = SingleLiveEvent<String>()
     fun observeToast(): LiveData<String> = _toast
@@ -83,6 +85,12 @@ class SearchViewModel(
         }
     }
 
+    // запуск поиска по требованию
+    fun searchByClick(searchText: String) {
+        initSearch()
+        searchDebounce(searchText, instantStart = true)
+    }
+
     private fun badSearchConditions(newSearchText: String, instantStart: Boolean): Boolean {
         return isNextPageLoading || newSearchText.trim()
             .isEmpty() || !instantStart && page == 0 && latestSearchText == newSearchText.trim()
@@ -104,7 +112,7 @@ class SearchViewModel(
 
     // соберем запрос с фильтрами и параметрами
     private fun makeSearchRequest(expression: String): VacancySearchRequest {
-        val salaryFilters = settingsInteractor.getSalaryFilters()
+        salaryFilters = settingsInteractor.getSalaryFilters()
         return VacancySearchRequest(
             expression,
             page,
@@ -136,6 +144,14 @@ class SearchViewModel(
                         processResult(pair.first, pair.second, stateSwitch)
                     }
             }
+        }
+    }
+
+    fun filtersApplied(): ButtonFiltersMode {
+        return if (settingsInteractor.filtersApplied()) {
+            ButtonFiltersMode.ON
+        } else {
+            ButtonFiltersMode.OFF
         }
     }
 
@@ -181,10 +197,5 @@ class SearchViewModel(
 
     private fun renderState(state: SearchState, liveData: MutableLiveData<SearchState>) {
         liveData.postValue(state)
-    }
-
-    fun searchByClick(searchText: String) {
-        initSearch()
-        searchDebounce(searchText, instantStart = true)
     }
 }

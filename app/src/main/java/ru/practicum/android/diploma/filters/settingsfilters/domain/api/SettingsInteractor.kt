@@ -6,4 +6,7 @@ interface SettingsInteractor {
     fun getSalaryFilters(): SalaryFilters?
     fun saveSalaryFilters(salaryFilters: SalaryFilters)
     fun deleteSalaryFilters()
+
+    // установлены какие-то фильтры
+    fun filtersApplied(): Boolean
 }
