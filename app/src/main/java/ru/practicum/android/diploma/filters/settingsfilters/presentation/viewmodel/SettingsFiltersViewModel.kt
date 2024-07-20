@@ -13,7 +13,7 @@ class SettingsFiltersViewModel(
     private var salaryFilters = settingsInteractor.getSalaryFilters()
 
     private val _state = MutableLiveData<SalaryFilters?>()
-    fun observeFilters(): MutableLiveData<SalaryFilters?> = _state
+    fun observeFilters(): LiveData<SalaryFilters?> = _state
 
     init {
         _state.value = salaryFilters
