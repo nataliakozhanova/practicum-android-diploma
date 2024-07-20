@@ -58,7 +58,7 @@
         <item name="android:textSize">@dimen/sp_12</item>
     </style>
 
-    <style name="InputLayoutFilterSetting">
+    <style name="InputLayoutFilterSetting" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="boxStrokeWidth">0dp</item>
@@ -67,15 +67,30 @@
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/sp_12</item>
         <item name="hintTextColor">@color/tap_color_selector_filter_edit_text</item>
-
+        <item name="boxCornerRadiusBottomStart">@dimen/dp_12</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/dp_12</item>
+        <item name="boxCornerRadiusTopStart">@dimen/dp_12</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/dp_12</item>
+        <item name="expandedHintEnabled">false</item>
+        <item name="placeholderTextAppearance">@style/PlaceholderTextStyle</item>
     </style>
+
+    <style name="PlaceholderTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:fontWeight">400</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
     <style name="InputTextFilterSetting">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/sp_16</item>
         <item name="android:textCursorDrawable">@drawable/cursor_color</item>
-        <item name="android:textColor">?attr/android:textColorHint</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:imeOptions">actionDone</item>
     </style>
 
     <style name="FilterCheckBox16TextStyle">

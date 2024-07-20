@@ -31,6 +31,6 @@ val viewModelModule = module {
         ChooseRegionViewModel(get())
     }
     viewModel {
-        SettingsFiltersViewModel(get())
+        SettingsFiltersViewModel(get(), get(), get())
     }
 }
