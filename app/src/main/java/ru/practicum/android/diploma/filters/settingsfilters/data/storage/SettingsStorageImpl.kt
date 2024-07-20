@@ -6,16 +6,19 @@ import ru.practicum.android.diploma.filters.settingsfilters.domain.models.Salary
 
 const val SALARY_FILTERS_KEY = "key_for_salary_filters"
 
-class SettingsStorageImpl(private val sharedPreferences: SharedPreferences) :
+class SettingsStorageImpl(
+    private val sharedPreferences: SharedPreferences,
+    private val gson: Gson,
+) :
     SettingsStorageApi {
     override fun readSalaryFilters(): SalaryFilters? {
         val json = sharedPreferences.getString(SALARY_FILTERS_KEY, null)
-        if (json != null) return Gson().fromJson(json, SalaryFilters::class.java)
+        if (json != null) return gson.fromJson(json, SalaryFilters::class.java)
         return null
     }
 
     override fun writeSalaryFilters(salaryFilters: SalaryFilters) {
-        val json = Gson().toJson(salaryFilters)
+        val json = gson.toJson(salaryFilters)
         sharedPreferences.edit()
             .putString(SALARY_FILTERS_KEY, json)
             .apply()
