@@ -40,16 +40,30 @@ class ChooseAreaFragment : Fragment() {
             )
         }
 
+        binding.regionTv.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_chooseAreaFragment_to_chooseRegionFragment,
+                ChooseRegionFragment.createArgs(areaSettings?.countryInfo?.id)
+            )
+        }
+
         binding.countryArrowAndCleanIv.setOnClickListener {
             viewModelChooseArea.deleteCountrySettings()
             with(binding) {
+                areaSettings = null
                 countryArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
+                regionArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
                 countryTv.text = getString(R.string.country)
+                regionTv.text = getString(R.string.region)
                 applyBt.isVisible = false
             }
         }
         binding.regionArrowAndCleanIv.setOnClickListener {
             viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
+            with(binding) {
+                regionArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
+                regionTv.text = getString(R.string.region)
+            }
         }
 
         binding.applyBt.setOnClickListener {
