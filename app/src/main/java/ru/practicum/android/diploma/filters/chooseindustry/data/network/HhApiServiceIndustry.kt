@@ -3,16 +3,19 @@ package ru.practicum.android.diploma.filters.chooseindustry.data.network
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
-import ru.practicum.android.diploma.filters.chooseindustry.data.dto.IndustryResponse
+import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.filters.chooseindustry.data.dto.IndustryDto
 
 interface HhApiServiceIndustry {
     @Headers(
-        USER
+        USER,
+        AUTH
     )
     @GET("/industries")
-    suspend fun getIndustries(): Response<IndustryResponse>
+    suspend fun getIndustries(): Response<List<IndustryDto>>
 
     companion object {
         const val USER = "HH-User-Agent: PracticumHHCareerCompass (natalia.v.kozhanova@gmail.com)"
+        const val AUTH = "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}"
     }
 }

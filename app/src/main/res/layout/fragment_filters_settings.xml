@@ -97,7 +97,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_industry"
+        android:id="@+id/constraintIndustry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/filter_arrow_forward_2"
@@ -163,7 +163,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
         app:endIconTint="@color/black"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
-        app:layout_constraintTop_toBottomOf="@+id/constraint_industry">
+        app:layout_constraintTop_toBottomOf="@+id/constraintIndustry">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/industryTextInput"
             style="@style/InputTextFilterSetting"
