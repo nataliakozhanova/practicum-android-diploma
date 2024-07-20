@@ -36,7 +36,7 @@ val dataModule = module {
     }
 
     single<SettingsStorageApi> {
-        SettingsStorageImpl(get())
+        SettingsStorageImpl(get(), get())
     }
 
     single<HhApiService> {
