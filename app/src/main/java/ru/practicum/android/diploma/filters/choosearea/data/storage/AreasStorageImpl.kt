@@ -4,13 +4,13 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 
-const val AREA_SETTINGS_KEY = "key_for_area_settings"
+const val AREA_FILTERS_KEY = "key_for_area_filters"
 
 class AreasStorageImpl(private val sharedPreferences: SharedPreferences) :
     AreasStorageApi {
 
     override fun readArea(): AreaInfo? {
-        val json = sharedPreferences.getString(AREA_SETTINGS_KEY, null)
+        val json = sharedPreferences.getString(AREA_FILTERS_KEY, null)
         if (json != null) return Gson().fromJson(json, AreaInfo::class.java)
         return null
     }
@@ -18,13 +18,13 @@ class AreasStorageImpl(private val sharedPreferences: SharedPreferences) :
     override fun writeArea(area: AreaInfo) {
         val json = Gson().toJson(area)
         sharedPreferences.edit()
-            .putString(AREA_SETTINGS_KEY, json)
+            .putString(AREA_FILTERS_KEY, json)
             .apply()
     }
 
     override fun removeArea() {
         sharedPreferences.edit()
-            .remove(AREA_SETTINGS_KEY)
+            .remove(AREA_FILTERS_KEY)
             .apply()
     }
 }

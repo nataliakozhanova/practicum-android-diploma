@@ -8,6 +8,8 @@ import ru.practicum.android.diploma.filters.choosearea.data.repo.ChooseAreaRepos
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaRepository
 import ru.practicum.android.diploma.filters.chooseindustry.data.repo.IndustryRepositoryImpl
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryRepository
+import ru.practicum.android.diploma.filters.settingsfilters.data.repo.SettingsRepositoryImpl
+import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsRepository
 import ru.practicum.android.diploma.search.data.repo.SearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.vacancydetails.data.repo.DetailsRepositoryImpl
@@ -33,5 +35,8 @@ val repositoryModule = module {
     }
     single<IndustryRepository> {
         IndustryRepositoryImpl(get(named(DiConstants.INDUSTRY)))
+    }
+    single<SettingsRepository> {
+        SettingsRepositoryImpl(get())
     }
 }
