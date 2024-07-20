@@ -10,6 +10,7 @@ import ru.practicum.android.diploma.common.data.NetworkClient
 import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.data.ResponseBase
 import ru.practicum.android.diploma.common.data.ServerInternalError
+import ru.practicum.android.diploma.filters.chooseindustry.data.dto.IndustryDto
 import ru.practicum.android.diploma.filters.chooseindustry.data.dto.IndustryResponse
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustryErrorType
 import ru.practicum.android.diploma.util.isConnected
@@ -18,12 +19,12 @@ import java.net.HttpURLConnection
 
 class IndustryRetrofitNetworkClient(val api: HhApiServiceIndustry, val context: Context) : NetworkClient {
     override suspend fun doRequest(dto: Any): ResponseBase {
+        val response = api.getIndustries()
         if (!isConnected(context)) {
             return ResponseBase(NoInternetError())
         }
         return withContext(Dispatchers.IO) {
             try {
-                val response = api.getIndustries()
                 when (response.code()) {
                     HttpURLConnection.HTTP_OK -> convertIndustryResponse(response.body())
                     HttpURLConnection.HTTP_BAD_REQUEST -> ResponseBase(IndustryErrorType())
@@ -39,12 +40,12 @@ class IndustryRetrofitNetworkClient(val api: HhApiServiceIndustry, val context: 
         }
     }
 
-    private fun convertIndustryResponse(responseBody: IndustryResponse?): ResponseBase =
+    private fun convertIndustryResponse(responseBody: List<IndustryDto>?): ResponseBase =
         if (responseBody == null) {
             ResponseBase(IndustryErrorType())
         } else {
             IndustryResponse(
-                responseBody.industries
+                responseBody
             )
         }
 }

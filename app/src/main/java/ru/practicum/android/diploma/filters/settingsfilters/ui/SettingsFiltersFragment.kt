@@ -44,6 +44,11 @@ class SettingsFiltersFragment : Fragment() {
                 R.id.action_filterFragment_to_chooseAreaFragment,
             )
         }
+        binding.constraintIndustry.setOnClickListener{
+            findNavController().navigate(
+                R.id.action_filterFragment_to_chooseIndustryFragment
+            )
+        }
         binding.noSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setOnlyWithSalary(isChecked)
         }

@@ -19,12 +19,12 @@ class IndustryRepositoryImpl(private val networkClient: NetworkClient) : Industr
                     Resource
                         .Success(
                             IndustriesResult(
-                                industries = response.industries.map(::convertIndustry)
+                                industries = response.industries.map { convertIndustry(it) }
                             )
                         )
                 )
-
             }
+
             else -> {
                 emit(Resource.Error(response.errorType))
             }
@@ -37,3 +37,4 @@ class IndustryRepositoryImpl(private val networkClient: NetworkClient) : Industr
             it.name,
         )
 }
+
