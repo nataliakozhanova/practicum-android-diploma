@@ -148,7 +148,7 @@ class SearchViewModel(
     }
 
     fun filtersApplied(): ButtonFiltersMode {
-        return if (settingsInteractor.filtersApplied()) {
+        return if (true) {
             ButtonFiltersMode.ON
         } else {
             ButtonFiltersMode.OFF
