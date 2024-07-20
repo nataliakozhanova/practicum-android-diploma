@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentChooosingRegionBinding
+import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasByParentIdState
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasWithCountriesState
 import ru.practicum.android.diploma.filters.choosearea.presentation.viewmodel.ChooseRegionViewModel
@@ -49,14 +50,7 @@ class ChooseRegionFragment : Fragment() {
         viewModelChooseRegion.observeAreasWithCountriesState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AreasWithCountriesState.Content -> {
-                    binding.regionProgressBar.isVisible = false
-                    binding.errorPlaceholderIv.isVisible = false
-                    binding.errorPlaceholderTv.isVisible = false
-                    binding.regionRv.isVisible = true
-
-                    regionsAdapter.areas.clear()
-                    regionsAdapter.areas.addAll(state.areasWithCountry)
-                    regionsAdapter.notifyDataSetChanged()
+                    showContent(state.areasWithCountry)
                 }
 
                 is AreasWithCountriesState.Error -> {
@@ -70,22 +64,13 @@ class ChooseRegionFragment : Fragment() {
                 is AreasWithCountriesState.Loading -> {
                     binding.regionProgressBar.isVisible = true
                 }
-
             }
-
         }
 
         viewModelChooseRegion.observeAreasBiIdState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AreasByParentIdState.Content -> {
-                    binding.regionProgressBar.isVisible = false
-                    binding.errorPlaceholderIv.isVisible = false
-                    binding.errorPlaceholderTv.isVisible = false
-                    binding.regionRv.isVisible = true
-
-                    regionsAdapter.areas.clear()
-                    regionsAdapter.areas.addAll(state.areas)
-                    regionsAdapter.notifyDataSetChanged()
+                    showContent(state.areas)
                 }
 
                 is AreasByParentIdState.Error -> {
@@ -113,9 +98,18 @@ class ChooseRegionFragment : Fragment() {
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showContent(areas: List<AreaInfo>) {
+        binding.regionProgressBar.isVisible = false
+        binding.errorPlaceholderIv.isVisible = false
+        binding.errorPlaceholderTv.isVisible = false
+        binding.regionRv.isVisible = true
+        regionsAdapter.areas.clear()
+        regionsAdapter.areas.addAll(areas)
+        regionsAdapter.notifyDataSetChanged()
     }
 }

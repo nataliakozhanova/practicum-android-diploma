@@ -23,7 +23,6 @@ class ChooseRegionViewModel(
     private val _stateAreaWithCountry = MutableLiveData<AreasWithCountriesState>()
     fun observeAreasWithCountriesState(): LiveData<AreasWithCountriesState> = _stateAreaWithCountry
 
-
     // запрос списка регионов, когда страна не выбрана - страна для вывода в визуалку подтягивается из результатов запроса
 
     fun chooseOnlyArea() {
