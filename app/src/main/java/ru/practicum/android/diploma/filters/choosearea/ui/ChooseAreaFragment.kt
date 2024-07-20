@@ -43,7 +43,7 @@ class ChooseAreaFragment : Fragment() {
         binding.countryArrowAndCleanIv.setOnClickListener {
             viewModelChooseArea.deleteCountrySettings()
             with(binding) {
-                countryArrowAndCleanIv.setImageResource((R.drawable.arrow_forward_24px_button))
+                countryArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
                 countryTv.text = getString(R.string.country)
                 applyBt.isVisible = false
             }

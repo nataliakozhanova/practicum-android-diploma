@@ -17,7 +17,7 @@ import ru.practicum.android.diploma.filters.choosearea.domain.models.CountryInfo
 
 class ChooseAreaRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val areasStorageApi : AreasStorageApi
+    private val areasStorageApi: AreasStorageApi
 ) : ChooseAreaRepository {
     override fun getCountries(): Flow<Resource<CountriesResult?>> = flow {
         when (val response = networkClient.doRequest(AreasRequest())) {
@@ -115,6 +115,5 @@ class ChooseAreaRepositoryImpl(
         }
         return areas
     }
-
 
 }
