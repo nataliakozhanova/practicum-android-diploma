@@ -14,6 +14,8 @@ import ru.practicum.android.diploma.favorites.data.converters.VacancyDbConverter
 import ru.practicum.android.diploma.favorites.data.db.VacancyDatabase
 import ru.practicum.android.diploma.filters.choosearea.data.network.AreasRetrofitNetworkClient
 import ru.practicum.android.diploma.filters.choosearea.data.network.HhApiServiceAreas
+import ru.practicum.android.diploma.filters.choosearea.data.storage.AreasStorageApi
+import ru.practicum.android.diploma.filters.choosearea.data.storage.AreasStorageImpl
 import ru.practicum.android.diploma.filters.chooseindustry.data.network.HhApiServiceIndustry
 import ru.practicum.android.diploma.filters.chooseindustry.data.network.IndustryRetrofitNetworkClient
 import ru.practicum.android.diploma.search.data.network.HhApiService
@@ -22,6 +24,15 @@ import ru.practicum.android.diploma.vacancydetails.data.network.HhApiServiceDeta
 import ru.practicum.android.diploma.vacancydetails.data.network.RetrofitNetworkClientDetails
 
 val dataModule = module {
+    single {
+        androidContext()
+            .getSharedPreferences(DiConstants.PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    single<AreasStorageApi> {
+        AreasStorageImpl(get())
+    }
+
     single<HhApiService> {
         Retrofit.Builder()
             .baseUrl(DiConstants.API_BASE_URL)

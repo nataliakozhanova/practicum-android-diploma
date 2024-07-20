@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.data.ErrorType
 import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
+import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasResult
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasByParentIdState
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasWithCountriesState
@@ -93,5 +94,17 @@ class ChooseAreaViewModel(
 
     private fun renderAreasByParentId(state: AreasByParentIdState) {
         _stateAreaById.postValue(state)
+    }
+
+    fun getAreaSettings(): AreaInfo? {
+        return chooseAreaInteractor.getAreaSettings()
+    }
+
+    fun deleteCountrySettings() {
+        chooseAreaInteractor.deleteAreaSettings()
+    }
+
+    fun saveAreaSettings(area: AreaInfo) {
+        chooseAreaInteractor.saveAreaSettings(area)
     }
 }

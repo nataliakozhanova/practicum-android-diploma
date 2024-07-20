@@ -29,7 +29,7 @@ val repositoryModule = module {
         ExternalNavigatorImpl()
     }
     single<ChooseAreaRepository> {
-        ChooseAreaRepositoryImpl(get(named(DiConstants.AREAS)))
+        ChooseAreaRepositoryImpl(get(named(DiConstants.AREAS)), get())
     }
     single<IndustryRepository> {
         IndustryRepositoryImpl(get(named(DiConstants.INDUSTRY)))
