@@ -82,7 +82,14 @@ class RetrofitNetworkClient(
         if (searchRequest.filters.onlyWithSalary) {
             options[HhQueryOptions.ONLY_WITH_SALARY.key] = "${searchRequest.filters.onlyWithSalary}"
         }
-
+        // фильтр по региону
+        if (!searchRequest.filters.areaId.isNullOrEmpty()) {
+            options[HhQueryOptions.AREA.key] = "${searchRequest.filters.areaId}"
+        }
+        // фильтр по индустрии
+        if (!searchRequest.filters.industryId.isNullOrEmpty()) {
+            options[HhQueryOptions.INDUSTRY.key] = "${searchRequest.filters.industryId}"
+        }
         return options
     }
 

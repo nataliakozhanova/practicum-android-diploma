@@ -210,11 +210,13 @@ class SearchFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && !nextPageRequestSending) {
                     // отправим запрос следующей страницы
                     loadNextPage()
-                    // прокрутим адаптер вниз, иначе лоадер закрывает последнюю вакансию текущнй страницы
+                    // прокрутим адаптер вниз, иначе лоадер закрывает последнюю вакансию текущей страницы
                     binding.searchResultsRV.smoothScrollToPosition(vacancySearchAdapter.vacancies.size)
                 }
             }
         })
+        // иконка кнопки фильтров
+        binding.buttonFilters.setImageResource(viewModel.filtersOn().drawableId)
     }
 
     private fun loadVacancies(vacancies: MutableList<VacancyBase>) {

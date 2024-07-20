@@ -16,5 +16,4 @@ class SettingsRepositoryImpl(private val settingsStorageApi: SettingsStorageApi)
     override fun deleteSalaryFilters() {
         settingsStorageApi.removeSalaryFilters()
     }
-
 }
