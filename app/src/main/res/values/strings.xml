@@ -18,7 +18,7 @@
     <string name="enter_amount">Введите сумму</string>
     <string name="enter_region">Введите регион</string>
     <string name="enter_industry">Введите отрасль</string>
-    <string name="not_show_without_salary">Не показывать без зарплаты</string>
+    <string name="only_with_salary">Не показывать без зарплаты</string>
     <string name="country">Страна</string>
     <string name="region">Регион</string>
     <string name="select_country">Выбор страны</string>
