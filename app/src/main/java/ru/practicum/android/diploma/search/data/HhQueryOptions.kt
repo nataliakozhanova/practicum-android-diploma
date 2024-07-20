@@ -8,4 +8,5 @@ enum class HhQueryOptions(val key: String, val value: String) {
     VACANCY_SEARCH_ORDER("vacancy_search_order", "publication_time"),
     SALARY("salary", ""),
     ONLY_WITH_SALARY("only_with_salary", ""),
+    AREA("area", ""),
 }

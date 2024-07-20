@@ -82,6 +82,10 @@ class RetrofitNetworkClient(
         if (searchRequest.filters.onlyWithSalary) {
             options[HhQueryOptions.ONLY_WITH_SALARY.key] = "${searchRequest.filters.onlyWithSalary}"
         }
+        // фильтр по региону
+        if (searchRequest.filters.areaId != null) {
+            options[HhQueryOptions.AREA.key] = "${searchRequest.filters.areaId}"
+        }
 
         return options
     }
