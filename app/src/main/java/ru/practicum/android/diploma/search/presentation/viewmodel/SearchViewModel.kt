@@ -128,7 +128,7 @@ class SearchViewModel(
             page,
             ITEMS_PER_PAGE,
             Filters(
-                areaId = "",
+                areaId = areaFilters?.id,
                 industryId = "",
                 salary = salaryFilters?.salary?.toIntOrNull(),
                 onlyWithSalary = salaryFilters?.checkbox ?: false,
