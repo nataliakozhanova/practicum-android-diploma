@@ -26,7 +26,11 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.vacancyDetailsFragment, R.id.filterFragment -> binding.menuBNV.isVisible = false
+                R.id.vacancyDetailsFragment, R.id.filterFragment,
+                R.id.filterFragment, R.id.chooseIndustryFragment,
+                R.id.chooseAreaFragment, R.id.chooseCountryFragment,
+                R.id.chooseRegionFragment -> binding.menuBNV.isVisible = false
+
                 else -> binding.menuBNV.isVisible = true
             }
         }
