@@ -186,7 +186,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_48"
-        android:text="@string/not_show_without_salary"
+        android:text="@string/only_with_salary"
         app:layout_constraintEnd_toStartOf="@+id/noSalaryCheckbox"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
         app:layout_constraintTop_toBottomOf="@+id/industryLayout" />

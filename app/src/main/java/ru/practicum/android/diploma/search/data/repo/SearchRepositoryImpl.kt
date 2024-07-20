@@ -8,16 +8,16 @@ import ru.practicum.android.diploma.common.domain.EmployerInfo
 import ru.practicum.android.diploma.common.domain.SalaryInfo
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.search.data.dto.VacancySearchDto
-import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.domain.models.SearchResult
+import ru.practicum.android.diploma.search.domain.models.VacancySearchRequest
 
 class SearchRepositoryImpl(
     private val networkClient: NetworkClient,
 ) : SearchRepository {
-    override fun findVacancies(expression: String, page: Int?, perPage: Int?): Flow<Resource<SearchResult?>> = flow {
-        when (val response = networkClient.doRequest(VacancySearchRequest(expression, page, perPage))) {
+    override fun findVacancies(searchRequest: VacancySearchRequest): Flow<Resource<SearchResult?>> = flow {
+        when (val response = networkClient.doRequest(searchRequest)) {
             is VacancySearchResponse -> {
                 emit(
                     Resource

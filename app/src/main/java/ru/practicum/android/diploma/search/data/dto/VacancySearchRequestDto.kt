@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.search.data.dto
 
-data class VacancySearchRequest(
+data class VacancySearchRequestDto(
     val expression: String,
     val page: Int?,
     val perPage: Int?,

@@ -12,16 +12,20 @@ import ru.practicum.android.diploma.common.data.ErrorType
 import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.common.domain.VacancyBase
+import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
+import ru.practicum.android.diploma.search.domain.models.Filters
 import ru.practicum.android.diploma.search.domain.models.SearchResult
 import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
+import ru.practicum.android.diploma.search.domain.models.VacancySearchRequest
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.isConnected
 
 class SearchViewModel(
     private val context: Context,
-    private val interactor: SearchInteractor,
+    private val searchInteractor: SearchInteractor,
+    private val settingsInteractor: SettingsInteractor,
 ) : ViewModel() {
     companion object {
         const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
@@ -29,7 +33,7 @@ class SearchViewModel(
     }
 
     private var vacanciesList = mutableListOf<VacancyBase>()
-    private var vacanciesCheck = mutableListOf<String>()
+    private var vacanciesHhIDs = mutableListOf<String>()
     private var pages: Int = 0
     private var page: Int = 0
     private var latestSearchText: String? = null
@@ -53,7 +57,7 @@ class SearchViewModel(
         pages = 0
         latestSearchText = null
         vacanciesList.clear()
-        vacanciesCheck.clear()
+        vacanciesHhIDs.clear()
         if (searchJob != null && searchJob!!.isActive) {
             searchJob?.cancel()
         }
@@ -98,6 +102,22 @@ class SearchViewModel(
         }
     }
 
+    // соберем запрос с фильтрами и параметрами
+    private fun makeSearchRequest(expression: String): VacancySearchRequest {
+        val salaryFilters = settingsInteractor.getSalaryFilters()
+        return VacancySearchRequest(
+            expression,
+            page,
+            ITEMS_PER_PAGE,
+            Filters(
+                areaId = "",
+                industryId = "",
+                salary = salaryFilters?.salary?.toIntOrNull(),
+                onlyWithSalary = salaryFilters?.checkbox ?: false,
+            )
+        )
+    }
+
     private fun searchRequest(newSearchText: String) {
         // отгружаем в livedata для начального поиска или следующей страницы
         val stateSwitch = if (page > 0) {
@@ -111,7 +131,7 @@ class SearchViewModel(
             renderState(SearchState.Loading, stateSwitch)
             // корутина на поиск
             viewModelScope.launch {
-                interactor.findVacancies(newSearchText, page, ITEMS_PER_PAGE)
+                searchInteractor.findVacancies(makeSearchRequest(newSearchText))
                     .collect { pair ->
                         processResult(pair.first, pair.second, stateSwitch)
                     }
@@ -119,20 +139,12 @@ class SearchViewModel(
         }
     }
 
-    private fun vacancyHash(vacancy: VacancyBase): String {
-        return "${vacancy.name},${vacancy.employerInfo.areaName}," +
-            "${vacancy.employerInfo.employerName},${vacancy.salaryInfo}"
-    }
-
     private fun saveVacancies(vacancies: List<VacancyBase>) {
-        var newVacsCount = 0
         // только уникальные вакансии
         for (newVacancy in vacancies) {
-            var vacHash = vacancyHash(newVacancy)
-            if (!vacanciesCheck.contains(vacHash)) {
+            if (!vacanciesHhIDs.contains(newVacancy.hhID)) {
                 vacanciesList.add(newVacancy)
-                vacanciesCheck.add(vacHash)
-                newVacsCount += 1
+                vacanciesHhIDs.add(newVacancy.hhID)
             }
         }
     }
