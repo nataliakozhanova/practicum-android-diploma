@@ -32,11 +32,11 @@ val dataModule = module {
     }
 
     single<AreasStorageApi> {
-        AreasStorageImpl(get())
+        AreasStorageImpl(get(), get())
     }
 
     single<SettingsStorageApi> {
-        SettingsStorageImpl(get())
+        SettingsStorageImpl(get(), get())
     }
 
     single<HhApiService> {
@@ -67,7 +67,6 @@ val dataModule = module {
         Retrofit.Builder()
             .baseUrl(DiConstants.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiServiceIndustry::class.java)
     }
@@ -84,9 +83,10 @@ val dataModule = module {
             Context.MODE_PRIVATE
         )
     }
-    factory { VacancyDbConverter() }
 
-    factory { Gson() }
+    factory { VacancyDbConverter(get()) }
+
+    single { Gson() }
 
     single<NetworkClient>(named(DiConstants.SEARCH)) {
         RetrofitNetworkClient(get(), androidContext())

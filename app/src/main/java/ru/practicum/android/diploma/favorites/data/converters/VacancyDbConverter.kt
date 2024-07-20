@@ -10,7 +10,9 @@ import ru.practicum.android.diploma.vacancydetails.domain.models.Address
 import ru.practicum.android.diploma.vacancydetails.domain.models.Details
 import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 
-class VacancyDbConverter {
+class VacancyDbConverter(
+    private val gson: Gson,
+) {
     fun map(vacancy: VacancyDetails): VacancyEntity {
         return VacancyEntity(
             hhID = vacancy.hhID,
@@ -39,7 +41,7 @@ class VacancyDbConverter {
     }
 
     private fun mapKeySkills(keySkills: List<NameInfo>): String {
-        return Gson().toJson(keySkills)
+        return gson.toJson(keySkills)
     }
 
     fun map(vacancy: VacancyEntity): VacancyDetails {
@@ -112,7 +114,7 @@ class VacancyDbConverter {
     }
 
     private fun mapKeySkills(keySkills: String): List<NameInfo> {
-        return Gson().fromJson(keySkills, object : TypeToken<List<NameInfo>>() {}.type) ?: emptyList()
+        return gson.fromJson(keySkills, object : TypeToken<List<NameInfo>>() {}.type) ?: emptyList()
     }
 
 }
