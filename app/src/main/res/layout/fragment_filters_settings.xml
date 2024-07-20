@@ -64,7 +64,7 @@
         app:layout_constraintTop_toTopOf="@+id/filter_arrow_forward_1">
 
         <TextView
-            android:id="@+id/place_to_work"
+            android:id="@+id/placeToWork"
             style="@style/filterPlaceAndIndustry16TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,13 +75,13 @@
             tools:visibility="gone" />
 
         <TextView
-            android:id="@+id/place_to_work_dark"
+            android:id="@+id/placeToWorkDark"
             style="@style/filterPlaceAndIndustry12TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/place_to_work"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place_to_work"
+            app:layout_constraintTop_toBottomOf="@+id/placeToWork"
             tools:visibility="visible" />
 
         <TextView
@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place_to_work_dark"
+            app:layout_constraintTop_toBottomOf="@+id/placeToWorkDark"
             tools:visibility="visible"
             tools:text="@string/mock_rus_mos"/>
 
@@ -106,7 +106,7 @@
         app:layout_constraintTop_toTopOf="@+id/filter_arrow_forward_2">
 
         <TextView
-            android:id="@+id/industry_filter_setting"
+            android:id="@+id/industryFilterSetting"
             style="@style/filterPlaceAndIndustry16TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,25 +117,25 @@
             tools:visibility="gone" />
 
         <TextView
-            android:id="@+id/industry_dark"
+            android:id="@+id/industryDark"
             style="@style/filterPlaceAndIndustry12TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/industry"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/industry_filter_setting"
+            app:layout_constraintTop_toBottomOf="@+id/industryFilterSetting"
             tools:visibility="visible" />
 
         <TextView
-            android:id="@+id/industry_big_dark"
+            android:id="@+id/industryBigDark"
             style="@style/FilterCheckBox16TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mock_IT"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/industry_dark"
+            app:layout_constraintTop_toBottomOf="@+id/industryDark"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -155,19 +155,21 @@
         android:layout_marginTop="@dimen/dp_48"
         android:hint="@string/expected_salary"
         app:cursorColor="@color/blue"
+        app:placeholderText="@string/enter_amount"
+        app:placeholderTextColor="@color/dark_grey"
         app:endIconMode="custom"
-        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:endIconDrawable="@drawable/clear_24px_input_edittext_button"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
         app:endIconTint="@color/black"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
         app:layout_constraintTop_toBottomOf="@+id/constraint_industry">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/industry"
+            android:id="@+id/industryTextInput"
             style="@style/InputTextFilterSetting"
             android:background="@drawable/edit_text_background"
             android:inputType="number"
-            android:text="@string/enter_amount" />
+            android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
