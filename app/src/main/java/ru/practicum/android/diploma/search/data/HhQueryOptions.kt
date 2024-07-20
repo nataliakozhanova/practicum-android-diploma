@@ -9,4 +9,5 @@ enum class HhQueryOptions(val key: String, val value: String) {
     SALARY("salary", ""),
     ONLY_WITH_SALARY("only_with_salary", ""),
     AREA("area", ""),
+    INDUSTRY("industry", ""),
 }

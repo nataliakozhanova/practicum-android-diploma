@@ -86,6 +86,10 @@ class RetrofitNetworkClient(
         if (searchRequest.filters.areaId != null) {
             options[HhQueryOptions.AREA.key] = "${searchRequest.filters.areaId}"
         }
+        // фильтр по индустрии
+        if (searchRequest.filters.industryId != null) {
+            options[HhQueryOptions.INDUSTRY.key] = "${searchRequest.filters.industryId}"
+        }
 
         return options
     }
