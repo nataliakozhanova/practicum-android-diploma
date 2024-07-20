@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentChoosingCountryBinding
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.CountriesState
@@ -16,7 +17,10 @@ class ChooseCountryFragment : Fragment() {
     private var _binding: FragmentChoosingCountryBinding? = null
     private val binding get() = _binding!!
     private val viewModelChooseCountry: ChooseCountryViewModel by viewModel()
-    private val countriesAdapter = CountriesAdapter { _ -> }
+    private val countriesAdapter = CountriesAdapter { country ->
+        viewModelChooseCountry.saveCountrySettings(country)
+        findNavController().navigateUp()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

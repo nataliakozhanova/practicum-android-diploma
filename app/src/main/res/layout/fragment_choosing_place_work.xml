@@ -32,7 +32,7 @@
     <TextView
         android:id="@+id/countryTv"
         style="@style/Regular16TextStyle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/dp_16"
         android:clickable="true"
@@ -41,15 +41,28 @@
         android:paddingStart="@dimen/dp_16"
         android:text="Страна"
         android:textColor="?attr/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/countryArrowAndCleanIv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/screenPlaceWork"
         tools:text="Страна" />
 
+    <ImageView
+        android:id="@+id/countryArrowAndCleanIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_12"
+        android:src="@drawable/arrow_forward_24px_button"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@id/countryTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/countryTv"
+        app:layout_constraintTop_toBottomOf="@id/screenPlaceWork" />
+
     <TextView
         android:id="@+id/regionTv"
         style="@style/Regular16TextStyle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/dp_16"
         android:clickable="true"
@@ -58,10 +71,23 @@
         android:paddingVertical="@dimen/dp_16"
         android:paddingStart="@dimen/dp_16"
         android:textColor="?attr/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/regionArrowAndCleanIv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/countryTv"
         tools:text="Регион" />
+
+    <ImageView
+        android:id="@+id/regionArrowAndCleanIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_12"
+        android:src="@drawable/arrow_forward_24px_button"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@id/regionTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/regionTv"
+        app:layout_constraintTop_toBottomOf="@id/countryTv" />
 
 
     <Button
@@ -73,7 +99,7 @@
         android:layout_marginEnd="17dp"
         android:layout_marginBottom="24dp"
         android:text="@string/enter_button"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

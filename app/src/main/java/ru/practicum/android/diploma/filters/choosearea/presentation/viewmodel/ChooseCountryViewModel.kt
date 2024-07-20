@@ -8,7 +8,9 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.data.ErrorType
 import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
+import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.choosearea.domain.models.CountriesResult
+import ru.practicum.android.diploma.filters.choosearea.domain.models.CountryInfo
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.CountriesState
 
 class ChooseCountryViewModel(
@@ -51,6 +53,10 @@ class ChooseCountryViewModel(
 
     private fun renderCountriesState(state: CountriesState) {
         _stateCountries.postValue(state)
+    }
+
+    fun saveCountrySettings(country: CountryInfo) {
+        chooseAreaInteractor.saveAreaSettings(AreaInfo(id = "", name = "", countryInfo = country))
     }
 
 }

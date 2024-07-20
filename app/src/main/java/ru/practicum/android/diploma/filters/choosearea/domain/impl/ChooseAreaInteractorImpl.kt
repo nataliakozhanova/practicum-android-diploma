@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.common.data.ErrorType
 import ru.practicum.android.diploma.common.data.Resource
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaRepository
+import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasResult
 import ru.practicum.android.diploma.filters.choosearea.domain.models.CountriesResult
 
@@ -30,6 +31,18 @@ class ChooseAreaInteractorImpl(private val repository: ChooseAreaRepository) : C
 
     override fun getAreasWithCountries(): Flow<Pair<AreasResult?, ErrorType>> {
         return repository.getAreasWithCountries().map { mapResult(it) }
+    }
+
+    override fun saveAreaSettings(area: AreaInfo) {
+        repository.saveAreaSettings(area)
+    }
+
+    override fun getAreaSettings(): AreaInfo? {
+        return repository.getAreaSettings()
+    }
+
+    override fun deleteAreaSettings() {
+        repository.deleteAreaSettings()
     }
 
     private fun mapResult(result: Resource<AreasResult?>): Pair<AreasResult?, ErrorType> {

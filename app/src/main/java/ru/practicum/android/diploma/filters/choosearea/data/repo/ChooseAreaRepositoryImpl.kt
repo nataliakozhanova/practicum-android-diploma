@@ -8,6 +8,7 @@ import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogDto
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogRequest
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogResponse
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasRequest
+import ru.practicum.android.diploma.filters.choosearea.data.storage.AreasStorageApi
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaRepository
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasResult
@@ -16,6 +17,7 @@ import ru.practicum.android.diploma.filters.choosearea.domain.models.CountryInfo
 
 class ChooseAreaRepositoryImpl(
     private val networkClient: NetworkClient,
+    private val areasStorageApi: AreasStorageApi
 ) : ChooseAreaRepository {
     override fun getCountries(): Flow<Resource<CountriesResult?>> = flow {
         when (val response = networkClient.doRequest(AreasRequest())) {
@@ -78,6 +80,18 @@ class ChooseAreaRepositoryImpl(
         }
     }
 
+    override fun saveAreaSettings(area: AreaInfo) {
+        areasStorageApi.writeArea(area)
+    }
+
+    override fun getAreaSettings(): AreaInfo? {
+        return areasStorageApi.readArea()
+    }
+
+    override fun deleteAreaSettings() {
+        areasStorageApi.removeArea()
+    }
+
     private fun convertCountry(it: AreasCatalogDto): CountryInfo =
         CountryInfo(
             it.id,
@@ -101,4 +115,5 @@ class ChooseAreaRepositoryImpl(
         }
         return areas
     }
+
 }
