@@ -50,7 +50,8 @@
     <fragment
         android:id="@+id/chooseAreaFragment"
         android:name="ru.practicum.android.diploma.filters.choosearea.ui.ChooseAreaFragment"
-        android:label="ChooseAreaFragment" >
+        android:label="ChooseAreaFragment"
+        tools:layout="@layout/fragment_choosing_place_work">
         <action
             android:id="@+id/action_chooseAreaFragment_to_chooseCountryFragment"
             app:destination="@id/chooseCountryFragment" />
@@ -61,14 +62,17 @@
     <fragment
         android:id="@+id/chooseCountryFragment"
         android:name="ru.practicum.android.diploma.filters.choosearea.ui.ChooseCountryFragment"
-        android:label="ChooseCountryFragment" />
+        android:label="ChooseCountryFragment"
+        tools:layout="@layout/fragment_choosing_country"/>
     <fragment
         android:id="@+id/chooseRegionFragment"
         android:name="ru.practicum.android.diploma.filters.choosearea.ui.ChooseRegionFragment"
-        android:label="ChooseRegionFragment" />
+        android:label="ChooseRegionFragment"
+        tools:layout="@layout/fragment_chooosing_region"/>
     <fragment
         android:id="@+id/chooseIndustryFragment"
         android:name="ru.practicum.android.diploma.filters.chooseindustry.ui.ChooseIndustryFragment"
-        android:label="ChooseIndustryFragment" />
+        android:label="ChooseIndustryFragment"
+        tools:layout="@layout/fragment_choosing_industry"/>
 
 </navigation>
