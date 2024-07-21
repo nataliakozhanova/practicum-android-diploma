@@ -10,6 +10,7 @@ import ru.practicum.android.diploma.common.data.NetworkClient
 import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.data.ResponseBase
 import ru.practicum.android.diploma.common.data.ServerInternalError
+import ru.practicum.android.diploma.filters.chooseindustry.data.dto.IndustrtesRequest
 import ru.practicum.android.diploma.filters.chooseindustry.data.dto.IndustryDto
 import ru.practicum.android.diploma.filters.chooseindustry.data.dto.IndustryResponse
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustryErrorType
@@ -19,7 +20,8 @@ import java.net.HttpURLConnection
 
 class IndustryRetrofitNetworkClient(val api: HhApiServiceIndustry, val context: Context) : NetworkClient {
     override suspend fun doRequest(dto: Any): ResponseBase {
-        val response = api.getIndustries()
+        val query = (dto as? IndustrtesRequest)?.query
+        val response = api.getIndustries(query)
         if (!isConnected(context)) {
             return ResponseBase(NoInternetError())
         }

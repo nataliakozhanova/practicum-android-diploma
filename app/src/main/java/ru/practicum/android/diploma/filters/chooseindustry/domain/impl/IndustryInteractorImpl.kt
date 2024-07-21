@@ -27,6 +27,19 @@ class IndustryInteractorImpl(
         }
     }
 
+    override fun searchIndustries(query: String): Flow<Pair<IndustriesResult?, ErrorType>> {
+        return repository.searchIndustries(query).map { result ->
+            when (result) {
+                is Resource.Success -> {
+                    Pair(result.data, result.error)
+                }
+                is Resource.Error -> {
+                    Pair(null, result.error)
+                }
+            }
+        }
+    }
+
     override fun saveIndustrySettings(industry: IndustriesModel) {
         industryStorageApi.writeIndustry(industry)
     }

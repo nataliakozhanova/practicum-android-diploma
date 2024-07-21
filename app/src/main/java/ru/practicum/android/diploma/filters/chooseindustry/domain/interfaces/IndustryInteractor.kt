@@ -10,4 +10,5 @@ interface IndustryInteractor {
     fun saveIndustrySettings(industry: IndustriesModel)
     fun getIndustrySettings(): IndustriesModel?
     fun deleteIndustrySettings()
+    fun searchIndustries(query: String): Flow<Pair<IndustriesResult?, ErrorType>>
 }
