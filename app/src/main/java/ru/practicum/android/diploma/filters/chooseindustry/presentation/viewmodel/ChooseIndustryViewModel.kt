@@ -37,9 +37,11 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
                 } else {
                     renderState(IndustriesStates.Empty)
                 }
-            } else -> {
-            renderState(IndustriesStates.Error(errorType))
-        }
+            }
+
+            else -> {
+                renderState(IndustriesStates.Error(errorType))
+            }
         }
     }
 
