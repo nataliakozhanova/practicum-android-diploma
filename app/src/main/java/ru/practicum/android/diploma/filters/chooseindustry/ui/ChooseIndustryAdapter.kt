@@ -8,17 +8,19 @@ import ru.practicum.android.diploma.filters.chooseindustry.domain.model.Industri
 
 class ChooseIndustryAdapter(private val industriesClickListener: IndustryClickListener) :
     RecyclerView.Adapter<ChooseIndustryViewHolder>() {
+
     fun interface IndustryClickListener {
         fun onClick(item: IndustriesModel)
     }
 
     var industries: ArrayList<IndustriesModel> = ArrayList()
+    private var selectedIndustry: IndustriesModel? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChooseIndustryViewHolder {
-        val layoutInspector = LayoutInflater.from(parent.context)
+        val layoutInflater = LayoutInflater.from(parent.context)
         return ChooseIndustryViewHolder(
             industriesClickListener,
-            ItemChoosingIndustryBinding.inflate(layoutInspector, parent, false)
+            ItemChoosingIndustryBinding.inflate(layoutInflater, parent, false)
         )
     }
 
@@ -27,6 +29,15 @@ class ChooseIndustryAdapter(private val industriesClickListener: IndustryClickLi
     }
 
     override fun onBindViewHolder(holder: ChooseIndustryViewHolder, position: Int) {
-        holder.bind(industries[position])
+        val industry = industries[position]
+        holder.bind(industry, industry == selectedIndustry)
+    }
+
+    fun selectIndustry(industry: IndustriesModel) {
+        val previousSelected = selectedIndustry
+        selectedIndustry = if (selectedIndustry == industry) null else industry
+        // Обновляем только измененные позиции
+        previousSelected?.let { notifyItemChanged(industries.indexOf(it)) }
+        notifyItemChanged(industries.indexOf(industry))
     }
 }

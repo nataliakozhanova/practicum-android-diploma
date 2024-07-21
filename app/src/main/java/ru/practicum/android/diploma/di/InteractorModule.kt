@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.di
 
+import org.koin.core.scope.get
 import org.koin.dsl.module
 import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyInteractor
 import ru.practicum.android.diploma.favorites.domain.impl.FavouriteVacancyInteractorImpl
@@ -28,9 +29,12 @@ val interactorModule = module {
         ChooseAreaInteractorImpl(get())
     }
     factory<IndustryInteractor> {
-        IndustryInteractorImpl(get())
+        IndustryInteractorImpl(get(), get())
     }
     factory<SettingsInteractor> {
         SettingsInteractorImpl(get())
+    }
+    factory<IndustryInteractor> {
+        IndustryInteractorImpl(get(), get())
     }
 }

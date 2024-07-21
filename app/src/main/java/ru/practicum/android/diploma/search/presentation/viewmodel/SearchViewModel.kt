@@ -57,6 +57,7 @@ class SearchViewModel(
 
     init {
         _state.value = SearchState.Default
+        getFilters()
     }
 
     fun initSearch() {

@@ -6,21 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentChoosingIndustryBinding
 import ru.practicum.android.diploma.filters.chooseindustry.presentation.models.IndustriesStates
 import ru.practicum.android.diploma.filters.chooseindustry.presentation.viewmodel.ChooseIndustryViewModel
+import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 
 class ChooseIndustryFragment : Fragment() {
     private var _binding: FragmentChoosingIndustryBinding? = null
     private val binding get() = _binding!!
     private val viewModelChooseIndustry: ChooseIndustryViewModel by viewModel()
-    private val industriesAdapter = ChooseIndustryAdapter { industry ->
-        // viewModelChooseIndustry.save(industry) здесь будет сохранение
-        // findNavController().navigateUp()
+    private val industriesAdapter: ChooseIndustryAdapter by lazy {
+        ChooseIndustryAdapter { industry: IndustriesModel ->
+            viewModelChooseIndustry.selectIndustry(industry)
+            industriesAdapter.selectIndustry(industry)
+        }
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentChoosingIndustryBinding.inflate(inflater, container, false)
@@ -32,7 +35,7 @@ class ChooseIndustryFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = industriesAdapter
 
-        viewModelChooseIndustry.observeIndustryState().observe(viewLifecycleOwner) { state ->
+        viewModelChooseIndustry.observeIndustryState().observe(viewLifecycleOwner) { state: IndustriesStates ->
             when (state) {
                 is IndustriesStates.Content -> {
                     binding.industryProgressBar.isVisible = false
@@ -49,7 +52,6 @@ class ChooseIndustryFragment : Fragment() {
                     binding.errorIndustryCl.isVisible = true
                     binding.errorPlaceholderIv.isVisible = true
                     binding.errorPlaceholderTv.isVisible = true
-
                 }
 
                 is IndustriesStates.Empty -> {
@@ -57,17 +59,28 @@ class ChooseIndustryFragment : Fragment() {
                     binding.errorPlaceholderIv.isVisible = true
                     binding.errorPlaceholderTv.isVisible = true
                     binding.errorPlaceholderTv.text = "пустой список"
-
                 }
 
                 is IndustriesStates.Loading -> {
                     binding.industryProgressBar.isVisible = true
                 }
-
             }
-
         }
 
         viewModelChooseIndustry.getIndustry()
+
+        binding.applyBt.setOnClickListener {
+            viewModelChooseIndustry.saveSelectedIndustry()
+            findNavController().navigateUp()
+        }
+
+        binding.arrowBackIv.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

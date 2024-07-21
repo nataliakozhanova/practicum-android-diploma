@@ -9,8 +9,9 @@ class ChooseIndustryViewHolder(
     private val binding: ItemChoosingIndustryBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: IndustriesModel) {
+    fun bind(item: IndustriesModel, isSelected: Boolean) {
         binding.industryName.text = item.name
         itemView.setOnClickListener { clickListener.onClick(item) }
+        binding.radioButton.isChecked = isSelected
     }
 }

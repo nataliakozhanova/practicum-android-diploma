@@ -39,7 +39,8 @@ class SettingsFiltersFragment : Fragment() {
         setBindings()
         setObserves()
         renderSavedAreaSettings()
-        /*renderSavedIndustrySettings()*/
+        renderSavedSalarySettings()
+        renderSavedIndustrySettings()
         changeTextInputLayoutEndIconMode(binding.industryTextInput.text)
         originalFilters = viewModel.getSalaryFilters()
         updateButtonsVisibility()
@@ -48,6 +49,7 @@ class SettingsFiltersFragment : Fragment() {
     private fun setObserves() {
         viewModel.observeFilters().observe(viewLifecycleOwner) { state ->
             binding.noSalaryCheckbox.isChecked = state?.checkbox ?: false
+            binding.industryTextInput.setText(state?.salary)
         }
     }
 
@@ -70,9 +72,9 @@ class SettingsFiltersFragment : Fragment() {
             clearAreaSettings()
         }
 
-        /*binding.filterArrowForward2.setOnClickListener {
+        binding.filterArrowForward2.setOnClickListener {
             clearIndustrySettings()
-        }*/
+        }
 
         binding.industryTextInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -106,10 +108,10 @@ class SettingsFiltersFragment : Fragment() {
         val isSalaryEntered = binding.industryTextInput.text?.isNotEmpty() == true
         val isNoSalaryChecked = binding.noSalaryCheckbox.isChecked
         val isAreaSet = viewModel.getAreaSettings() != null
-        // val isIndustrySet = viewModel.getIndustrySettings() != null
+        val isIndustrySet = viewModel.getIndustrySettings() != null
 
-        binding.applyButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet
-        binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet
+        binding.applyButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
+        binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
     }
 
     private fun changeTextInputLayoutEndIconMode(text: CharSequence?) {
@@ -150,7 +152,7 @@ class SettingsFiltersFragment : Fragment() {
         }
     }
 
-    /*private fun renderSavedIndustrySettings() {
+    private fun renderSavedIndustrySettings() {
         val industrySettings = viewModel.getIndustrySettings()
         if (industrySettings != null) {
             with(binding) {
@@ -168,7 +170,15 @@ class SettingsFiltersFragment : Fragment() {
                 filterArrowForward2.setImageResource(R.drawable.arrow_forward_24px_button)
             }
         }
-    }*/
+    }
+
+    private fun renderSavedSalarySettings() {
+        val salaryFilters = viewModel.getSalaryFilters()
+        if (salaryFilters != null) {
+            binding.industryTextInput.setText(salaryFilters.salary)
+            binding.noSalaryCheckbox.isChecked = salaryFilters.checkbox
+        }
+    }
 
     private fun clearAreaSettings() {
         viewModel.clearAreaSettings()
@@ -176,10 +186,10 @@ class SettingsFiltersFragment : Fragment() {
         updateButtonsVisibility()
     }
 
-    /*private fun clearIndustrySettings() {
+    private fun clearIndustrySettings() {
         viewModel.clearIndustrySettings()
         renderSavedIndustrySettings()
-    }*/
+    }
 
     private fun applyFiltersAndNavigate() {
         // Сохранение всех текущих настроек фильтра
@@ -196,7 +206,8 @@ class SettingsFiltersFragment : Fragment() {
         // Сброс всех фильтров
         viewModel.resetFilters()
         renderSavedAreaSettings()
-        // renderSavedIndustrySettings()
+        renderSavedIndustrySettings()
+        renderSavedSalarySettings()
         binding.industryTextInput.text?.clear()
         binding.noSalaryCheckbox.isChecked = false
         updateButtonsVisibility()

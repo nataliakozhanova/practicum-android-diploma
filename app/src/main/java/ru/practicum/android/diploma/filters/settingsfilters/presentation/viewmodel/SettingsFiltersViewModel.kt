@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryInteractor
+import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
 import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
+import ru.practicum.android.diploma.search.domain.models.Filters
 
 class SettingsFiltersViewModel(
     private val settingsInteractor: SettingsInteractor,
@@ -40,9 +42,9 @@ class SettingsFiltersViewModel(
         chooseAreaInteractor.deleteAreaSettings()
     }
 
-    /*fun clearIndustrySettings() {
+    fun clearIndustrySettings() {
         chooseIndustryInteractor.deleteIndustrySettings()
-    }*/
+    }
 
     fun saveSalary(amount: String) {
         salaryFilters = SalaryFilters(
@@ -69,7 +71,7 @@ class SettingsFiltersViewModel(
         // Сброс всех фильтров
         clearSalary()
         clearAreaSettings()
-        // clearIndustrySettings()
+        clearIndustrySettings()
         salaryFilters = SalaryFilters(checkbox = false, salary = null)
         settingsInteractor.saveSalaryFilters(salaryFilters!!)
         _state.value = salaryFilters
@@ -77,6 +79,10 @@ class SettingsFiltersViewModel(
 
     fun getSalaryFilters(): SalaryFilters? {
         return salaryFilters
+    }
+
+    fun getIndustrySettings(): IndustriesModel? {
+        return chooseIndustryInteractor.getIndustrySettings()
     }
 
 }
