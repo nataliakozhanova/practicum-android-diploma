@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.filters.choosearea.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,15 +33,17 @@ class ChooseAreaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        renderAreaSettings()
+        viewModelChooseArea.areaSettings.observe(viewLifecycleOwner) { area ->
+            renderAreaSettings()
+        }
 
-        binding.countryTv.setOnClickListener {
+        binding.countryEd.setOnClickListener {
             findNavController().navigate(
-                R.id.action_chooseAreaFragment_to_chooseCountryFragment,
+                R.id.action_chooseAreaFragment_to_chooseCountryFragment
             )
         }
 
-        binding.regionTv.setOnClickListener {
+        binding.regionEd.setOnClickListener {
             findNavController().navigate(
                 R.id.action_chooseAreaFragment_to_chooseRegionFragment,
                 ChooseRegionFragment.createArgs(areaSettings?.countryInfo?.id)
@@ -53,8 +56,8 @@ class ChooseAreaFragment : Fragment() {
                 areaSettings = null
                 countryArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
                 regionArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
-                countryTv.text = getString(R.string.country)
-                regionTv.text = getString(R.string.region)
+                countryEd.text = null
+                regionEd.text = null
                 applyBt.isVisible = false
             }
         }
@@ -62,7 +65,7 @@ class ChooseAreaFragment : Fragment() {
             viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
             with(binding) {
                 regionArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
-                regionTv.text = getString(R.string.region)
+                regionEd.text = null
             }
         }
 
@@ -77,22 +80,25 @@ class ChooseAreaFragment : Fragment() {
     }
 
     private fun renderAreaSettings() {
+        Log.d("ChooseAreaFragment", "Rendering area settings")
         areaSettings = viewModelChooseArea.getAreaSettings()
+        Log.d("ChooseAreaFragment", "Area settings: $areaSettings")
         if (areaSettings != null) {
             with(binding) {
-                countryTv.text = areaSettings!!.countryInfo.name
+                countryEd.setText(areaSettings!!.countryInfo.name)
                 applyBt.isVisible = true
                 countryArrowAndCleanIv.isVisible = true
                 countryArrowAndCleanIv.setImageResource(R.drawable.clear_24px_input_edittext_button)
             }
             if (areaSettings!!.name.isNotEmpty()) {
                 with(binding) {
-                    regionTv.text = areaSettings!!.name
+                    regionEd.setText(areaSettings!!.name)
                     regionArrowAndCleanIv.isVisible = true
                     regionArrowAndCleanIv.setImageResource(R.drawable.clear_24px_input_edittext_button)
                 }
 
             }
         }
+
     }
 }
