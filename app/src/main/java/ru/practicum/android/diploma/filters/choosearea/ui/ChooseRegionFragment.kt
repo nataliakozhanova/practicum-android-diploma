@@ -85,6 +85,9 @@ class ChooseRegionFragment : Fragment() {
         } else {
             viewModelChooseRegion.chooseOnlyArea()
         }
+        binding.arrowBackIv.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {

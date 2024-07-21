@@ -72,6 +72,10 @@ class ChooseAreaFragment : Fragment() {
         binding.applyBt.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        binding.arrowBackIv.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {

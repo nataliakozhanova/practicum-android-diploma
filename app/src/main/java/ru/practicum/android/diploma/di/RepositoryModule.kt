@@ -7,6 +7,8 @@ import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyReposito
 import ru.practicum.android.diploma.filters.choosearea.data.repo.ChooseAreaRepositoryImpl
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaRepository
 import ru.practicum.android.diploma.filters.chooseindustry.data.repo.IndustryRepositoryImpl
+import ru.practicum.android.diploma.filters.chooseindustry.data.storage.IndustryStorageApi
+import ru.practicum.android.diploma.filters.chooseindustry.data.storage.IndustryStorageImpl
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryRepository
 import ru.practicum.android.diploma.filters.settingsfilters.data.repo.SettingsRepositoryImpl
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsRepository
@@ -34,7 +36,10 @@ val repositoryModule = module {
         ChooseAreaRepositoryImpl(get(named(DiConstants.AREAS)), get())
     }
     single<IndustryRepository> {
-        IndustryRepositoryImpl(get(named(DiConstants.INDUSTRY)))
+        IndustryRepositoryImpl(get(named(DiConstants.INDUSTRY)), get())
+    }
+    single<IndustryStorageApi> {
+        IndustryStorageImpl(get(), get())
     }
     single<SettingsRepository> {
         SettingsRepositoryImpl(get())

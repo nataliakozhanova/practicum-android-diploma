@@ -67,6 +67,9 @@ class ChooseCountryFragment : Fragment() {
 
         viewModelChooseCountry.chooseCountry()
 
+        binding.arrowBackIv.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {
