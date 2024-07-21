@@ -29,7 +29,7 @@
         app:layout_constraintStart_toEndOf="@+id/arrowBackIv"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/countryTv"
         style="@style/Regular16TextStyle"
         android:layout_width="0dp"
@@ -40,54 +40,98 @@
         android:paddingVertical="@dimen/dp_16"
         android:paddingStart="@dimen/dp_16"
         android:text="Страна"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="@color/dark_grey"
         app:layout_constraintEnd_toStartOf="@+id/countryArrowAndCleanIv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/screenPlaceWork"
-        tools:text="Страна" />
+        tools:text="Страна" />-->
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/countryTil"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="@string/country"
+        android:textColorHint="@color/dark_grey"
+        app:boxStrokeWidth="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/countryArrowAndCleanIv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/screenPlaceWork">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/countryEd"
+            style="@style/Medium16TextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/backgroundColor"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="textNoSuggestions" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
         android:id="@+id/countryArrowAndCleanIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_36"
         android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_12"
-        android:src="@drawable/arrow_forward_24px_button"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@id/countryTv"
+        android:src="@drawable/arrow_forward_24px_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/countryTv"
-        app:layout_constraintTop_toBottomOf="@id/screenPlaceWork" />
+        app:layout_constraintTop_toBottomOf="@+id/screenPlaceWork" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/regionTv"
         style="@style/Regular16TextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/dp_16"
         android:clickable="true"
-        android:visibility="visible"
-        android:text="Регион"
         android:paddingVertical="@dimen/dp_16"
         android:paddingStart="@dimen/dp_16"
+        android:text="Регион"
         android:textColor="?attr/colorPrimary"
+        android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/regionArrowAndCleanIv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countryTv"
-        tools:text="Регион" />
+        app:layout_constraintTop_toBottomOf="@+id/countryTil"
+        tools:text="Регион" />-->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/regionTil"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/region"
+        android:textColorHint="@color/dark_grey"
+        app:boxStrokeWidth="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/regionArrowAndCleanIv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/countryTil">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/regionEd"
+            style="@style/Medium16TextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/backgroundColor"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="textNoSuggestions" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
         android:id="@+id/regionArrowAndCleanIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_12"
-        android:src="@drawable/arrow_forward_24px_button"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@id/regionTv"
+        android:src="@drawable/arrow_forward_24px_button"
+        app:layout_constraintBottom_toBottomOf="@+id/regionTil"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/regionTv"
-        app:layout_constraintTop_toBottomOf="@id/countryTv" />
+        app:layout_constraintTop_toBottomOf="@+id/countryTil" />
 
 
     <Button
