@@ -62,10 +62,12 @@ class ChooseAreaFragment : Fragment() {
             }
         }
         binding.regionArrowAndCleanIv.setOnClickListener {
-            viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
-            with(binding) {
-                regionArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
-                regionEd.text = null
+            areaSettings?.let {
+                viewModelChooseArea.saveAreaSettings(AreaInfo("", "", it.countryInfo))
+                with(binding) {
+                    regionArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
+                    regionEd.text = null
+                }
             }
         }
 

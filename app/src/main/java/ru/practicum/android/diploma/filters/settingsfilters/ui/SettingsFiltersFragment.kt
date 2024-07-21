@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filters.settingsfilters.ui
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher

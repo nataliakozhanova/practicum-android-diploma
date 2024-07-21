@@ -28,10 +28,12 @@ class ChooseAreaViewModel(
     fun deleteCountrySettings() {
         chooseAreaInteractor.deleteAreaSettings()
         _areaSettings.value = null
+        loadAreaSettings()
     }
 
     fun saveAreaSettings(area: AreaInfo) {
         chooseAreaInteractor.saveAreaSettings(area)
         _areaSettings.value = area
+        loadAreaSettings()
     }
 }
