@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.filters.choosearea.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,12 +61,10 @@ class ChooseAreaFragment : Fragment() {
             }
         }
         binding.regionArrowAndCleanIv.setOnClickListener {
-            areaSettings?.let {
-                viewModelChooseArea.saveAreaSettings(AreaInfo("", "", it.countryInfo))
-                with(binding) {
-                    regionArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
-                    regionEd.text = null
-                }
+            viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
+            with(binding) {
+                regionArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
+                regionEd.text = null
             }
         }
 
@@ -76,6 +73,7 @@ class ChooseAreaFragment : Fragment() {
         }
 
         binding.arrowBackIv.setOnClickListener {
+            viewModelChooseArea.deleteCountrySettings()
             findNavController().navigateUp()
         }
     }
@@ -86,9 +84,7 @@ class ChooseAreaFragment : Fragment() {
     }
 
     private fun renderAreaSettings() {
-        Log.d("ChooseAreaFragment", "Rendering area settings")
         areaSettings = viewModelChooseArea.getAreaSettings()
-        Log.d("ChooseAreaFragment", "Area settings: $areaSettings")
         if (areaSettings != null) {
             with(binding) {
                 countryEd.setText(areaSettings!!.countryInfo.name)
@@ -105,6 +101,5 @@ class ChooseAreaFragment : Fragment() {
 
             }
         }
-
     }
 }

@@ -8,7 +8,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.data.BadRequestError
+import ru.practicum.android.diploma.common.data.ErrorType
+import ru.practicum.android.diploma.common.data.NoInternetError
+import ru.practicum.android.diploma.common.data.ServerInternalError
 import ru.practicum.android.diploma.databinding.FragmentChoosingCountryBinding
+import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasNotFoundType
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.CountriesState
 import ru.practicum.android.diploma.filters.choosearea.presentation.viewmodel.ChooseCountryViewModel
 
@@ -50,11 +56,11 @@ class ChooseCountryFragment : Fragment() {
                 }
 
                 is CountriesState.Error -> {
-                    // showTypeErrorOrEmpty(state.errorType) - дописать
+                    showTypeErrorOrEmpty(state.errorType)
                 }
 
                 is CountriesState.Empty -> {
-                    // showTypeErrorOrEmpty(AreasNotFoundType()) - дописать
+                    showTypeErrorOrEmpty(AreasNotFoundType())
                 }
 
                 is CountriesState.Loading -> {
@@ -69,6 +75,31 @@ class ChooseCountryFragment : Fragment() {
 
         binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+    }
+
+    private fun showTypeErrorOrEmpty(errorType: ErrorType) {
+        when (errorType) {
+            is ServerInternalError, is BadRequestError -> {
+                binding.countryRv.isVisible = false
+                binding.errorPlaceholderIv.setImageResource(R.drawable.image_empty_content)
+                binding.errorPlaceholderTv.setText(R.string.empty_list)
+
+                binding.errorPlaceholderIv.isVisible = true
+                binding.errorPlaceholderTv.isVisible = true
+            }
+
+            is NoInternetError -> {
+                binding.countryRv.isVisible = false
+                binding.errorPlaceholderIv.setImageResource(R.drawable.image_no_internet_error)
+                binding.errorPlaceholderTv.setText(R.string.no_internet)
+
+                binding.errorPlaceholderIv.isVisible = true
+                binding.errorPlaceholderTv.isVisible = true
+            }
+
+            else -> {}
         }
     }
 
