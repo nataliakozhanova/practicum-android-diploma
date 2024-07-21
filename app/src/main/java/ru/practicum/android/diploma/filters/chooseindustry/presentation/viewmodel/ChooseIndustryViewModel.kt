@@ -17,6 +17,7 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
     fun observeIndustryState(): LiveData<IndustriesStates> = _stateIndustry
 
     private var selectedIndustry: IndustriesModel? = null
+    private var allIndustries: List<IndustriesModel> = listOf()
 
     fun getIndustry() {
         renderState(IndustriesStates.Loading)
@@ -31,15 +32,14 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
         when (errorType) {
             is Success -> {
                 if (result != null) {
+                    allIndustries = result.industries
                     renderState(IndustriesStates.Content(result.industries))
                 } else {
                     renderState(IndustriesStates.Empty)
                 }
-            }
-
-            else -> {
-                renderState(IndustriesStates.Error(errorType))
-            }
+            } else -> {
+            renderState(IndustriesStates.Error(errorType))
+        }
         }
     }
 
@@ -55,5 +55,14 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
         selectedIndustry?.let {
             interactor.saveIndustrySettings(it)
         }
+    }
+
+    fun searchIndustries(query: String) {
+        val filteredIndustries = if (query.isEmpty()) {
+            allIndustries
+        } else {
+            allIndustries.filter { it.name.contains(query, ignoreCase = true) }
+        }
+        renderState(IndustriesStates.Content(filteredIndustries))
     }
 }

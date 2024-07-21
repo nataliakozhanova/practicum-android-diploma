@@ -10,4 +10,5 @@ interface IndustryRepository {
     fun saveIndustrySettings(industry: IndustriesModel)
     fun getIndustrySettings(): IndustriesModel?
     fun deleteIndustrySettings()
+    fun searchIndustries(query: String): Flow<Resource<IndustriesResult>>
 }

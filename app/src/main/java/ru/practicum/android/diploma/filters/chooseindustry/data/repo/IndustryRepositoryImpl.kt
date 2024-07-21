@@ -35,6 +35,25 @@ class IndustryRepositoryImpl(
         }
     }
 
+    override fun searchIndustries(query: String): Flow<Resource<IndustriesResult>> = flow {
+        when (val response = networkClient.doRequest(IndustrtesRequest(query))) {
+            is IndustryResponse -> {
+                emit(
+                    Resource
+                        .Success(
+                            IndustriesResult(
+                                industries = response.industries.map { convertIndustry(it) }
+                            )
+                        )
+                )
+            }
+
+            else -> {
+                emit(Resource.Error(response.errorType))
+            }
+        }
+    }
+
     private fun convertIndustry(it: IndustryDto): IndustriesModel =
         IndustriesModel(
             it.id,
