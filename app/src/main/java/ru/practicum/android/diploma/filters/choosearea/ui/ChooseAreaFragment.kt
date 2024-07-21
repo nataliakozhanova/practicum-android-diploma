@@ -73,7 +73,7 @@ class ChooseAreaFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.arrowBackIv.setOnClickListener{
+        binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
         }
     }

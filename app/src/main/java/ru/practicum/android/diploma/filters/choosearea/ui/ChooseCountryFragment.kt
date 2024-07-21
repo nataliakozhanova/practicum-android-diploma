@@ -67,7 +67,7 @@ class ChooseCountryFragment : Fragment() {
 
         viewModelChooseCountry.chooseCountry()
 
-        binding.arrowBackIv.setOnClickListener{
+        binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
         }
     }

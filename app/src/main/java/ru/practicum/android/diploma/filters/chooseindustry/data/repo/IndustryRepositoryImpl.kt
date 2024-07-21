@@ -12,7 +12,8 @@ import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.Ind
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesResult
 
-class IndustryRepositoryImpl(private val networkClient: NetworkClient, private val storage: IndustryStorageApi) : IndustryRepository {
+class IndustryRepositoryImpl(private val networkClient: NetworkClient,
+                             private val storage: IndustryStorageApi) : IndustryRepository {
     override fun getIndustries(): Flow<Resource<IndustriesResult>> = flow {
         when (val response = networkClient.doRequest(IndustrtesRequest())) {
             is IndustryResponse -> {

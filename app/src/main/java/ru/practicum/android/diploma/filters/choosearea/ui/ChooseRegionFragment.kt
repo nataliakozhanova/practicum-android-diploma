@@ -85,7 +85,7 @@ class ChooseRegionFragment : Fragment() {
         } else {
             viewModelChooseRegion.chooseOnlyArea()
         }
-        binding.arrowBackIv.setOnClickListener{
+        binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
         }
     }

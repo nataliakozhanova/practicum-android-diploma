@@ -9,7 +9,6 @@ import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.Ind
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
 import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
-import ru.practicum.android.diploma.search.domain.models.Filters
 
 class SettingsFiltersViewModel(
     private val settingsInteractor: SettingsInteractor,
