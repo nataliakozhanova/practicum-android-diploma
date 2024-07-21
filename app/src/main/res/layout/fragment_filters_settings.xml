@@ -169,6 +169,7 @@
             style="@style/InputTextFilterSetting"
             android:background="@drawable/edit_text_background"
             android:inputType="number"
+            android:textColor="@color/black"
             android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -203,7 +204,6 @@
         android:minHeight="64dp"
         android:paddingVertical="@dimen/dp_12"
         android:text="@string/apply_button"
-        android:textAllCaps="false"
         android:textColor="@color/white"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/reset_button"

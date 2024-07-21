@@ -53,7 +53,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="@string/country"
-        android:textColorHint="@color/dark_grey"
+        app:placeholderTextAppearance="@style/PlaceholderTextStyle"
+        android:textColorHint="?attr/android:textColorHint"
+        app:hintTextColor="@color/tap_color_selector_place_to_work"
         app:boxStrokeWidth="0dp"
         app:layout_constraintEnd_toStartOf="@+id/countryArrowAndCleanIv"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +63,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/countryEd"
-            style="@style/Medium16TextStyle"
+            style="@style/Regular16TextStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/backgroundColor"
@@ -106,13 +108,14 @@
         android:hint="@string/region"
         android:textColorHint="@color/dark_grey"
         app:boxStrokeWidth="0dp"
+        app:placeholderTextAppearance="@style/PlaceholderTextStyle"
         app:layout_constraintEnd_toStartOf="@+id/regionArrowAndCleanIv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/countryTil">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/regionEd"
-            style="@style/Medium16TextStyle"
+            style="@style/Regular16TextStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/backgroundColor"
@@ -134,7 +137,7 @@
         app:layout_constraintTop_toBottomOf="@+id/countryTil" />
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/applyBt"
         style="@style/BigBlueButtons"
         android:layout_width="match_parent"
@@ -143,6 +146,7 @@
         android:layout_marginEnd="17dp"
         android:layout_marginBottom="24dp"
         android:text="@string/enter_button"
+        android:background="@drawable/apply_button"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
