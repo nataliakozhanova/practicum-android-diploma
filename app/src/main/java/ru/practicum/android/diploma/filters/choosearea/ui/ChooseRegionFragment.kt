@@ -1,19 +1,25 @@
 package ru.practicum.android.diploma.filters.choosearea.ui
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentChooosingRegionBinding
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasByParentIdState
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasWithCountriesState
 import ru.practicum.android.diploma.filters.choosearea.presentation.viewmodel.ChooseRegionViewModel
+import ru.practicum.android.diploma.util.debounce
 
 class ChooseRegionFragment : Fragment() {
 
@@ -31,6 +37,16 @@ class ChooseRegionFragment : Fragment() {
     private val regionsAdapter = RegionsAdapter { region ->
         viewModelChooseRegion.saveAreaWithCountrySettings(region)
         findNavController().navigateUp()
+    }
+
+    private val searchDebounce by lazy {
+        debounce<String>(
+            delayMillis = 300L,
+            coroutineScope = viewLifecycleOwner.lifecycleScope,
+            useLastParam = true
+        ) { query ->
+            viewModelChooseRegion.searchAreas(query)
+        }
     }
 
     override fun onCreateView(
@@ -54,11 +70,15 @@ class ChooseRegionFragment : Fragment() {
                 }
 
                 is AreasWithCountriesState.Loading -> {
-                    binding.regionProgressBar.isVisible = true
+                    showLoading()
                 }
 
-                else -> {
-                    // showTypeErrorOrEmpty(state.errorType) и howTypeErrorOrEmpty(AreasNotFoundType()) - дописать
+                is AreasWithCountriesState.Error -> {
+                    showErrorPlaceholder(R.drawable.image_empty_content, getString(R.string.failed_to_get_list))
+                }
+
+                is AreasWithCountriesState.Empty -> {
+                    showErrorPlaceholder(R.drawable.image_nothing_found, getString(R.string.no_region))
                 }
             }
         }
@@ -70,11 +90,15 @@ class ChooseRegionFragment : Fragment() {
                 }
 
                 is AreasByParentIdState.Loading -> {
-                    binding.regionProgressBar.isVisible = true
+                    showLoading()
                 }
 
-                else -> {
-                    // showTypeErrorOrEmpty(state.errorType) и howTypeErrorOrEmpty(AreasNotFoundType()) - дописать
+                is AreasByParentIdState.Error -> {
+                    showErrorPlaceholder(R.drawable.image_empty_content, getString(R.string.failed_to_get_list))
+                }
+
+                is AreasByParentIdState.Empty -> {
+                    showErrorPlaceholder(R.drawable.image_nothing_found, getString(R.string.no_region))
                 }
             }
         }
@@ -85,8 +109,33 @@ class ChooseRegionFragment : Fragment() {
         } else {
             viewModelChooseRegion.chooseOnlyArea()
         }
+
         binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        binding.tietSearchMask.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchDebounce(s.toString())
+                if (s.isNullOrEmpty()) {
+                    binding.editTextRegion.endIconDrawable =
+                        ContextCompat.getDrawable(requireContext(), R.drawable.search_24px_input_edittext_icon)
+                } else {
+                    binding.editTextRegion.endIconDrawable =
+                        ContextCompat.getDrawable(requireContext(), R.drawable.clear_24px_input_edittext_button)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        binding.editTextRegion.setEndIconOnClickListener {
+            if (!binding.tietSearchMask.text.isNullOrEmpty()) {
+                binding.tietSearchMask.text?.clear()
+                viewModelChooseRegion.searchAreas("")
+            }
         }
     }
 
@@ -103,5 +152,21 @@ class ChooseRegionFragment : Fragment() {
         regionsAdapter.areas.clear()
         regionsAdapter.areas.addAll(areas)
         regionsAdapter.notifyDataSetChanged()
+    }
+
+    private fun showLoading() {
+        binding.regionProgressBar.isVisible = true
+        binding.errorPlaceholderIv.isVisible = false
+        binding.errorPlaceholderTv.isVisible = false
+        binding.regionRv.isVisible = false
+    }
+
+    private fun showErrorPlaceholder(imageResId: Int, message: String) {
+        binding.regionProgressBar.isVisible = false
+        binding.errorPlaceholderIv.isVisible = true
+        binding.errorPlaceholderTv.isVisible = true
+        binding.regionRv.isVisible = false
+        binding.errorPlaceholderIv.setImageResource(imageResId)
+        binding.errorPlaceholderTv.text = message
     }
 }

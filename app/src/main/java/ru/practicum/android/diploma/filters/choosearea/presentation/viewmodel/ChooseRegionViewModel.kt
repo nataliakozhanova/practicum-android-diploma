@@ -23,6 +23,8 @@ class ChooseRegionViewModel(
     private val _stateAreaWithCountry = MutableLiveData<AreasWithCountriesState>()
     fun observeAreasWithCountriesState(): LiveData<AreasWithCountriesState> = _stateAreaWithCountry
 
+    private var allAreas: List<AreaInfo> = emptyList()
+
     // запрос списка регионов, когда страна не выбрана - страна для вывода в визуалку подтягивается из результатов запроса
 
     fun chooseOnlyArea() {
@@ -38,6 +40,7 @@ class ChooseRegionViewModel(
         when (errorType) {
             is Success -> {
                 if (areas != null) {
+                    allAreas = areas.areas
                     renderAreasWithCountriesState(
                         AreasWithCountriesState.Content(areas.areas)
                     )
@@ -75,6 +78,7 @@ class ChooseRegionViewModel(
         when (errorType) {
             is Success -> {
                 if (areas != null) {
+                    allAreas = areas.areas
                     renderAreasByParentId(
                         AreasByParentIdState.Content(areas.areas)
                     )
@@ -99,5 +103,19 @@ class ChooseRegionViewModel(
 
     fun saveAreaWithCountrySettings(area: AreaInfo) {
         chooseAreaInteractor.saveAreaSettings(AreaInfo(id = area.id, name = area.name, countryInfo = area.countryInfo))
+    }
+
+    // метод для поиска областей
+    fun searchAreas(query: String) {
+        val filteredAreas = if (query.isEmpty()) {
+            allAreas
+        } else {
+            allAreas.filter { it.name.contains(query, ignoreCase = true) }
+        }
+        if (filteredAreas.isEmpty()) {
+            _stateAreaById.postValue(AreasByParentIdState.Empty)
+        } else {
+            _stateAreaById.postValue(AreasByParentIdState.Content(filteredAreas))
+        }
     }
 }
