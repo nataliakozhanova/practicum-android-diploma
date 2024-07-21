@@ -156,7 +156,7 @@
         android:hint="@string/expected_salary"
         app:cursorColor="@color/blue"
         app:placeholderText="@string/enter_amount"
-        app:placeholderTextColor="@color/dark_grey"
+        app:placeholderTextColor="?attr/android:textColorHint"
         app:endIconMode="custom"
         android:focusableInTouchMode="true"
         app:endIconDrawable="@drawable/clear_24px_input_edittext_button"
