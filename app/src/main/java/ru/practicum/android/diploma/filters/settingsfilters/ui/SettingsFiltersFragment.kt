@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.filters.settingsfilters.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -229,7 +228,8 @@ class SettingsFiltersFragment : Fragment() {
         // Обновление оригинальных фильтров
         originalSalaryFilters = viewModel.getSalaryFilters()
         updateButtonsVisibility()
-
+        // стираем припрятанные фильтры, чтобы применились новые
+        viewModel.deleteStashedFilters()
         // Переход на SearchFragment с примененными фильтрами
         findNavController().navigate(
             R.id.action_filterFragment_to_searchFragment,
@@ -240,6 +240,7 @@ class SettingsFiltersFragment : Fragment() {
     private fun resetFilters() {
         // Сброс всех фильтров
         viewModel.resetFilters()
+        originalFilters = viewModel.getOriginalFilters()
         renderSavedAreaSettings()
         renderSavedIndustrySettings()
         renderSavedSalarySettings()

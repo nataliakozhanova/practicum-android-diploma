@@ -93,4 +93,8 @@ class SettingsFiltersViewModel(
         )
     }
 
+    fun deleteStashedFilters() {
+        settingsInteractor.deleteStashedFilters()
+    }
+
 }

@@ -43,8 +43,10 @@ class SearchFragment : Fragment() {
 
         private const val RESTART_FLAG = "restartLastSearch"
         private const val SET_SEARCH_MASK = "setSearchMask"
-        fun createArgs(restartLastSearch: Boolean, searchMask: String?): Bundle =
-            bundleOf(RESTART_FLAG to restartLastSearch, SET_SEARCH_MASK to searchMask)
+
+        // private const val SET_FILTERS = "setFilters"
+        fun createArgs(restartLastSearch: Boolean, searchMask: String?/*, setFilters: FiltersAll*/): Bundle =
+            bundleOf(RESTART_FLAG to restartLastSearch, SET_SEARCH_MASK to searchMask/*, SET_FILTERS to setFilters*/)
     }
 
     private var _binding: FragmentSearchBinding? = null
@@ -86,9 +88,6 @@ class SearchFragment : Fragment() {
             showToast(it)
         }
 
-        // настроим слежение за объектами фрагмента
-        setBindings()
-
         // маска может прийти аргументом
         val setSearchMask = arguments?.getString(SET_SEARCH_MASK)
         if (setSearchMask != null) {
@@ -101,6 +100,9 @@ class SearchFragment : Fragment() {
         if (restartLastSearch && searchMask.isNotEmpty()) {
             viewModel.searchByClick(searchMask)
         }
+
+        // настроим слежение за объектами фрагмента
+        setBindings()
     }
 
     // обработка состояний поиска первой страницы
@@ -237,6 +239,8 @@ class SearchFragment : Fragment() {
 
     private fun bindOpenFilters() {
         binding.buttonFilters.setOnClickListener {
+            // сохраним фильтры на случай возвращения во фрагмент кнопкой назад
+            viewModel.saveStashedFilters()
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment,
                 SettingsFiltersFragment.createArgs(searchMask)
