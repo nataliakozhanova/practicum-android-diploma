@@ -6,7 +6,6 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogDto
-import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogResponse
 
 interface HhApiServiceAreas {
     @Headers(
