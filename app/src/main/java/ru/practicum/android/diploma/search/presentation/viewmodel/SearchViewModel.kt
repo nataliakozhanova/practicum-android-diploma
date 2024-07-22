@@ -95,6 +95,10 @@ class SearchViewModel(
         }
     }
 
+    fun getLastSearchMask(): String? {
+        return latestSearchText
+    }
+
     // запуск поиска по требованию
     fun searchByClick(searchText: String) {
         initSearch()
