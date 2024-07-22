@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.databinding.FragmentFiltersSettingsBinding
 import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
 import ru.practicum.android.diploma.filters.settingsfilters.presentation.viewmodel.SettingsFiltersViewModel
@@ -25,7 +26,8 @@ class SettingsFiltersFragment : Fragment() {
     private var _binding: FragmentFiltersSettingsBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SettingsFiltersViewModel>()
-    private var originalFilters: SalaryFilters? = null
+    private var originalSalaryFilters: SalaryFilters? = null
+    private var originalFilters: FiltersAll? = null
     private var lastSearchMask: String? = null
 
     companion object {
@@ -50,7 +52,8 @@ class SettingsFiltersFragment : Fragment() {
         renderSavedSalarySettings()
         renderSavedIndustrySettings()
         changeTextInputLayoutEndIconMode(binding.industryTextInput.text)
-        originalFilters = viewModel.getSalaryFilters()
+        originalSalaryFilters = viewModel.getSalaryFilters()
+        originalFilters = viewModel.getOriginalFilters()
         lastSearchMask = arguments?.getString(LAST_SEARCH_MASK)
         updateButtonsVisibility()
     }
@@ -125,13 +128,21 @@ class SettingsFiltersFragment : Fragment() {
     }
 
     private fun updateButtonsVisibility() {
+        // показать кнопку сброс, если что-то заполнено
         val isSalaryEntered = binding.industryTextInput.text?.isNotEmpty() == true
-        // показать кнопки если флаг поменялся
-        val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != originalFilters?.checkbox
+        val isNoSalaryChecked = binding.noSalaryCheckbox.isChecked
         val isAreaSet = viewModel.getAreaSettings() != null
         val isIndustrySet = viewModel.getIndustrySettings() != null
-        binding.applyButton.isVisible = isSalaryEntered || isNoSalaryChanged || isAreaSet || isIndustrySet
-        binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChanged || isAreaSet || isIndustrySet
+        binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
+
+        // показать кнопку применить если что-то поменялось
+        val salaryInputValue = binding.industryTextInput.text.toString()
+        val originalSalaryValue = originalFilters?.salary?.salary ?: ""
+        val isSalaryChanged = salaryInputValue != originalSalaryValue
+        val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != originalFilters?.salary?.checkbox
+        val isAreaChanged = viewModel.getAreaSettings()?.id != originalFilters?.area?.id
+        val isIndustryChanged = viewModel.getIndustrySettings()?.id != originalFilters?.industry?.id
+        binding.applyButton.isVisible = isSalaryChanged || isNoSalaryChanged || isAreaChanged || isIndustryChanged
     }
 
     private fun changeTextInputLayoutEndIconMode(text: CharSequence?) {
@@ -215,9 +226,10 @@ class SettingsFiltersFragment : Fragment() {
         // Сохранение всех текущих настроек фильтра
         viewModel.applyFilters()
         // Обновление оригинальных фильтров
-        originalFilters = viewModel.getSalaryFilters()
+        originalSalaryFilters = viewModel.getSalaryFilters()
         updateButtonsVisibility()
-
+        // стираем припрятанные фильтры, чтобы применились новые
+        viewModel.deleteStashedFilters()
         // Переход на SearchFragment с примененными фильтрами
         findNavController().navigate(
             R.id.action_filterFragment_to_searchFragment,
@@ -228,6 +240,7 @@ class SettingsFiltersFragment : Fragment() {
     private fun resetFilters() {
         // Сброс всех фильтров
         viewModel.resetFilters()
+        originalFilters = viewModel.getOriginalFilters()
         renderSavedAreaSettings()
         renderSavedIndustrySettings()
         renderSavedSalarySettings()

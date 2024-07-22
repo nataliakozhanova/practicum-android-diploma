@@ -9,16 +9,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.domain.Success
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.common.presentation.ButtonFiltersMode
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
-import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryInteractor
-import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
-import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.models.Filters
 import ru.practicum.android.diploma.search.domain.models.SearchResult
@@ -31,7 +29,7 @@ import ru.practicum.android.diploma.util.isConnected
 class SearchViewModel(
     private val context: Context,
     private val searchInteractor: SearchInteractor,
-    private val filterSalaryInteractor: SettingsInteractor,
+    private val settingsInteractor: SettingsInteractor,
     private val filterAreaInteractor: ChooseAreaInteractor,
     private val filterIndustryInteractor: IndustryInteractor,
 ) : ViewModel() {
@@ -47,9 +45,8 @@ class SearchViewModel(
     private var latestSearchText: String? = null
     private var isNextPageLoading: Boolean = false
     private var searchJob: Job? = null
-    private var salaryFilters: SalaryFilters? = null
-    private var areaFilters: AreaInfo? = null
-    private var industryFilters: IndustriesModel? = null
+    private var activeFilters: FiltersAll? = null
+    private var latestFilters: FiltersAll? = null
 
     private val _toast = SingleLiveEvent<String>()
     fun observeToast(): LiveData<String> = _toast
@@ -61,7 +58,7 @@ class SearchViewModel(
 
     init {
         _state.value = SearchState.Default
-        getFilters()
+        loadFilters(useLastChanges = false)
     }
 
     fun initSearch() {
@@ -76,6 +73,7 @@ class SearchViewModel(
     }
 
     fun clearSearch() {
+        settingsInteractor.deleteStashedFilters()
         initSearch()
         renderState(SearchState.Default, _state)
     }
@@ -93,10 +91,6 @@ class SearchViewModel(
                 }
             }
         }
-    }
-
-    fun getLastSearchMask(): String? {
-        return latestSearchText
     }
 
     // запуск поиска по требованию
@@ -124,25 +118,40 @@ class SearchViewModel(
         }
     }
 
-    private fun getFilters() {
-        salaryFilters = filterSalaryInteractor.getSalaryFilters()
-        areaFilters = filterAreaInteractor.getAreaSettings()
-        industryFilters = filterIndustryInteractor.getIndustrySettings()
+    fun saveStashedFilters() {
+        settingsInteractor.saveStashedFilters(activeFilters)
+        loadFilters(useLastChanges = false)
+    }
+
+    // для поиска загружаем активные фильтры - припрятанные либо последние
+    private fun loadFilters(useLastChanges: Boolean) {
+        val stashedFilters = settingsInteractor.getStashedFilters()
+        latestFilters = FiltersAll(
+            settingsInteractor.getSalaryFilters(),
+            filterAreaInteractor.getAreaSettings(),
+            filterIndustryInteractor.getIndustrySettings()
+        )
+        activeFilters = if (!useLastChanges && stashedFilters != null) {
+            stashedFilters
+        } else {
+            latestFilters
+        }
     }
 
     // соберем запрос с фильтрами и параметрами
     private fun makeSearchRequest(expression: String): VacancySearchRequest {
-        getFilters()
+        loadFilters(useLastChanges = false)
+        val searchFilters = Filters(
+            areaId = activeFilters?.area?.id,
+            industryId = activeFilters?.industry?.id,
+            salary = activeFilters?.salary?.salary?.toIntOrNull(),
+            onlyWithSalary = activeFilters?.salary?.checkbox ?: false,
+        )
         return VacancySearchRequest(
             expression,
             page,
             ITEMS_PER_PAGE,
-            Filters(
-                areaId = areaFilters?.id,
-                industryId = "",
-                salary = salaryFilters?.salary?.toIntOrNull(),
-                onlyWithSalary = salaryFilters?.checkbox ?: false,
-            )
+            searchFilters
         )
     }
 
@@ -167,20 +176,24 @@ class SearchViewModel(
         }
     }
 
+    // просчет фильтров ведется на последних
     private fun salaryFiltersOn(): Boolean {
-        return salaryFilters != null && (salaryFilters?.checkbox == true || salaryFilters?.salary != null)
+        return latestFilters?.salary != null
+            && (
+                latestFilters?.salary?.checkbox == true
+                    || latestFilters?.salary?.salary != null
+                )
     }
 
     private fun areaFiltersOn(): Boolean {
-        return areaFilters != null && areaFilters?.id?.isNotEmpty() == true
+        return latestFilters?.area != null && latestFilters?.area?.id?.isNotEmpty() == true
     }
 
     private fun industryFiltersOn(): Boolean {
-        return industryFilters != null && industryFilters?.id?.isNotEmpty() == true
+        return latestFilters?.industry != null && latestFilters?.industry?.id?.isNotEmpty() == true
     }
 
     fun filtersOn(): ButtonFiltersMode {
-        getFilters()
         return if (salaryFiltersOn() || areaFiltersOn() || industryFiltersOn()) {
             ButtonFiltersMode.ON
         } else {
