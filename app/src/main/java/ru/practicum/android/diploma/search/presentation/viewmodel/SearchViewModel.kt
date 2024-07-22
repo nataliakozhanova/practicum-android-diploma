@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -125,7 +124,6 @@ class SearchViewModel(
         salaryFilters = filterSalaryInteractor.getSalaryFilters()
         areaFilters = filterAreaInteractor.getAreaSettings()
         industryFilters = filterIndustryInteractor.getIndustrySettings()
-        Log.d("mine", "industryFilters = ${industryFilters}")
     }
 
     // соберем запрос с фильтрами и параметрами
