@@ -21,8 +21,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.data.ErrorType
-import ru.practicum.android.diploma.common.data.NoInternetError
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.common.presentation.EditTextSearchIcon
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding

@@ -2,8 +2,8 @@ package ru.practicum.android.diploma.filters.chooseindustry.domain.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.practicum.android.diploma.common.data.ErrorType
-import ru.practicum.android.diploma.common.data.Resource
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.Resource
 import ru.practicum.android.diploma.filters.chooseindustry.data.storage.IndustryStorageApi
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryInteractor
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryRepository
