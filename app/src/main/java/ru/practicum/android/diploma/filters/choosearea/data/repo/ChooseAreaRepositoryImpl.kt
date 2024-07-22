@@ -17,7 +17,7 @@ import ru.practicum.android.diploma.filters.choosearea.domain.models.CountryInfo
 
 class ChooseAreaRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val areasStorageApi: AreasStorageApi
+    private val areasStorageApi: AreasStorageApi,
 ) : ChooseAreaRepository {
 
     companion object {
@@ -118,12 +118,9 @@ class ChooseAreaRepositoryImpl(
         )
         val areas: MutableList<AreaInfo> = mutableListOf()
         for (area in it.areas) {
-            if (area.areas.isEmpty()) {
-                areas.add(AreaInfo(area.id, area.name, country))
-            } else {
-                for (subArea in area.areas) {
-                    areas.add(AreaInfo(subArea.id, subArea.name, country))
-                }
+            areas.add(AreaInfo(area.id, area.name, country))
+            for (subArea in area.areas) {
+                areas.add(AreaInfo(subArea.id, subArea.name, country))
             }
         }
         return areas

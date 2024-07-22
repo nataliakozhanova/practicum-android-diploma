@@ -154,7 +154,7 @@ class ChooseRegionFragment : Fragment() {
         binding.errorPlaceholderTv.isVisible = false
         binding.regionRv.isVisible = true
         regionsAdapter.areas.clear()
-        regionsAdapter.areas.addAll(areas)
+        regionsAdapter.areas.addAll(areas.sortedBy { it.name })
         regionsAdapter.notifyDataSetChanged()
     }
 
