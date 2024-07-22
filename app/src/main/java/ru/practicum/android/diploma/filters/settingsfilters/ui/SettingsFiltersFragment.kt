@@ -127,7 +127,7 @@ class SettingsFiltersFragment : Fragment() {
     private fun updateButtonsVisibility() {
         val isSalaryEntered = binding.industryTextInput.text?.isNotEmpty() == true
         // показать кнопки если флаг поменялся
-        val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != (originalFilters?.checkbox ?: false)
+        val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != originalFilters?.checkbox
         val isAreaSet = viewModel.getAreaSettings() != null
         val isIndustrySet = viewModel.getIndustrySettings() != null
         binding.applyButton.isVisible = isSalaryEntered || isNoSalaryChanged || isAreaSet || isIndustrySet
