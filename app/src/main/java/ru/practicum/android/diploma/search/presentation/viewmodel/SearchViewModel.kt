@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.common.presentation.ButtonFiltersMode
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
+import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryInteractor
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
 import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
@@ -31,6 +33,7 @@ class SearchViewModel(
     private val searchInteractor: SearchInteractor,
     private val filterSalaryInteractor: SettingsInteractor,
     private val filterAreaInteractor: ChooseAreaInteractor,
+    private val filterIndustryInteractor: IndustryInteractor,
 ) : ViewModel() {
     companion object {
         const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
@@ -119,6 +122,7 @@ class SearchViewModel(
     private fun getFilters() {
         salaryFilters = filterSalaryInteractor.getSalaryFilters()
         areaFilters = filterAreaInteractor.getAreaSettings()
+        Log.d("mine", "areaFilters = ${areaFilters}")
     }
 
     // соберем запрос с фильтрами и параметрами
