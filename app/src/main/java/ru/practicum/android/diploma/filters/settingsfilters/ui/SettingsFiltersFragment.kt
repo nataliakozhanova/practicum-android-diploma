@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,6 +18,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFiltersSettingsBinding
 import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
 import ru.practicum.android.diploma.filters.settingsfilters.presentation.viewmodel.SettingsFiltersViewModel
+import ru.practicum.android.diploma.search.ui.SearchFragment
 
 class SettingsFiltersFragment : Fragment() {
 
@@ -24,6 +26,12 @@ class SettingsFiltersFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SettingsFiltersViewModel>()
     private var originalFilters: SalaryFilters? = null
+    private var lastSearchMask: String? = null
+
+    companion object {
+        private const val LAST_SEARCH_MASK = "lastSearchMask"
+        fun createArgs(lastSearchMask: String?): Bundle = bundleOf(LAST_SEARCH_MASK to lastSearchMask)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +51,7 @@ class SettingsFiltersFragment : Fragment() {
         renderSavedIndustrySettings()
         changeTextInputLayoutEndIconMode(binding.industryTextInput.text)
         originalFilters = viewModel.getSalaryFilters()
+        lastSearchMask = arguments?.getString(LAST_SEARCH_MASK)
         updateButtonsVisibility()
     }
 
@@ -64,9 +73,11 @@ class SettingsFiltersFragment : Fragment() {
                 R.id.action_filterFragment_to_chooseIndustryFragment,
             )
         }
-        /*binding.noSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
+
+        binding.noSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setOnlyWithSalary(isChecked)
-        }*/
+            updateButtonsVisibility()
+        }
 
         binding.filterArrowForward1.setOnClickListener {
             clearAreaSettings()
@@ -104,10 +115,10 @@ class SettingsFiltersFragment : Fragment() {
             resetFilters()
         }
         updateButtonsVisibility()
-        backArrowPress()
+        myOnBackArrowPressed()
     }
 
-    private fun backArrowPress() {
+    private fun myOnBackArrowPressed() {
         binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -115,10 +126,10 @@ class SettingsFiltersFragment : Fragment() {
 
     private fun updateButtonsVisibility() {
         val isSalaryEntered = binding.industryTextInput.text?.isNotEmpty() == true
-        val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != originalFilters?.checkbox ?: false
+        // показать кнопки если флаг поменялся
+        val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != (originalFilters?.checkbox ?: false)
         val isAreaSet = viewModel.getAreaSettings() != null
         val isIndustrySet = viewModel.getIndustrySettings() != null
-
         binding.applyButton.isVisible = isSalaryEntered || isNoSalaryChanged || isAreaSet || isIndustrySet
         binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChanged || isAreaSet || isIndustrySet
     }
@@ -208,7 +219,10 @@ class SettingsFiltersFragment : Fragment() {
         updateButtonsVisibility()
 
         // Переход на SearchFragment с примененными фильтрами
-        findNavController().navigateUp()
+        findNavController().navigate(
+            R.id.action_filterFragment_to_searchFragment,
+            SearchFragment.createArgs(true, lastSearchMask)
+        )
     }
 
     private fun resetFilters() {

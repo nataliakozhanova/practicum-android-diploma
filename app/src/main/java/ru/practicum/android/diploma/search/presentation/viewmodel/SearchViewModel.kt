@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
 import android.content.Context
+import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,7 +48,6 @@ class SearchViewModel(
     private var page: Int = 0
     private var latestSearchText: String? = null
     private var isNextPageLoading: Boolean = false
-    private var goneToFiltersFragment: Boolean = false
     private var searchJob: Job? = null
     private var salaryFilters: SalaryFilters? = null
     private var areaFilters: AreaInfo? = null
@@ -96,16 +97,8 @@ class SearchViewModel(
         }
     }
 
-    fun getLastSearchMaskBeforeOpenFilters(): String? {
-        return if (goneToFiltersFragment) {
-            latestSearchText
-        } else {
-            null
-        }
-    }
-
-    fun setGoToFiltersFragment(flag: Boolean) {
-        goneToFiltersFragment = flag
+    fun getLastSearchMask(): String? {
+        return latestSearchText
     }
 
     // запуск поиска по требованию

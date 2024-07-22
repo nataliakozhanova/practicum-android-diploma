@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.common.presentation.EditTextSearchIcon
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.filters.settingsfilters.ui.SettingsFiltersFragment
 import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
@@ -38,6 +40,11 @@ class SearchFragment : Fragment() {
         private const val SEARCH_MASK = ""
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 200L
         private const val TOAST_DEBOUNCE_DELAY_MILLIS = 1000L
+
+        private const val RESTART_FLAG = "restartLastSearch"
+        private const val SET_SEARCH_MASK = "setSearchMask"
+        fun createArgs(restartLastSearch: Boolean, searchMask: String?): Bundle =
+            bundleOf(RESTART_FLAG to restartLastSearch, SET_SEARCH_MASK to searchMask)
     }
 
     private var _binding: FragmentSearchBinding? = null
@@ -81,11 +88,17 @@ class SearchFragment : Fragment() {
 
         // настроим слежение за объектами фрагмента
         setBindings()
-        // поиск с возвратом из фильтров
-        val beforeFiltersSearchMask = viewModel.getLastSearchMaskBeforeOpenFilters()
-        if (beforeFiltersSearchMask != null) {
-            viewModel.searchByClick(beforeFiltersSearchMask)
-            viewModel.setGoToFiltersFragment(false)
+
+        // маска может прийти аргументом
+        val setSearchMask = arguments?.getString(SET_SEARCH_MASK)
+        if (setSearchMask != null) {
+            searchMask = setSearchMask
+        }
+
+        // перезапускаем поиск, если пришел флаг
+        val restartLastSearch = arguments?.getBoolean(RESTART_FLAG) ?: false
+        if (restartLastSearch && searchMask.isNotEmpty()) {
+            viewModel.searchByClick(searchMask)
         }
     }
 
@@ -223,9 +236,9 @@ class SearchFragment : Fragment() {
 
     private fun bindOpenFilters() {
         binding.buttonFilters.setOnClickListener {
-            viewModel.setGoToFiltersFragment(true)
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment,
+                SettingsFiltersFragment.createArgs(searchMask)
             )
         }
     }
