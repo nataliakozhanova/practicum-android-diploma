@@ -105,7 +105,7 @@ class ChooseRegionViewModel(
         chooseAreaInteractor.saveAreaSettings(AreaInfo(id = area.id, name = area.name, countryInfo = area.countryInfo))
     }
 
-    // метод для поиска областей
+    // метод для локальной фильтрации списка регионов
     fun searchAreas(query: String) {
         val filteredAreas = if (query.isEmpty()) {
             allAreas
