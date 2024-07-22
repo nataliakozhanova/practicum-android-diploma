@@ -39,7 +39,6 @@ class IndustryRepositoryImpl(
         }
     }
 
-
     private fun convertIndustry(it: IndustryDto): List<IndustriesModel> {
         val industryItems = mutableListOf<IndustriesModel>()
         industryItems.add(IndustriesModel(it.id, it.name))
