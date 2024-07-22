@@ -134,6 +134,8 @@ class VacancyDetailsFragment : Fragment() {
         binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = false
         when (type) {
             is BadRequestError -> {
+                binding.favoriteVacansyIv.isVisible = false
+                binding.shareVacansyIv.isVisible = false
                 binding.errorPlaceholderTv.text = getString(R.string.server_error)
                 binding.errorPlaceholderIv.setImageResource(R.drawable.image_vacancy_server_error)
             }
