@@ -208,7 +208,7 @@ class SettingsFiltersFragment : Fragment() {
         updateButtonsVisibility()
 
         // Переход на SearchFragment с примененными фильтрами
-        findNavController().navigate(R.id.action_filterFragment_to_searchFragment)
+        findNavController().navigateUp()
     }
 
     private fun resetFilters() {

@@ -46,6 +46,7 @@ class SearchViewModel(
     private var page: Int = 0
     private var latestSearchText: String? = null
     private var isNextPageLoading: Boolean = false
+    private var goneToFiltersFragment: Boolean = false
     private var searchJob: Job? = null
     private var salaryFilters: SalaryFilters? = null
     private var areaFilters: AreaInfo? = null
@@ -93,6 +94,18 @@ class SearchViewModel(
                 }
             }
         }
+    }
+
+    fun getLastSearchMaskBeforeOpenFilters(): String? {
+        return if (goneToFiltersFragment) {
+            latestSearchText
+        } else {
+            null
+        }
+    }
+
+    fun setGoToFiltersFragment(flag: Boolean) {
+        goneToFiltersFragment = flag
     }
 
     // запуск поиска по требованию

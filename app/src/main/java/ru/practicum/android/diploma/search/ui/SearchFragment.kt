@@ -66,12 +66,6 @@ class SearchFragment : Fragment() {
             openVacancy(track)
         }
 
-        binding.buttonFilters.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_searchFragment_to_filterFragment,
-            )
-        }
-
         // подпишемся на результаты поиска первой страницы
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             searchStateCheck(state)
@@ -87,6 +81,12 @@ class SearchFragment : Fragment() {
 
         // настроим слежение за объектами фрагмента
         setBindings()
+        // поиск с возвратом из фильтров
+        val beforeFiltersSearchMask = viewModel.getLastSearchMaskBeforeOpenFilters()
+        if (beforeFiltersSearchMask != null) {
+            viewModel.searchByClick(beforeFiltersSearchMask)
+            viewModel.setGoToFiltersFragment(false)
+        }
     }
 
     // обработка состояний поиска первой страницы
@@ -217,6 +217,17 @@ class SearchFragment : Fragment() {
         })
         // иконка кнопки фильтров
         binding.buttonFilters.setImageResource(viewModel.filtersOn().drawableId)
+        // переход в фильтры
+        bindOpenFilters()
+    }
+
+    private fun bindOpenFilters() {
+        binding.buttonFilters.setOnClickListener {
+            viewModel.setGoToFiltersFragment(true)
+            findNavController().navigate(
+                R.id.action_searchFragment_to_filterFragment,
+            )
+        }
     }
 
     private fun loadVacancies(vacancies: MutableList<VacancyBase>) {
