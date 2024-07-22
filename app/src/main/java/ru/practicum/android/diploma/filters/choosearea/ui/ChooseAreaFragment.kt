@@ -144,7 +144,7 @@ class ChooseAreaFragment : Fragment() {
 
     private fun checkIvImage(imageView: ImageView, imageResourceId: Int): Boolean {
         return imageView.drawable?.let {
-            return (it.constantState == ContextCompat.getDrawable(imageView.context, imageResourceId)?.constantState)
+            return it.constantState == ContextCompat.getDrawable(imageView.context, imageResourceId)?.constantState
         } ?: false
     }
 }
