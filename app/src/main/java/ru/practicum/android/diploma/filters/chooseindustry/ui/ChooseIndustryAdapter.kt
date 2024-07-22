@@ -13,7 +13,12 @@ class ChooseIndustryAdapter(private val industriesClickListener: IndustryClickLi
         fun onClick(item: IndustriesModel)
     }
 
-    var industries: ArrayList<IndustriesModel> = ArrayList()
+    var industries: List<IndustriesModel> = emptyList()
+
+    fun setItems(items: List<IndustriesModel>) {
+        industries = items
+        notifyDataSetChanged()
+    }
     private var selectedIndustry: IndustriesModel? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChooseIndustryViewHolder {

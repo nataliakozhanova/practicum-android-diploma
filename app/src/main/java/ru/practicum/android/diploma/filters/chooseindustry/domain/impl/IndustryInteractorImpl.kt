@@ -18,7 +18,7 @@ class IndustryInteractorImpl(
         return repository.getIndustries().map { result ->
             when (result) {
                 is Resource.Success -> {
-                    Pair(result.data, result.error)
+                    Pair(result.data?.let { IndustriesResult(it) }, result.error)
                 }
                 is Resource.Error -> {
                     Pair(null, result.error)
@@ -31,7 +31,7 @@ class IndustryInteractorImpl(
         return repository.searchIndustries(query).map { result ->
             when (result) {
                 is Resource.Success -> {
-                    Pair(result.data, result.error)
+                    Pair(result.data?.let { IndustriesResult(it) }, result.error)
                 }
                 is Resource.Error -> {
                     Pair(null, result.error)

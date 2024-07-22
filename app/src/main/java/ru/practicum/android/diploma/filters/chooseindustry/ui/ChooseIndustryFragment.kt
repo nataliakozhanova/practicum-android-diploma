@@ -58,9 +58,7 @@ class ChooseIndustryFragment : Fragment() {
                     binding.errorPlaceholderIv.isVisible = false
                     binding.errorPlaceholderTv.isVisible = false
                     binding.recyclerView.isVisible = true
-
-                    industriesAdapter.industries.clear()
-                    industriesAdapter.industries.addAll(state.industries)
+                    industriesAdapter.setItems(state.industries)
                     industriesAdapter.notifyDataSetChanged()
                 }
 
