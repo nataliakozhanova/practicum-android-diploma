@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.filters.settingsfilters.presentation.viewmo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryInteractor
@@ -82,6 +83,14 @@ class SettingsFiltersViewModel(
 
     fun getIndustrySettings(): IndustriesModel? {
         return chooseIndustryInteractor.getIndustrySettings()
+    }
+
+    fun getOriginalFilters(): FiltersAll {
+        return FiltersAll(
+            salary = salaryFilters,
+            area = getAreaSettings(),
+            industry = getIndustrySettings()
+        )
     }
 
 }

@@ -93,6 +93,7 @@ class SearchFragment : Fragment() {
         val setSearchMask = arguments?.getString(SET_SEARCH_MASK)
         if (setSearchMask != null) {
             searchMask = setSearchMask
+            binding.editTextSearchLayout.editText?.setText(searchMask)
         }
 
         // перезапускаем поиск, если пришел флаг

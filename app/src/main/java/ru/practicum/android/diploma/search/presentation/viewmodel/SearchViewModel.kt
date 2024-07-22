@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.data.ErrorType
 import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.data.Success
+import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.common.presentation.ButtonFiltersMode
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
@@ -50,6 +51,7 @@ class SearchViewModel(
     private var salaryFilters: SalaryFilters? = null
     private var areaFilters: AreaInfo? = null
     private var industryFilters: IndustriesModel? = null
+    private var allFilters: FiltersAll? = null
 
     private val _toast = SingleLiveEvent<String>()
     fun observeToast(): LiveData<String> = _toast
@@ -95,10 +97,6 @@ class SearchViewModel(
         }
     }
 
-    fun getLastSearchMask(): String? {
-        return latestSearchText
-    }
-
     // запуск поиска по требованию
     fun searchByClick(searchText: String) {
         initSearch()
@@ -128,6 +126,11 @@ class SearchViewModel(
         salaryFilters = filterSalaryInteractor.getSalaryFilters()
         areaFilters = filterAreaInteractor.getAreaSettings()
         industryFilters = filterIndustryInteractor.getIndustrySettings()
+        allFilters = FiltersAll(
+            salaryFilters,
+            areaFilters,
+            industryFilters
+        )
     }
 
     // соберем запрос с фильтрами и параметрами
