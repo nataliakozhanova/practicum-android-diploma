@@ -81,9 +81,11 @@ class SettingsFiltersFragment : Fragment() {
                 updateButtonsVisibility()
                 changeTextInputLayoutEndIconMode(s)
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // so what, detekt?
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 // so what, detekt?
             }
@@ -102,6 +104,13 @@ class SettingsFiltersFragment : Fragment() {
             resetFilters()
         }
         updateButtonsVisibility()
+        backArrowPress()
+    }
+
+    private fun backArrowPress() {
+        binding.arrowBackIv.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun updateButtonsVisibility() {
