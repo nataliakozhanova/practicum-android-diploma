@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.common.data.ErrorType
-import ru.practicum.android.diploma.common.data.NoInternetError
-import ru.practicum.android.diploma.common.data.Success
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.NoInternetError
+import ru.practicum.android.diploma.common.domain.Success
 import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyInteractor
 import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsInteractor
 import ru.practicum.android.diploma.vacancydetails.domain.models.DetailsNotFoundType
