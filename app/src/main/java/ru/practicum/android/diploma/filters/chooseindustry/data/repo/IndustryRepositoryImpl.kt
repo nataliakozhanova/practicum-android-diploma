@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.filters.chooseindustry.data.repo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.common.data.NetworkClient
-import ru.practicum.android.diploma.common.data.Resource
+import ru.practicum.android.diploma.common.domain.Resource
 import ru.practicum.android.diploma.filters.chooseindustry.data.dto.IndustrtesRequest
 import ru.practicum.android.diploma.filters.chooseindustry.data.dto.IndustryDto
 import ru.practicum.android.diploma.filters.chooseindustry.data.dto.IndustryResponse
