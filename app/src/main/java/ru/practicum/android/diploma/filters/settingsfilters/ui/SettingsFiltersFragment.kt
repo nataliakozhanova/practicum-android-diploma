@@ -64,9 +64,9 @@ class SettingsFiltersFragment : Fragment() {
                 R.id.action_filterFragment_to_chooseIndustryFragment,
             )
         }
-        binding.noSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
+        /*binding.noSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setOnlyWithSalary(isChecked)
-        }
+        }*/
 
         binding.filterArrowForward1.setOnClickListener {
             clearAreaSettings()
@@ -115,12 +115,12 @@ class SettingsFiltersFragment : Fragment() {
 
     private fun updateButtonsVisibility() {
         val isSalaryEntered = binding.industryTextInput.text?.isNotEmpty() == true
-        val isNoSalaryChecked = binding.noSalaryCheckbox.isChecked
+        val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != originalFilters?.checkbox ?: false
         val isAreaSet = viewModel.getAreaSettings() != null
         val isIndustrySet = viewModel.getIndustrySettings() != null
 
-        binding.applyButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
-        binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
+        binding.applyButton.isVisible = isSalaryEntered || isNoSalaryChanged || isAreaSet || isIndustrySet
+        binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChanged || isAreaSet || isIndustrySet
     }
 
     private fun changeTextInputLayoutEndIconMode(text: CharSequence?) {
