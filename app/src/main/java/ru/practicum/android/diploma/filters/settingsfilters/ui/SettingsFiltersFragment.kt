@@ -27,7 +27,7 @@ class SettingsFiltersFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SettingsFiltersViewModel>()
     private var originalSalaryFilters: SalaryFilters? = null
-    private val originalFilters: FiltersAll = viewModel.getOriginalFilters()
+    private var originalFilters: FiltersAll? = null
     private var lastSearchMask: String? = null
 
     companion object {
@@ -53,6 +53,7 @@ class SettingsFiltersFragment : Fragment() {
         renderSavedIndustrySettings()
         changeTextInputLayoutEndIconMode(binding.industryTextInput.text)
         originalSalaryFilters = viewModel.getSalaryFilters()
+        originalFilters = viewModel.getOriginalFilters()
         lastSearchMask = arguments?.getString(LAST_SEARCH_MASK)
         updateButtonsVisibility()
     }
@@ -135,10 +136,10 @@ class SettingsFiltersFragment : Fragment() {
         binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
 
         // показать кнопку применить если что-то поменялось
-        val isSalaryChanged = binding.industryTextInput.text.toString() != originalFilters.salary?.salary
-        val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != originalFilters.salary?.checkbox
-        val isAreaChanged = viewModel.getAreaSettings()?.id != originalFilters.area?.id
-        val isIndustryChanged = viewModel.getIndustrySettings()?.id != originalFilters.industry?.id
+        val isSalaryChanged = binding.industryTextInput.text.toString() != originalFilters?.salary?.salary
+        val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != originalFilters?.salary?.checkbox
+        val isAreaChanged = viewModel.getAreaSettings()?.id != originalFilters?.area?.id
+        val isIndustryChanged = viewModel.getIndustrySettings()?.id != originalFilters?.industry?.id
         binding.applyButton.isVisible = isSalaryChanged || isNoSalaryChanged || isAreaChanged || isIndustryChanged
     }
 
