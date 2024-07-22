@@ -15,6 +15,8 @@ import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.common.presentation.ButtonFiltersMode
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
+import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryInteractor
+import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
 import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
@@ -31,6 +33,7 @@ class SearchViewModel(
     private val searchInteractor: SearchInteractor,
     private val filterSalaryInteractor: SettingsInteractor,
     private val filterAreaInteractor: ChooseAreaInteractor,
+    private val filterIndustryInteractor: IndustryInteractor,
 ) : ViewModel() {
     companion object {
         const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
@@ -46,6 +49,7 @@ class SearchViewModel(
     private var searchJob: Job? = null
     private var salaryFilters: SalaryFilters? = null
     private var areaFilters: AreaInfo? = null
+    private var industryFilters: IndustriesModel? = null
 
     private val _toast = SingleLiveEvent<String>()
     fun observeToast(): LiveData<String> = _toast
@@ -119,6 +123,7 @@ class SearchViewModel(
     private fun getFilters() {
         salaryFilters = filterSalaryInteractor.getSalaryFilters()
         areaFilters = filterAreaInteractor.getAreaSettings()
+        industryFilters = filterIndustryInteractor.getIndustrySettings()
     }
 
     // соберем запрос с фильтрами и параметрами
@@ -166,9 +171,13 @@ class SearchViewModel(
         return areaFilters != null && areaFilters?.id?.isNotEmpty() == true
     }
 
+    private fun industryFiltersOn(): Boolean {
+        return industryFilters != null && industryFilters?.id?.isNotEmpty() == true
+    }
+
     fun filtersOn(): ButtonFiltersMode {
         getFilters()
-        return if (salaryFiltersOn() || areaFiltersOn()) {
+        return if (salaryFiltersOn() || areaFiltersOn() || industryFiltersOn()) {
             ButtonFiltersMode.ON
         } else {
             ButtonFiltersMode.OFF
