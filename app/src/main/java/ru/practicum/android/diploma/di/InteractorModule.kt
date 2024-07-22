@@ -34,7 +34,4 @@ val interactorModule = module {
     factory<SettingsInteractor> {
         SettingsInteractorImpl(get())
     }
-    factory<IndustryInteractor> {
-        IndustryInteractorImpl(get(), get())
-    }
 }
