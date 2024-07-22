@@ -19,6 +19,19 @@ class ChooseAreaRepositoryImpl(
     private val networkClient: NetworkClient,
     private val areasStorageApi: AreasStorageApi
 ) : ChooseAreaRepository {
+
+    companion object {
+        const val OTHER_REGIONS = "Другие регионы"
+    }
+
+    private val comparator = Comparator { o1: CountryInfo, o2: CountryInfo ->
+        when {
+            o1.name == OTHER_REGIONS -> 1
+            o2.name == OTHER_REGIONS -> -1
+            else -> 0
+        }
+    }
+
     override fun getCountries(): Flow<Resource<CountriesResult?>> = flow {
         when (val response = networkClient.doRequest(AreasRequest())) {
             is AreasCatalogResponse -> {
@@ -26,7 +39,7 @@ class ChooseAreaRepositoryImpl(
                     Resource
                         .Success(
                             CountriesResult(
-                                countries = response.areasCatalog.map(::convertCountry)
+                                countries = response.areasCatalog.map(::convertCountry).sortedWith(comparator)
                             )
                         )
                 )
