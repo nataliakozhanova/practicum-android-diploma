@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.filters.settingsfilters.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -136,7 +137,9 @@ class SettingsFiltersFragment : Fragment() {
         binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
 
         // показать кнопку применить если что-то поменялось
-        val isSalaryChanged = binding.industryTextInput.text.toString() != originalFilters?.salary?.salary
+        val salaryInputValue = binding.industryTextInput.text.toString()
+        val originalSalaryValue = originalFilters?.salary?.salary ?: ""
+        val isSalaryChanged = salaryInputValue != originalSalaryValue
         val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != originalFilters?.salary?.checkbox
         val isAreaChanged = viewModel.getAreaSettings()?.id != originalFilters?.area?.id
         val isIndustryChanged = viewModel.getIndustrySettings()?.id != originalFilters?.industry?.id
