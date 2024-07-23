@@ -97,4 +97,8 @@ class SettingsFiltersViewModel(
         settingsInteractor.deleteStashedFilters()
     }
 
+    fun hasStashedFilters(): Boolean {
+        return null != settingsInteractor.getStashedFilters()
+    }
+
 }

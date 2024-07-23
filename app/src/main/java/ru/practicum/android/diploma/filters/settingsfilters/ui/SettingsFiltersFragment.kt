@@ -154,7 +154,8 @@ class SettingsFiltersFragment : Fragment() {
         val isAreaSet = viewModel.getAreaSettings() != null
         val isIndustrySet = viewModel.getIndustrySettings() != null
         binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
-
+        // есть спрятанные фильтры
+        val hasStashedFilters = viewModel.hasStashedFilters()
         // показать кнопку применить если что-то поменялось
         val salaryInputValue = binding.industryTextInput.text.toString()
         val originalSalaryValue = originalFilters?.salary?.salary ?: ""
@@ -162,7 +163,8 @@ class SettingsFiltersFragment : Fragment() {
         val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != originalFilters?.salary?.checkbox
         val isAreaChanged = viewModel.getAreaSettings()?.id != originalFilters?.area?.id
         val isIndustryChanged = viewModel.getIndustrySettings()?.id != originalFilters?.industry?.id
-        binding.applyButton.isVisible = isSalaryChanged || isNoSalaryChanged || isAreaChanged || isIndustryChanged
+        binding.applyButton.isVisible = isSalaryChanged || isNoSalaryChanged || isAreaChanged
+            || isIndustryChanged || hasStashedFilters
     }
 
     private fun changeTextInputLayoutEndIconMode(text: CharSequence?) {
