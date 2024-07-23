@@ -49,6 +49,18 @@ class ChooseAreaFragment : Fragment() {
             )
         }
 
+        binding.applyBt.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.arrowBackIv.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        setBindingArrows()
+    }
+
+    private fun setBindingArrows() {
         binding.countryArrowAndCleanIv.setOnClickListener {
             if (checkIvImage(binding.countryArrowAndCleanIv, R.drawable.clear_24px_input_edittext_button)) {
                 viewModelChooseArea.deleteCountrySettings()
@@ -72,14 +84,6 @@ class ChooseAreaFragment : Fragment() {
                     ChooseRegionFragment.createArgs(areaSettings?.countryInfo?.id)
                 )
             }
-        }
-
-        binding.applyBt.setOnClickListener {
-            findNavController().navigateUp()
-        }
-
-        binding.arrowBackIv.setOnClickListener {
-            findNavController().navigateUp()
         }
     }
 
