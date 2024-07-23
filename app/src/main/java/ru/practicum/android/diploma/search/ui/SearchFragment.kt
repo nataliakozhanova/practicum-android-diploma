@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.search.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -364,6 +365,11 @@ class SearchFragment : Fragment() {
             placeHolderImage.isVisible = true
             placeHolderText.isVisible = true
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Log.d("mine", "Resume ($searchMask)")
     }
 
     private fun openVacancy(vacancy: VacancyBase) {
