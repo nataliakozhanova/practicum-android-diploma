@@ -260,6 +260,7 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        arguments?.clear()
         _binding = null
     }
 
@@ -364,11 +365,6 @@ class SearchFragment : Fragment() {
             placeHolderImage.isVisible = true
             placeHolderText.isVisible = true
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Log.d("mine", "Resume ($searchMask)")
     }
 
     private fun openVacancy(vacancy: VacancyBase) {
