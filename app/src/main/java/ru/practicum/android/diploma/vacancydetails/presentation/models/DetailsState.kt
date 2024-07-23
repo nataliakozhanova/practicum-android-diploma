@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.vacancydetails.presentation.models
 
-import ru.practicum.android.diploma.common.data.ErrorType
+import ru.practicum.android.diploma.common.domain.ErrorType
 import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 
 sealed interface DetailsState {

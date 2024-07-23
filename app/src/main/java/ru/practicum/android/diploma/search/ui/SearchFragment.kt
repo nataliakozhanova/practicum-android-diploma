@@ -21,8 +21,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.data.ErrorType
-import ru.practicum.android.diploma.common.data.NoInternetError
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.common.presentation.EditTextSearchIcon
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -43,6 +43,7 @@ class SearchFragment : Fragment() {
 
         private const val RESTART_FLAG = "restartLastSearch"
         private const val SET_SEARCH_MASK = "setSearchMask"
+
         fun createArgs(restartLastSearch: Boolean, searchMask: String?): Bundle =
             bundleOf(RESTART_FLAG to restartLastSearch, SET_SEARCH_MASK to searchMask)
     }
@@ -85,7 +86,6 @@ class SearchFragment : Fragment() {
         viewModel.observeToast().observe(viewLifecycleOwner) {
             showToast(it)
         }
-
         // настроим слежение за объектами фрагмента
         setBindings()
 
@@ -93,6 +93,7 @@ class SearchFragment : Fragment() {
         val setSearchMask = arguments?.getString(SET_SEARCH_MASK)
         if (setSearchMask != null) {
             searchMask = setSearchMask
+            binding.editTextSearchLayout.editText?.setText(searchMask)
         }
 
         // перезапускаем поиск, если пришел флаг
@@ -104,6 +105,7 @@ class SearchFragment : Fragment() {
 
     // обработка состояний поиска первой страницы
     private fun searchStateCheck(state: SearchState) {
+        // Log.d("mine", "State = ${state.javaClass}")
         when (state) {
             SearchState.Default -> showStartPage()
 
@@ -132,6 +134,7 @@ class SearchFragment : Fragment() {
 
     // обработка состояний поиска следующих страниц
     private fun nextPageStateCheck(state: SearchState) {
+        // Log.d("mine", "nextState = ${state.javaClass}")
         when (state) {
             is SearchState.Default -> {
                 showNextPagePreloader(false)
@@ -170,16 +173,10 @@ class SearchFragment : Fragment() {
         binding.editTextSearchLayout.editText?.doOnTextChanged { text, _, _, _ ->
             searchMask = text.toString().trim()
             // иконка в поле поиска
-            binding.editTextSearchLayout.endIconDrawable = ContextCompat.getDrawable(
-                requireContext(),
-                if (searchMask.isEmpty()) {
-                    EditTextSearchIcon.SEARCH_ICON.drawableId
-                } else {
-                    EditTextSearchIcon.CLEAR_ICON.drawableId
-                }
-            )
+            setEditEndIcon()
             if (searchMask.trim().isEmpty()) {
                 viewModel.clearSearch()
+                showStartPage()
                 showNextPagePreloader(false)
                 nextPageRequestSending = true
             } // без условия hasFocus срабатывает при возврате на фрагмент
@@ -205,10 +202,22 @@ class SearchFragment : Fragment() {
         binding.editTextSearchLayout.editText?.setOnEditorActionListener { _, actionId, _ ->
             // поиск по нажатию Done на клавиатуре
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.deletePreviousFilters()
                 viewModel.searchByClick(binding.tietSearchMask.text.toString())
             }
             false
         }
+    }
+
+    private fun setEditEndIcon() {
+        binding.editTextSearchLayout.endIconDrawable = ContextCompat.getDrawable(
+            requireContext(),
+            if (searchMask.isEmpty()) {
+                EditTextSearchIcon.SEARCH_ICON.drawableId
+            } else {
+                EditTextSearchIcon.CLEAR_ICON.drawableId
+            }
+        )
     }
 
     // настроим слежку за изменениями во фрагменте
@@ -355,6 +364,11 @@ class SearchFragment : Fragment() {
             placeHolderImage.isVisible = true
             placeHolderText.isVisible = true
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Log.d("mine", "Resume ($searchMask)")
     }
 
     private fun openVacancy(vacancy: VacancyBase) {

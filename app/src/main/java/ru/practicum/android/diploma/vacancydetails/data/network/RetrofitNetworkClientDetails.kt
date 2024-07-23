@@ -5,11 +5,11 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.common.data.BadRequestError
+import ru.practicum.android.diploma.common.domain.BadRequestError
 import ru.practicum.android.diploma.common.data.NetworkClient
-import ru.practicum.android.diploma.common.data.NoInternetError
+import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.data.ResponseBase
-import ru.practicum.android.diploma.common.data.ServerInternalError
+import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.util.isConnected
 import ru.practicum.android.diploma.vacancydetails.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.vacancydetails.data.dto.VacancyDetailsResponse

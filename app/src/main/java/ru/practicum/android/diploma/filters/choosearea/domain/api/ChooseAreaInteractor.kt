@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.filters.choosearea.domain.api
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.common.data.ErrorType
+import ru.practicum.android.diploma.common.domain.ErrorType
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasResult
 import ru.practicum.android.diploma.filters.choosearea.domain.models.CountriesResult
