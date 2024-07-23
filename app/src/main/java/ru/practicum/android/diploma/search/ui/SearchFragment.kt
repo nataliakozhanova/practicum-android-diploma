@@ -366,6 +366,11 @@ class SearchFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Log.d("mine", "Resume ($searchMask)")
+    }
+
     private fun openVacancy(vacancy: VacancyBase) {
         findNavController().navigate(
             R.id.action_searchFragment_to_vacancyDetailsFragment,
