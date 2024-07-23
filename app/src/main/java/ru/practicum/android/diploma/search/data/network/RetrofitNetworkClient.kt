@@ -90,6 +90,8 @@ class RetrofitNetworkClient(
         if (!searchRequest.filters.industryId.isNullOrEmpty()) {
             options[HhQueryOptions.INDUSTRY.key] = "${searchRequest.filters.industryId}"
         }
+
+        Log.d("mine", "searchRequest = $searchRequest")
         return options
     }
 

@@ -147,8 +147,15 @@ class SearchViewModel(
     // соберем запрос с фильтрами и параметрами
     private fun makeSearchRequest(expression: String): VacancySearchRequest {
         loadFilters(useLastChanges = false)
+
+        Log.d("mine", "COUNTRY = ${activeFilters?.area?.countryInfo?.id}")
+        Log.d("mine", "COUNTRY = ${activeFilters?.area?.countryInfo?.id}")
         val searchFilters = Filters(
-            areaId = activeFilters?.area?.id,
+            areaId = if (activeFilters?.area?.id.isNullOrEmpty()) {
+                activeFilters?.area?.countryInfo?.id
+            } else {
+                activeFilters?.area?.id
+            },
             industryId = activeFilters?.industry?.id,
             salary = activeFilters?.salary?.salary?.toIntOrNull(),
             onlyWithSalary = activeFilters?.salary?.checkbox ?: false,
@@ -186,9 +193,9 @@ class SearchViewModel(
     private fun salaryFiltersOn(): Boolean {
         return latestFilters?.salary != null
             && (
-                latestFilters?.salary?.checkbox == true
-                    || latestFilters?.salary?.salary != null
-                )
+            latestFilters?.salary?.checkbox == true
+                || latestFilters?.salary?.salary != null
+            )
     }
 
     private fun areaFiltersOn(): Boolean {
