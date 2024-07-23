@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.common.data.ErrorType
-import ru.practicum.android.diploma.common.data.Success
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.Success
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryInteractor
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesResult

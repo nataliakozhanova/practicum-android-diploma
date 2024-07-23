@@ -3,8 +3,8 @@ package ru.practicum.android.diploma.vacancydetails.domain.impl
 import android.content.Intent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.practicum.android.diploma.common.data.ErrorType
-import ru.practicum.android.diploma.common.data.Resource
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.Resource
 import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsInteractor
 import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsRepository
 import ru.practicum.android.diploma.vacancydetails.domain.api.ExternalNavigator

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.common.data.ErrorType
-import ru.practicum.android.diploma.common.data.Success
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.Success
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasResult
@@ -105,7 +105,7 @@ class ChooseRegionViewModel(
         chooseAreaInteractor.saveAreaSettings(AreaInfo(id = area.id, name = area.name, countryInfo = area.countryInfo))
     }
 
-    // метод для поиска областей
+    // метод для локальной фильтрации списка регионов
     fun searchAreas(query: String) {
         val filteredAreas = if (query.isEmpty()) {
             allAreas

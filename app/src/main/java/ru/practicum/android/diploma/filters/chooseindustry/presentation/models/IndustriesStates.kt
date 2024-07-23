@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.filters.chooseindustry.presentation.models
 
-import ru.practicum.android.diploma.common.data.ErrorType
+import ru.practicum.android.diploma.common.domain.ErrorType
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 
 sealed interface IndustriesStates {

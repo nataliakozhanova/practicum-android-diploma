@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.filters.settingsfilters.presentation.viewmo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryInteractor
@@ -16,12 +17,18 @@ class SettingsFiltersViewModel(
     private val chooseIndustryInteractor: IndustryInteractor
 ) : ViewModel() {
 
+    private var originalFilters: FiltersAll? = null
     private var salaryFilters = settingsInteractor.getSalaryFilters()
 
     private val _state = MutableLiveData<SalaryFilters?>()
     fun observeFilters(): LiveData<SalaryFilters?> = _state
 
     init {
+        originalFilters = FiltersAll(
+            salary = salaryFilters,
+            area = getAreaSettings(),
+            industry = getIndustrySettings()
+        )
         _state.value = salaryFilters
     }
 
@@ -77,11 +84,27 @@ class SettingsFiltersViewModel(
     }
 
     fun getSalaryFilters(): SalaryFilters? {
-        return salaryFilters
+        return settingsInteractor.getSalaryFilters()
     }
 
     fun getIndustrySettings(): IndustriesModel? {
         return chooseIndustryInteractor.getIndustrySettings()
     }
 
+    fun getOriginalFilters(): FiltersAll? {
+        return originalFilters
+    }
+
+    fun savePreviousFilters() {
+        settingsInteractor.savePreviousFilters(originalFilters)
+    }
+
+    fun deletePreviousFilters() {
+        settingsInteractor.deletePreviousFilters()
+    }
+
+    fun hasPreviousFilters(): Boolean {
+        val previous = settingsInteractor.getPreviousFilters()
+        return previous != null
+    }
 }
