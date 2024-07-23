@@ -84,7 +84,7 @@ class SettingsFiltersViewModel(
     }
 
     fun getSalaryFilters(): SalaryFilters? {
-        return salaryFilters
+        return settingsInteractor.getSalaryFilters()
     }
 
     fun getIndustrySettings(): IndustriesModel? {
@@ -94,11 +94,6 @@ class SettingsFiltersViewModel(
     fun getOriginalFilters(): FiltersAll? {
         return originalFilters
     }
-
-    /*private fun filtersAreEmpty(filters: FiltersAll): Boolean {
-        return filters.salary?.salary == null && filters.salary?.checkbox == false
-            && filters.area == null && filters.industry == null
-    }*/
 
     fun savePreviousFilters() {
         settingsInteractor.savePreviousFilters(originalFilters)
