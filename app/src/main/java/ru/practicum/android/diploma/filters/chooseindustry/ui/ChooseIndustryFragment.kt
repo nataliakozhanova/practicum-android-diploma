@@ -95,7 +95,10 @@ class ChooseIndustryFragment : Fragment() {
         }
 
         viewModelChooseIndustry.getIndustry()
+        setBindings()
+    }
 
+    private fun setBindings() {
         binding.applyBt.setOnClickListener {
             viewModelChooseIndustry.saveSelectedIndustry()
             findNavController().navigateUp()

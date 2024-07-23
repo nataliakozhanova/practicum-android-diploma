@@ -24,7 +24,7 @@ import ru.practicum.android.diploma.search.ui.SearchFragment
 class SettingsFiltersFragment : Fragment() {
 
     private var _binding: FragmentFiltersSettingsBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
     private val viewModel by viewModel<SettingsFiltersViewModel>()
     private var originalSalaryFilters: SalaryFilters? = null
     private var originalFilters: FiltersAll? = null
@@ -63,41 +63,15 @@ class SettingsFiltersFragment : Fragment() {
         updateButtonsVisibility()
     }
 
-    private fun openAreaSettings() {
-        findNavController().navigate(
-            R.id.action_filterFragment_to_chooseAreaFragment,
-        )
-    }
-
-    private fun openIndustrySettings() {
-        findNavController().navigate(
-            R.id.action_filterFragment_to_chooseIndustryFragment,
-        )
-    }
-
-    private fun onClickFilterArrows() {
-        binding.filterArrowForward1.setOnClickListener {
-            if (binding.filterArrowForward1.tag == FilterArrow.FORWARD.drawableId) {
-                openAreaSettings()
-            } else {
-                clearAreaSettings()
-            }
-        }
-        binding.filterArrowForward2.setOnClickListener {
-            if (binding.filterArrowForward2.tag == FilterArrow.FORWARD.drawableId) {
-                openIndustrySettings()
-            } else {
-                clearIndustrySettings()
-            }
-        }
-    }
-
     private fun setBindings() {
+        val binder = SettingsFiltersBinding(this)
+        binder.onClickFilterArrows()
+
         binding.placeToWorkCl.setOnClickListener {
-            openAreaSettings()
+            binder.openAreaSettings()
         }
         binding.constraintIndustry.setOnClickListener {
-            openIndustrySettings()
+            binder.openIndustrySettings()
         }
 
         binding.noSalaryCheckbox.setOnClickListener {
@@ -105,9 +79,6 @@ class SettingsFiltersFragment : Fragment() {
             updateButtonsVisibility()
         }
 
-        onClickFilterArrows()
-
-        // How about this, Nikita?
         binding.salaryLayout.editText?.doOnTextChanged { text, _, _, _ ->
             updateButtonsVisibility()
             changeTextInputLayoutEndIconMode(text)
@@ -236,13 +207,13 @@ class SettingsFiltersFragment : Fragment() {
         }
     }
 
-    private fun clearAreaSettings() {
+    fun clearAreaSettings() {
         viewModel.clearAreaSettings()
         renderSavedAreaSettings()
         updateButtonsVisibility()
     }
 
-    private fun clearIndustrySettings() {
+    fun clearIndustrySettings() {
         viewModel.clearIndustrySettings()
         renderSavedIndustrySettings()
         updateButtonsVisibility()
