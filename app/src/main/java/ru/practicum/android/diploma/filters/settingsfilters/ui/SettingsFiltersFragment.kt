@@ -282,7 +282,7 @@ class SettingsFiltersFragment : Fragment() {
         // Сброс всех фильтров
         viewModel.resetFilters()
         viewModel.deleteStashedFilters()
-        //originalFilters = viewModel.getOriginalFilters()
+        // originalFilters = viewModel.getOriginalFilters()
         renderSavedAreaSettings()
         renderSavedIndustrySettings()
         renderSavedSalarySettings()
