@@ -95,11 +95,6 @@ class SettingsFiltersViewModel(
         return originalFilters
     }
 
-    /*private fun filtersAreEmpty(filters: FiltersAll): Boolean {
-        return filters.salary?.salary == null && filters.salary?.checkbox == false
-            && filters.area == null && filters.industry == null
-    }*/
-
     fun savePreviousFilters() {
         settingsInteractor.savePreviousFilters(originalFilters)
     }

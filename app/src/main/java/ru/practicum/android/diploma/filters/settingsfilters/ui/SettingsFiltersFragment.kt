@@ -56,7 +56,6 @@ class SettingsFiltersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBindings()
-        setObserves()
         renderSavedAreaSettings()
         renderSavedSalarySettings()
         renderSavedIndustrySettings()
@@ -65,13 +64,6 @@ class SettingsFiltersFragment : Fragment() {
         originalFilters = viewModel.getOriginalFilters()
         lastSearchMask = arguments?.getString(LAST_SEARCH_MASK)
         updateButtonsVisibility()
-    }
-
-    private fun setObserves() {
-        viewModel.observeFilters().observe(viewLifecycleOwner) { state ->
-            binding.noSalaryCheckbox.isChecked = state?.checkbox ?: false
-            binding.industryTextInput.setText(state?.salary)
-        }
     }
 
     private fun openAreaSettings() {
@@ -111,10 +103,15 @@ class SettingsFiltersFragment : Fragment() {
             openIndustrySettings()
         }
 
-        binding.noSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setOnlyWithSalary(isChecked)
+        binding.noSalaryCheckbox.setOnClickListener {
+            viewModel.setOnlyWithSalary(binding.noSalaryCheckbox.isChecked)
             updateButtonsVisibility()
         }
+
+        /*binding.noSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setOnlyWithSalary(isChecked)
+            updateButtonsVisibility()
+        }*/
 
         onClickFilterArrows()
 
@@ -286,7 +283,6 @@ class SettingsFiltersFragment : Fragment() {
         // Сброс всех фильтров
         viewModel.resetFilters()
         viewModel.deletePreviousFilters()
-        // originalFilters = viewModel.getOriginalFilters()
         renderSavedAreaSettings()
         renderSavedIndustrySettings()
         renderSavedSalarySettings()
