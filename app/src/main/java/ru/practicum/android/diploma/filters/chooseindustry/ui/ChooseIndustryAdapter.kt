@@ -19,6 +19,7 @@ class ChooseIndustryAdapter(private val industriesClickListener: IndustryClickLi
         industries = items
         notifyDataSetChanged()
     }
+
     private var selectedIndustry: IndustriesModel? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChooseIndustryViewHolder {
@@ -46,3 +47,5 @@ class ChooseIndustryAdapter(private val industriesClickListener: IndustryClickLi
         notifyItemChanged(industries.indexOf(industry))
     }
 }
+
+

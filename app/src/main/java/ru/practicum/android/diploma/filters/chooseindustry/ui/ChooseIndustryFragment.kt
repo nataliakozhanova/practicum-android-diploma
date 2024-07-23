@@ -16,6 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentChoosingIndustryBinding
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
+import ru.practicum.android.diploma.filters.chooseindustry.presentation.models.ChosenStates
 import ru.practicum.android.diploma.filters.chooseindustry.presentation.models.IndustriesStates
 import ru.practicum.android.diploma.filters.chooseindustry.presentation.viewmodel.ChooseIndustryViewModel
 import ru.practicum.android.diploma.util.debounce
@@ -59,13 +60,14 @@ class ChooseIndustryFragment : Fragment() {
                     binding.errorPlaceholderTv.isVisible = false
                     binding.recyclerView.isVisible = true
                     industriesAdapter.setItems(state.industries)
-                    industriesAdapter.notifyDataSetChanged()
                 }
 
                 is IndustriesStates.Error -> {
                     binding.errorIndustryCl.isVisible = true
                     binding.errorPlaceholderIv.isVisible = true
                     binding.errorPlaceholderTv.isVisible = true
+
+
                 }
 
                 is IndustriesStates.Empty -> {
@@ -78,6 +80,13 @@ class ChooseIndustryFragment : Fragment() {
                 is IndustriesStates.Loading -> {
                     binding.industryProgressBar.isVisible = true
                 }
+            }
+        }
+
+        viewModelChooseIndustry.observeIndustryStateChosen().observe(viewLifecycleOwner) { state: ChosenStates ->
+            when (state) {
+                is ChosenStates.Chosen -> binding.applyBt.isVisible = true
+                is ChosenStates.NotChosen -> binding.applyBt.isVisible = false
             }
         }
 
@@ -120,6 +129,7 @@ class ChooseIndustryFragment : Fragment() {
             }
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
