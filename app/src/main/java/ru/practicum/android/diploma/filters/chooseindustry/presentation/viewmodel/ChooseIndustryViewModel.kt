@@ -21,7 +21,6 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
     private val _stateChosen: MutableLiveData<ChosenStates> = MutableLiveData()
     fun observeIndustryStateChosen(): LiveData<ChosenStates> = _stateChosen
 
-
     private var selectedIndustry: IndustriesModel? = null
     private var allIndustries: List<IndustriesModel> = listOf()
 
@@ -33,7 +32,6 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
             }
         }
     }
-
 
     private fun processResult(result: IndustriesResult?, errorType: ErrorType) {
         when (errorType) {

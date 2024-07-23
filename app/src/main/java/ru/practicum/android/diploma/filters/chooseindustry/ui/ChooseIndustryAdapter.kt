@@ -47,5 +47,3 @@ class ChooseIndustryAdapter(private val industriesClickListener: IndustryClickLi
         notifyItemChanged(industries.indexOf(industry))
     }
 }
-
-

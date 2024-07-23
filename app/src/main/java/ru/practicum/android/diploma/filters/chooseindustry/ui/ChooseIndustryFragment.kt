@@ -66,8 +66,6 @@ class ChooseIndustryFragment : Fragment() {
                     binding.errorIndustryCl.isVisible = true
                     binding.errorPlaceholderIv.isVisible = true
                     binding.errorPlaceholderTv.isVisible = true
-
-
                 }
 
                 is IndustriesStates.Empty -> {
@@ -129,7 +127,6 @@ class ChooseIndustryFragment : Fragment() {
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
