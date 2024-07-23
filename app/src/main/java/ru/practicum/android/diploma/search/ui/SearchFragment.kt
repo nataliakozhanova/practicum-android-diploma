@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.search.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,9 +44,8 @@ class SearchFragment : Fragment() {
         private const val RESTART_FLAG = "restartLastSearch"
         private const val SET_SEARCH_MASK = "setSearchMask"
 
-        // private const val SET_FILTERS = "setFilters"
-        fun createArgs(restartLastSearch: Boolean, searchMask: String?/*, setFilters: FiltersAll*/): Bundle =
-            bundleOf(RESTART_FLAG to restartLastSearch, SET_SEARCH_MASK to searchMask/*, SET_FILTERS to setFilters*/)
+        fun createArgs(restartLastSearch: Boolean, searchMask: String?): Bundle =
+            bundleOf(RESTART_FLAG to restartLastSearch, SET_SEARCH_MASK to searchMask)
     }
 
     private var _binding: FragmentSearchBinding? = null
@@ -108,6 +106,7 @@ class SearchFragment : Fragment() {
 
     // обработка состояний поиска первой страницы
     private fun searchStateCheck(state: SearchState) {
+        // Log.d("mine", "State = ${state.javaClass}")
         when (state) {
             SearchState.Default -> showStartPage()
 
@@ -136,6 +135,7 @@ class SearchFragment : Fragment() {
 
     // обработка состояний поиска следующих страниц
     private fun nextPageStateCheck(state: SearchState) {
+        // Log.d("mine", "nextState = ${state.javaClass}")
         when (state) {
             is SearchState.Default -> {
                 showNextPagePreloader(false)
@@ -173,8 +173,6 @@ class SearchFragment : Fragment() {
         // следим за изменением в поисковой строке
         binding.editTextSearchLayout.editText?.doOnTextChanged { text, _, _, _ ->
             searchMask = text.toString().trim()
-
-            Log.d("mine", "onTextChanged($text)")
             // иконка в поле поиска
             binding.editTextSearchLayout.endIconDrawable = ContextCompat.getDrawable(
                 requireContext(),

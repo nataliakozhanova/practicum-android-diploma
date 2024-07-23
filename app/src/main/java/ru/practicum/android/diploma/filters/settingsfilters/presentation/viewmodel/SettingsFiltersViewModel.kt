@@ -24,7 +24,11 @@ class SettingsFiltersViewModel(
     fun observeFilters(): LiveData<SalaryFilters?> = _state
 
     init {
-        originalFilters = getOriginalFilters()
+        originalFilters = FiltersAll(
+            salary = salaryFilters,
+            area = getAreaSettings(),
+            industry = getIndustrySettings()
+        )
         _state.value = salaryFilters
     }
 
@@ -87,12 +91,8 @@ class SettingsFiltersViewModel(
         return chooseIndustryInteractor.getIndustrySettings()
     }
 
-    fun getOriginalFilters(): FiltersAll {
-        return FiltersAll(
-            salary = salaryFilters,
-            area = getAreaSettings(),
-            industry = getIndustrySettings()
-        )
+    fun getOriginalFilters(): FiltersAll? {
+        return originalFilters
     }
 
     fun saveStashedFilters() {

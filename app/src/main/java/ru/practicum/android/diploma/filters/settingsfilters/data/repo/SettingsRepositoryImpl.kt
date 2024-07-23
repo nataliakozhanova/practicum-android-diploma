@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filters.settingsfilters.data.repo
 
-import android.util.Log
 import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.filters.settingsfilters.data.storage.SettingsStorageApi
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsRepository
@@ -26,7 +25,6 @@ class SettingsRepositoryImpl(private val settingsStorageApi: SettingsStorageApi)
     }
 
     override fun deleteStashedFilters() {
-        Log.d("mine", "delete Stashed")
         settingsStorageApi.removeStashedFilters()
     }
 }
