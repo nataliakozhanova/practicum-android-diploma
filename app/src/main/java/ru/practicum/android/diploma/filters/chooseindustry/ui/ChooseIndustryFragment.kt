@@ -65,7 +65,8 @@ class ChooseIndustryFragment : Fragment() {
                     binding.errorPlaceholderIv.isVisible = false
                     binding.errorPlaceholderTv.isVisible = false
                     binding.recyclerView.isVisible = true
-                    industriesAdapter.setItems(state.industries)
+                    val selectedIndustry = viewModelChooseIndustry.getSelectedIndustry()
+                    industriesAdapter.setItems(state.industries, selectedIndustry)
                 }
 
                 is IndustriesStates.Error -> {

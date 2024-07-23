@@ -15,8 +15,9 @@ class ChooseIndustryAdapter(private val industriesClickListener: IndustryClickLi
 
     var industries: List<IndustriesModel> = emptyList()
 
-    fun setItems(items: List<IndustriesModel>) {
+    fun setItems(items: List<IndustriesModel>, industrySelected: IndustriesModel?) {
         industries = items
+        selectedIndustry = industrySelected
         notifyDataSetChanged()
     }
 

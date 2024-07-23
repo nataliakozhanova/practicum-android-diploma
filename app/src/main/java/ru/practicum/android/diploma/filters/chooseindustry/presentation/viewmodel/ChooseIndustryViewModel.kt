@@ -75,6 +75,8 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
         }
     }
 
+    fun getSelectedIndustry(): IndustriesModel? = interactor.getIndustrySettings()
+
     fun searchIndustries(query: String) {
         val filteredIndustries = if (query.isEmpty()) {
             allIndustries
