@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -119,37 +118,28 @@ class SearchViewModel(
         }
     }
 
+    fun deletePreviousFilters() {
+        settingsInteractor.deletePreviousFilters()
+    }
+
     // для поиска загружаем активные фильтры - предыдущие либо последние
     private fun loadFilters(useLastChanges: Boolean) {
-        Log.d("mine", "loadFilters($useLastChanges)")
         val previousFilters = settingsInteractor.getPreviousFilters()
         latestFilters = FiltersAll(
             settingsInteractor.getSalaryFilters(),
             filterAreaInteractor.getAreaSettings(),
             filterIndustryInteractor.getIndustrySettings()
         )
-
-        var t1 = "     "
-        var t2 = "     "
-        if (!useLastChanges && previousFilters != null) {
-            activeFilters = previousFilters
-            t2 = "*****"
+        activeFilters = if (!useLastChanges && previousFilters != null) {
+            previousFilters
         } else {
-            activeFilters = latestFilters
-            t1 = "*****"
+            latestFilters
         }
-
-        Log.d("mine", "$t1 latestFilters = $latestFilters")
-        Log.d("mine", "$t2 previousFilters = $previousFilters")
-
     }
 
     // соберем запрос с фильтрами и параметрами
     private fun makeSearchRequest(expression: String): VacancySearchRequest {
         loadFilters(useLastChanges = false)
-
-        Log.d("mine", "COUNTRY = ${activeFilters?.area?.countryInfo?.id}")
-        Log.d("mine", "COUNTRY = ${activeFilters?.area?.countryInfo?.id}")
         val searchFilters = Filters(
             areaId = if (activeFilters?.area?.id.isNullOrEmpty()) {
                 activeFilters?.area?.countryInfo?.id

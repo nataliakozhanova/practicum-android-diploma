@@ -210,6 +210,7 @@ class SearchFragment : Fragment() {
         binding.editTextSearchLayout.editText?.setOnEditorActionListener { _, actionId, _ ->
             // поиск по нажатию Done на клавиатуре
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.deletePreviousFilters()
                 viewModel.searchByClick(binding.tietSearchMask.text.toString())
             }
             false

@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filters.settingsfilters.domain.impl
 
-import android.util.Log
 import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsRepository
@@ -22,9 +21,6 @@ class SettingsInteractorImpl(private val repository: SettingsRepository) : Setti
     override fun getPreviousFilters(): FiltersAll? = repository.getPreviousFilters()
 
     override fun savePreviousFilters(filters: FiltersAll?) {
-
-        Log.d("mine", "savePreviousFilters($filters)")
-
         if (filters != null) {
             repository.savePreviousFilters(filters)
         } else {

@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.filters.settingsfilters.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -172,7 +171,6 @@ class SettingsFiltersFragment : Fragment() {
         binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
         // есть предыдущие фильтры
         val hasPreviousFilters = viewModel.hasPreviousFilters()
-        Log.d("mine", "hasPreviousFilters = $hasPreviousFilters")
         // показать кнопку применить если что-то поменялось (или есть предыдущие фильтры)
         val salaryInputValue = binding.industryTextInput.text.toString()
         val originalSalaryValue = originalFilters?.salary?.salary ?: ""
@@ -275,8 +273,7 @@ class SettingsFiltersFragment : Fragment() {
         // Обновление оригинальных фильтров
         originalSalaryFilters = viewModel.getSalaryFilters()
         updateButtonsVisibility()
-        // стираем припрятанные фильтры, чтобы применились новые
-        Log.d("mine", "Apply: deletePREVFilters")
+        // стираем предыдущие фильтры, чтобы применились новые
         viewModel.deletePreviousFilters()
         // Переход на SearchFragment с примененными фильтрами
         findNavController().navigate(
@@ -288,7 +285,6 @@ class SettingsFiltersFragment : Fragment() {
     private fun resetFilters() {
         // Сброс всех фильтров
         viewModel.resetFilters()
-        Log.d("mine", "RESET: deletePREVFilters")
         viewModel.deletePreviousFilters()
         // originalFilters = viewModel.getOriginalFilters()
         renderSavedAreaSettings()

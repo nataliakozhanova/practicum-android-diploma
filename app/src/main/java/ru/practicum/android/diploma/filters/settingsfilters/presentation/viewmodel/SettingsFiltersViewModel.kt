@@ -102,8 +102,6 @@ class SettingsFiltersViewModel(
     }*/
 
     fun savePreviousFilters() {
-
-
         settingsInteractor.savePreviousFilters(originalFilters)
     }
 
