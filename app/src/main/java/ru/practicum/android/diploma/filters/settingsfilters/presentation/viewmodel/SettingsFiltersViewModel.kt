@@ -17,12 +17,14 @@ class SettingsFiltersViewModel(
     private val chooseIndustryInteractor: IndustryInteractor
 ) : ViewModel() {
 
+    private var originalFilters: FiltersAll? = null
     private var salaryFilters = settingsInteractor.getSalaryFilters()
 
     private val _state = MutableLiveData<SalaryFilters?>()
     fun observeFilters(): LiveData<SalaryFilters?> = _state
 
     init {
+        originalFilters = getOriginalFilters()
         _state.value = salaryFilters
     }
 
@@ -91,6 +93,13 @@ class SettingsFiltersViewModel(
             area = getAreaSettings(),
             industry = getIndustrySettings()
         )
+    }
+
+    fun saveStashedFilters() {
+        val stashed = settingsInteractor.getStashedFilters()
+        if (stashed == null) {
+            settingsInteractor.saveStashedFilters(originalFilters)
+        }
     }
 
     fun deleteStashedFilters() {

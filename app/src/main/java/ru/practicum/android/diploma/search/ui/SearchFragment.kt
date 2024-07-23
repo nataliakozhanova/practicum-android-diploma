@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.search.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -172,6 +173,8 @@ class SearchFragment : Fragment() {
         // следим за изменением в поисковой строке
         binding.editTextSearchLayout.editText?.doOnTextChanged { text, _, _, _ ->
             searchMask = text.toString().trim()
+
+            Log.d("mine", "onTextChanged($text)")
             // иконка в поле поиска
             binding.editTextSearchLayout.endIconDrawable = ContextCompat.getDrawable(
                 requireContext(),
@@ -183,6 +186,7 @@ class SearchFragment : Fragment() {
             )
             if (searchMask.trim().isEmpty()) {
                 viewModel.clearSearch()
+                showStartPage()
                 showNextPagePreloader(false)
                 nextPageRequestSending = true
             } // без условия hasFocus срабатывает при возврате на фрагмент
@@ -239,8 +243,6 @@ class SearchFragment : Fragment() {
 
     private fun bindOpenFilters() {
         binding.buttonFilters.setOnClickListener {
-            // сохраним фильтры на случай возвращения во фрагмент кнопкой назад
-            viewModel.saveStashedFilters()
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment,
                 SettingsFiltersFragment.createArgs(searchMask)

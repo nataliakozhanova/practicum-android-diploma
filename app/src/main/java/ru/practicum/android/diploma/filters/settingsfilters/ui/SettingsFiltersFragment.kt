@@ -143,6 +143,7 @@ class SettingsFiltersFragment : Fragment() {
 
     private fun myOnBackArrowPressed() {
         binding.arrowBackIv.setOnClickListener {
+            viewModel.saveStashedFilters()
             findNavController().navigateUp()
         }
     }
