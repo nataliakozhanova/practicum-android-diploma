@@ -14,8 +14,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.domain.BadRequestError
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.NoInternetError
+import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.databinding.FragmentChoosingIndustryBinding
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
+import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustryNotFoundType
 import ru.practicum.android.diploma.filters.chooseindustry.presentation.models.ChosenStates
 import ru.practicum.android.diploma.filters.chooseindustry.presentation.models.IndustriesStates
 import ru.practicum.android.diploma.filters.chooseindustry.presentation.viewmodel.ChooseIndustryViewModel
@@ -56,6 +61,7 @@ class ChooseIndustryFragment : Fragment() {
             when (state) {
                 is IndustriesStates.Content -> {
                     binding.industryProgressBar.isVisible = false
+                    binding.errorIndustryCl.isVisible = false
                     binding.errorPlaceholderIv.isVisible = false
                     binding.errorPlaceholderTv.isVisible = false
                     binding.recyclerView.isVisible = true
@@ -63,20 +69,19 @@ class ChooseIndustryFragment : Fragment() {
                 }
 
                 is IndustriesStates.Error -> {
-                    binding.errorIndustryCl.isVisible = true
-                    binding.errorPlaceholderIv.isVisible = true
-                    binding.errorPlaceholderTv.isVisible = true
+                    showTypeErrorOrEmpty(state.errorType)
                 }
 
                 is IndustriesStates.Empty -> {
-                    binding.errorIndustryCl.isVisible = true
-                    binding.errorPlaceholderIv.isVisible = true
-                    binding.errorPlaceholderTv.isVisible = true
-                    binding.errorPlaceholderTv.text = "пустой список"
+                    showTypeErrorOrEmpty(IndustryNotFoundType())
                 }
 
                 is IndustriesStates.Loading -> {
                     binding.industryProgressBar.isVisible = true
+                    binding.errorPlaceholderIv.isVisible = false
+                    binding.errorPlaceholderTv.isVisible = false
+                    binding.errorIndustryCl.isVisible = false
+                    binding.recyclerView.isVisible = false
                 }
             }
         }
@@ -131,5 +136,31 @@ class ChooseIndustryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showTypeErrorOrEmpty(errorType: ErrorType) {
+        binding.recyclerView.isVisible = false
+        binding.industryProgressBar.isVisible = false
+        binding.errorIndustryCl.isVisible = true
+        binding.errorPlaceholderIv.isVisible = true
+        binding.errorPlaceholderTv.isVisible = true
+        when (errorType) {
+            is ServerInternalError -> {
+                binding.errorPlaceholderIv.setImageResource(R.drawable.image_search_server_error)
+                binding.errorPlaceholderTv.setText(R.string.server_error)
+            }
+
+            is NoInternetError -> {
+                binding.errorPlaceholderIv.setImageResource(R.drawable.image_no_internet_error)
+                binding.errorPlaceholderTv.setText(R.string.no_internet)
+            }
+
+            is IndustryNotFoundType, is BadRequestError -> {
+                binding.errorPlaceholderIv.setImageResource(R.drawable.image_empty_content)
+                binding.errorPlaceholderTv.setText(R.string.failed_to_get_list)
+            }
+
+            else -> {}
+        }
     }
 }
