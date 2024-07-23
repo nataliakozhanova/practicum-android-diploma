@@ -109,14 +109,20 @@ class ChooseRegionFragment : Fragment() {
                 }
             }
         }
+        setChooses()
+        setBindings()
+    }
 
+    private fun setChooses() {
         countryID = requireArguments().getString(ARGS_COUNTRY_ID)
         if (countryID != null) {
             viewModelChooseRegion.chooseAreasByParentId(countryID!!)
         } else {
             viewModelChooseRegion.chooseOnlyArea()
         }
+    }
 
+    private fun setBindings() {
         binding.arrowBackIv.setOnClickListener {
             findNavController().navigateUp()
         }

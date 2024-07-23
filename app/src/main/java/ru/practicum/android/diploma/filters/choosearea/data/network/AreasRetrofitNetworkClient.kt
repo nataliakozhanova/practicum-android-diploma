@@ -5,10 +5,10 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.common.domain.BadRequestError
 import ru.practicum.android.diploma.common.data.NetworkClient
-import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.data.ResponseBase
+import ru.practicum.android.diploma.common.domain.BadRequestError
+import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogDto
 import ru.practicum.android.diploma.filters.choosearea.data.dto.AreasCatalogRequest
@@ -32,20 +32,12 @@ class AreasRetrofitNetworkClient(
                 when (dto) {
                     is AreasCatalogRequest -> {
                         val response = hhApiServiceAreas.getAreasByParentId(dto.areaId)
-                        when (response.code()) {
-                            HttpURLConnection.HTTP_OK -> convertAreasCatalogDto(response.body())
-                            HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(AreasNotFoundType())
-                            else -> ResponseBase(BadRequestError())
-                        }
+                        resultByResponseCode(response.code(), convertAreasCatalogDto(response.body()))
                     }
 
                     is AreasRequest -> {
                         val response = hhApiServiceAreas.getAreas()
-                        when (response.code()) {
-                            HttpURLConnection.HTTP_OK -> convertAreasCatalogResponse(response.body())
-                            HttpURLConnection.HTTP_BAD_REQUEST -> ResponseBase(AreasNotFoundType())
-                            else -> ResponseBase(BadRequestError())
-                        }
+                        resultByResponseCode(response.code(), convertAreasCatalogResponse(response.body()))
                     }
 
                     else -> ResponseBase(BadRequestError())
@@ -60,6 +52,14 @@ class AreasRetrofitNetworkClient(
                 e.message?.let { Log.e("IO", it) }
                 ResponseBase(ServerInternalError())
             }
+        }
+    }
+
+    private fun resultByResponseCode(code: Int, okResult: ResponseBase): ResponseBase {
+        return when (code) {
+            HttpURLConnection.HTTP_OK -> okResult
+            HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(AreasNotFoundType())
+            else -> ResponseBase(BadRequestError())
         }
     }
 

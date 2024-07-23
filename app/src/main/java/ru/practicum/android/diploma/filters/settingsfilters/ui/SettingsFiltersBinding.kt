@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filters.settingsfilters.ui
 
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.presentation.FilterArrow
@@ -10,7 +9,7 @@ class SettingsFiltersBinding(
 ) {
 
     fun onClickFilterArrows() {
-        with (fragment.binding) {
+        with(fragment.binding) {
             filterArrowForward1.setOnClickListener {
                 if (filterArrowForward1.tag == FilterArrow.FORWARD.drawableId) {
                     openAreaSettings()
