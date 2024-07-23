@@ -7,7 +7,7 @@ interface SettingsRepository {
     fun getSalaryFilters(): SalaryFilters?
     fun saveSalaryFilters(salaryFilters: SalaryFilters)
     fun deleteSalaryFilters()
-    fun getStashedFilters(): FiltersAll?
-    fun saveStashedFilters(filters: FiltersAll)
-    fun deleteStashedFilters()
+    fun getPreviousFilters(): FiltersAll?
+    fun savePreviousFilters(filters: FiltersAll)
+    fun deletePreviousFilters()
 }

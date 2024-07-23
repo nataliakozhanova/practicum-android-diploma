@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -73,7 +74,7 @@ class SearchViewModel(
     }
 
     fun clearSearch() {
-        settingsInteractor.deleteStashedFilters()
+        settingsInteractor.deletePreviousFilters()
         initSearch()
         renderState(SearchState.Default, _state)
     }
@@ -118,21 +119,17 @@ class SearchViewModel(
         }
     }
 
-    fun saveStashedFilters() {
-        settingsInteractor.saveStashedFilters(activeFilters)
-        loadFilters(useLastChanges = false)
-    }
-
-    // для поиска загружаем активные фильтры - припрятанные либо последние
+    // для поиска загружаем активные фильтры - предыдущие либо последние
     private fun loadFilters(useLastChanges: Boolean) {
-        val stashedFilters = settingsInteractor.getStashedFilters()
+        Log.d("mine", "loadFilters($useLastChanges)")
+        val previousFilters = settingsInteractor.getPreviousFilters()
         latestFilters = FiltersAll(
             settingsInteractor.getSalaryFilters(),
             filterAreaInteractor.getAreaSettings(),
             filterIndustryInteractor.getIndustrySettings()
         )
-        activeFilters = if (!useLastChanges && stashedFilters != null) {
-            stashedFilters
+        activeFilters = if (!useLastChanges && previousFilters != null) {
+            previousFilters
         } else {
             latestFilters
         }
@@ -194,6 +191,8 @@ class SearchViewModel(
     }
 
     fun filtersOn(): ButtonFiltersMode {
+        Log.d("mine", "latestFilters = $latestFilters")
+        loadFilters(useLastChanges = false)
         return if (salaryFiltersOn() || areaFiltersOn() || industryFiltersOn()) {
             ButtonFiltersMode.ON
         } else {

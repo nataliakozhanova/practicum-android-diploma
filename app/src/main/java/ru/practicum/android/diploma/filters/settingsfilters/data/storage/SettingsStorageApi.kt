@@ -7,7 +7,7 @@ interface SettingsStorageApi {
     fun readSalaryFilters(): SalaryFilters?
     fun writeSalaryFilters(salaryFilters: SalaryFilters)
     fun removeSalaryFilters()
-    fun readStashedFilters(): FiltersAll?
-    fun writeStashedFilters(filters: FiltersAll)
-    fun removeStashedFilters()
+    fun readPreviousFilters(): FiltersAll?
+    fun writePreviousFilters(filters: FiltersAll)
+    fun removePreviousFilters()
 }

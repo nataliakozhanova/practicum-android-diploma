@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filters.settingsfilters.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -95,19 +96,21 @@ class SettingsFiltersViewModel(
         return originalFilters
     }
 
-    fun saveStashedFilters() {
-        val stashed = settingsInteractor.getStashedFilters()
-        if (stashed == null) {
-            settingsInteractor.saveStashedFilters(originalFilters)
-        }
+    /*private fun filtersAreEmpty(filters: FiltersAll): Boolean {
+        return filters.salary?.salary == null && filters.salary?.checkbox == false
+            && filters.area == null && filters.industry == null
+    }*/
+
+    fun savePreviousFilters() {
+        settingsInteractor.savePreviousFilters(originalFilters)
     }
 
-    fun deleteStashedFilters() {
-        settingsInteractor.deleteStashedFilters()
+    fun deletePreviousFilters() {
+        settingsInteractor.deletePreviousFilters()
     }
 
-    fun hasStashedFilters(): Boolean {
-        return null != settingsInteractor.getStashedFilters()
+    fun hasPreviousFilters(): Boolean {
+        val previous = settingsInteractor.getPreviousFilters()
+        return previous != null
     }
-
 }
