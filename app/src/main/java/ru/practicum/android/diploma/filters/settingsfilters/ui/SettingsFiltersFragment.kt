@@ -219,6 +219,8 @@ class SettingsFiltersFragment : Fragment() {
                 industryBigDark.isVisible = true
                 industryBigDark.text = industrySettings.name
                 filterArrowForward2.setImageResource(FilterArrow.CLEAR.drawableId)
+                // чтобы определить потом реакцию на нажатие этого imageView
+                filterArrowForward2.tag = FilterArrow.CLEAR.drawableId
             }
         } else {
             with(binding) {
@@ -226,6 +228,8 @@ class SettingsFiltersFragment : Fragment() {
                 industryDark.isVisible = false
                 industryBigDark.isVisible = false
                 filterArrowForward2.setImageResource(FilterArrow.FORWARD.drawableId)
+                // чтобы определить потом реакцию на нажатие этого imageView
+                filterArrowForward2.tag = FilterArrow.FORWARD.drawableId
             }
         }
     }
