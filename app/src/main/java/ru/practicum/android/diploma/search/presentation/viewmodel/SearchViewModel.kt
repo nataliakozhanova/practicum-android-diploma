@@ -128,11 +128,20 @@ class SearchViewModel(
             filterAreaInteractor.getAreaSettings(),
             filterIndustryInteractor.getIndustrySettings()
         )
-        activeFilters = if (!useLastChanges && previousFilters != null) {
-            previousFilters
+
+        var t1 = "     "
+        var t2 = "     "
+        if (!useLastChanges && previousFilters != null) {
+            activeFilters = previousFilters
+            t2 = "*****"
         } else {
-            latestFilters
+            activeFilters = latestFilters
+            t1 = "*****"
         }
+
+        Log.d("mine", "$t1 latestFilters = $latestFilters")
+        Log.d("mine", "$t2 previousFilters = $previousFilters")
+
     }
 
     // соберем запрос с фильтрами и параметрами
@@ -191,7 +200,6 @@ class SearchViewModel(
     }
 
     fun filtersOn(): ButtonFiltersMode {
-        Log.d("mine", "latestFilters = $latestFilters")
         loadFilters(useLastChanges = false)
         return if (salaryFiltersOn() || areaFiltersOn() || industryFiltersOn()) {
             ButtonFiltersMode.ON

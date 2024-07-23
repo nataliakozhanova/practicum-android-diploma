@@ -172,6 +172,7 @@ class SettingsFiltersFragment : Fragment() {
         binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
         // есть предыдущие фильтры
         val hasPreviousFilters = viewModel.hasPreviousFilters()
+        Log.d("mine", "hasPreviousFilters = $hasPreviousFilters")
         // показать кнопку применить если что-то поменялось (или есть предыдущие фильтры)
         val salaryInputValue = binding.industryTextInput.text.toString()
         val originalSalaryValue = originalFilters?.salary?.salary ?: ""
