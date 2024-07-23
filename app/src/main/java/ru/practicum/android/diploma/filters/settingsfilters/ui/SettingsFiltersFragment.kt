@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -31,6 +32,12 @@ class SettingsFiltersFragment : Fragment() {
     private var originalFilters: FiltersAll? = null
     private var lastSearchMask: String? = null
 
+    private val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            myOnBackArrowPressed()
+        }
+    }
+
     companion object {
         private const val LAST_SEARCH_MASK = "lastSearchMask"
         fun createArgs(lastSearchMask: String?): Bundle = bundleOf(LAST_SEARCH_MASK to lastSearchMask)
@@ -41,6 +48,7 @@ class SettingsFiltersFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         _binding = FragmentFiltersSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -219,6 +227,8 @@ class SettingsFiltersFragment : Fragment() {
                 industryBigDark.isVisible = true
                 industryBigDark.text = industrySettings.name
                 filterArrowForward2.setImageResource(FilterArrow.CLEAR.drawableId)
+                // чтобы определить потом реакцию на нажатие этого imageView
+                filterArrowForward2.tag = FilterArrow.CLEAR.drawableId
             }
         } else {
             with(binding) {
@@ -226,6 +236,8 @@ class SettingsFiltersFragment : Fragment() {
                 industryDark.isVisible = false
                 industryBigDark.isVisible = false
                 filterArrowForward2.setImageResource(FilterArrow.FORWARD.drawableId)
+                // чтобы определить потом реакцию на нажатие этого imageView
+                filterArrowForward2.tag = FilterArrow.FORWARD.drawableId
             }
         }
     }
@@ -267,7 +279,8 @@ class SettingsFiltersFragment : Fragment() {
     private fun resetFilters() {
         // Сброс всех фильтров
         viewModel.resetFilters()
-        originalFilters = viewModel.getOriginalFilters()
+        viewModel.deleteStashedFilters()
+        // originalFilters = viewModel.getOriginalFilters()
         renderSavedAreaSettings()
         renderSavedIndustrySettings()
         renderSavedSalarySettings()
