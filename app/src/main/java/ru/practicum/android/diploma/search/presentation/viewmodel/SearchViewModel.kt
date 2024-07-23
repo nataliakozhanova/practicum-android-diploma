@@ -189,7 +189,8 @@ class SearchViewModel(
     }
 
     private fun areaFiltersOn(): Boolean {
-        return latestFilters?.area != null && latestFilters?.area?.id?.isNotEmpty() == true
+        return latestFilters?.area != null
+            && (latestFilters?.area?.id?.isEmpty() != true || latestFilters?.area?.countryInfo?.id?.isEmpty() != true)
     }
 
     private fun industryFiltersOn(): Boolean {
