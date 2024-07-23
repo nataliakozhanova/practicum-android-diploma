@@ -84,7 +84,7 @@ class SettingsFiltersViewModel(
     }
 
     fun getSalaryFilters(): SalaryFilters? {
-        return salaryFilters
+        return settingsInteractor.getSalaryFilters()
     }
 
     fun getIndustrySettings(): IndustriesModel? {

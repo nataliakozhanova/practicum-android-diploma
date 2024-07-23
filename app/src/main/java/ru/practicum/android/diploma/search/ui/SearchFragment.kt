@@ -86,6 +86,8 @@ class SearchFragment : Fragment() {
         viewModel.observeToast().observe(viewLifecycleOwner) {
             showToast(it)
         }
+        // настроим слежение за объектами фрагмента
+        setBindings()
 
         // маска может прийти аргументом
         val setSearchMask = arguments?.getString(SET_SEARCH_MASK)
@@ -99,9 +101,6 @@ class SearchFragment : Fragment() {
         if (restartLastSearch && searchMask.isNotEmpty()) {
             viewModel.searchByClick(searchMask)
         }
-
-        // настроим слежение за объектами фрагмента
-        setBindings()
     }
 
     // обработка состояний поиска первой страницы
@@ -174,14 +173,7 @@ class SearchFragment : Fragment() {
         binding.editTextSearchLayout.editText?.doOnTextChanged { text, _, _, _ ->
             searchMask = text.toString().trim()
             // иконка в поле поиска
-            binding.editTextSearchLayout.endIconDrawable = ContextCompat.getDrawable(
-                requireContext(),
-                if (searchMask.isEmpty()) {
-                    EditTextSearchIcon.SEARCH_ICON.drawableId
-                } else {
-                    EditTextSearchIcon.CLEAR_ICON.drawableId
-                }
-            )
+            setEditEndIcon()
             if (searchMask.trim().isEmpty()) {
                 viewModel.clearSearch()
                 showStartPage()
@@ -215,6 +207,17 @@ class SearchFragment : Fragment() {
             }
             false
         }
+    }
+
+    private fun setEditEndIcon() {
+        binding.editTextSearchLayout.endIconDrawable = ContextCompat.getDrawable(
+            requireContext(),
+            if (searchMask.isEmpty()) {
+                EditTextSearchIcon.SEARCH_ICON.drawableId
+            } else {
+                EditTextSearchIcon.CLEAR_ICON.drawableId
+            }
+        )
     }
 
     // настроим слежку за изменениями во фрагменте
