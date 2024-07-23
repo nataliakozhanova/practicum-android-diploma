@@ -131,7 +131,7 @@ class SettingsFiltersFragment : Fragment() {
         binding.arrowBackIv.setOnClickListener {
             viewModel.savePreviousFilters()
             findNavController().popBackStack()
-            //findNavController().navigateUp()
+            // findNavController().navigateUp()
         }
     }
 
