@@ -10,11 +10,16 @@ import ru.practicum.android.diploma.common.domain.Success
 import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryInteractor
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesResult
+import ru.practicum.android.diploma.filters.chooseindustry.presentation.models.ChosenStates
 import ru.practicum.android.diploma.filters.chooseindustry.presentation.models.IndustriesStates
 
 class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : ViewModel() {
+
     private val _stateIndustry: MutableLiveData<IndustriesStates> = MutableLiveData()
     fun observeIndustryState(): LiveData<IndustriesStates> = _stateIndustry
+
+    private val _stateChosen: MutableLiveData<ChosenStates> = MutableLiveData()
+    fun observeIndustryStateChosen(): LiveData<ChosenStates> = _stateChosen
 
     private var selectedIndustry: IndustriesModel? = null
     private var allIndustries: List<IndustriesModel> = listOf()
@@ -41,6 +46,7 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
 
             else -> {
                 renderState(IndustriesStates.Error(errorType))
+                renderChosen(ChosenStates.NotChosen)
             }
         }
     }
@@ -49,8 +55,18 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
         _stateIndustry.postValue(state)
     }
 
+    private fun renderChosen(state: ChosenStates) {
+        _stateChosen.postValue(state)
+    }
+
     fun selectIndustry(industry: IndustriesModel) {
-        selectedIndustry = if (selectedIndustry == industry) null else industry
+        if (selectedIndustry == industry) {
+            selectedIndustry = null
+            renderChosen(ChosenStates.NotChosen)
+        } else {
+            selectedIndustry = industry
+            renderChosen(ChosenStates.Chosen)
+        }
     }
 
     fun saveSelectedIndustry() {
