@@ -58,5 +58,4 @@ class ChooseCountryViewModel(
     fun saveCountrySettings(country: CountryInfo) {
         chooseAreaInteractor.saveAreaSettings(AreaInfo(id = "", name = "", countryInfo = country))
     }
-
 }

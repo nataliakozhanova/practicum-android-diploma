@@ -49,7 +49,6 @@ class ChooseCountryFragment : Fragment() {
                     binding.errorPlaceholderIv.isVisible = false
                     binding.errorPlaceholderTv.isVisible = false
                     binding.countryRv.isVisible = true
-
                     countriesAdapter.countries.clear()
                     countriesAdapter.countries.addAll(state.areas)
                     countriesAdapter.notifyDataSetChanged()
@@ -80,23 +79,24 @@ class ChooseCountryFragment : Fragment() {
     }
 
     private fun showTypeErrorOrEmpty(errorType: ErrorType) {
+        binding.countryRv.isVisible = false
+        binding.countriesProgressBar.isVisible = false
+        binding.errorPlaceholderIv.isVisible = true
+        binding.errorPlaceholderTv.isVisible = true
         when (errorType) {
-            is ServerInternalError, is BadRequestError -> {
-                binding.countryRv.isVisible = false
-                binding.errorPlaceholderIv.setImageResource(R.drawable.image_empty_content)
-                binding.errorPlaceholderTv.setText(R.string.empty_list)
-
-                binding.errorPlaceholderIv.isVisible = true
-                binding.errorPlaceholderTv.isVisible = true
+            is ServerInternalError -> {
+                binding.errorPlaceholderIv.setImageResource(R.drawable.image_search_server_error)
+                binding.errorPlaceholderTv.setText(R.string.server_error)
             }
 
             is NoInternetError -> {
-                binding.countryRv.isVisible = false
                 binding.errorPlaceholderIv.setImageResource(R.drawable.image_no_internet_error)
                 binding.errorPlaceholderTv.setText(R.string.no_internet)
+            }
 
-                binding.errorPlaceholderIv.isVisible = true
-                binding.errorPlaceholderTv.isVisible = true
+            is AreasNotFoundType, is BadRequestError -> {
+                binding.errorPlaceholderIv.setImageResource(R.drawable.image_empty_content)
+                binding.errorPlaceholderTv.setText(R.string.failed_to_get_list)
             }
 
             else -> {}

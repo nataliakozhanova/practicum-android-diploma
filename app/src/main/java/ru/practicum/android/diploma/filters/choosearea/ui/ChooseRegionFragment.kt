@@ -14,8 +14,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.domain.BadRequestError
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.NoInternetError
+import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.databinding.FragmentChooosingRegionBinding
 import ru.practicum.android.diploma.filters.choosearea.domain.models.AreaInfo
+import ru.practicum.android.diploma.filters.choosearea.domain.models.AreasNotFoundType
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasByParentIdState
 import ru.practicum.android.diploma.filters.choosearea.presentation.models.AreasWithCountriesState
 import ru.practicum.android.diploma.filters.choosearea.presentation.viewmodel.ChooseRegionViewModel
@@ -74,7 +79,8 @@ class ChooseRegionFragment : Fragment() {
                 }
 
                 is AreasWithCountriesState.Error -> {
-                    showErrorPlaceholder(R.drawable.image_empty_content, getString(R.string.failed_to_get_list))
+                    // showErrorPlaceholder(R.drawable.image_empty_content, getString(R.string.failed_to_get_list))
+                    showTypeErrorOrEmpty(state.errorType)
                 }
 
                 is AreasWithCountriesState.Empty -> {
@@ -94,7 +100,8 @@ class ChooseRegionFragment : Fragment() {
                 }
 
                 is AreasByParentIdState.Error -> {
-                    showErrorPlaceholder(R.drawable.image_empty_content, getString(R.string.failed_to_get_list))
+                    // showErrorPlaceholder(R.drawable.image_empty_content, getString(R.string.failed_to_get_list))
+                    showTypeErrorOrEmpty(state.errorType)
                 }
 
                 is AreasByParentIdState.Empty -> {
@@ -172,5 +179,23 @@ class ChooseRegionFragment : Fragment() {
         binding.regionRv.isVisible = false
         binding.errorPlaceholderIv.setImageResource(imageResId)
         binding.errorPlaceholderTv.text = message
+    }
+
+    private fun showTypeErrorOrEmpty(errorType: ErrorType) {
+        when (errorType) {
+            is ServerInternalError -> {
+                showErrorPlaceholder(R.drawable.image_search_server_error, getString(R.string.server_error))
+            }
+
+            is NoInternetError -> {
+                showErrorPlaceholder(R.drawable.image_no_internet_error, getString(R.string.no_internet))
+            }
+
+            is AreasNotFoundType, is BadRequestError -> {
+                showErrorPlaceholder(R.drawable.image_empty_content, getString(R.string.failed_to_get_list))
+            }
+
+            else -> {}
+        }
     }
 }
