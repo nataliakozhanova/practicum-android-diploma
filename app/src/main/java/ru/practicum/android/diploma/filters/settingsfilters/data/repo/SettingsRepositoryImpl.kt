@@ -18,13 +18,13 @@ class SettingsRepositoryImpl(private val settingsStorageApi: SettingsStorageApi)
         settingsStorageApi.removeSalaryFilters()
     }
 
-    override fun getStashedFilters(): FiltersAll? = settingsStorageApi.readStashedFilters()
+    override fun getPreviousFilters(): FiltersAll? = settingsStorageApi.readPreviousFilters()
 
-    override fun saveStashedFilters(filters: FiltersAll) {
-        settingsStorageApi.writeStashedFilters(filters)
+    override fun savePreviousFilters(filters: FiltersAll) {
+        settingsStorageApi.writePreviousFilters(filters)
     }
 
-    override fun deleteStashedFilters() {
-        settingsStorageApi.removeStashedFilters()
+    override fun deletePreviousFilters() {
+        settingsStorageApi.removePreviousFilters()
     }
 }

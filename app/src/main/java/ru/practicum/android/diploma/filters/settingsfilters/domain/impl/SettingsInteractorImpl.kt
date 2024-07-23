@@ -18,17 +18,17 @@ class SettingsInteractorImpl(private val repository: SettingsRepository) : Setti
         repository.deleteSalaryFilters()
     }
 
-    override fun getStashedFilters(): FiltersAll? = repository.getStashedFilters()
+    override fun getPreviousFilters(): FiltersAll? = repository.getPreviousFilters()
 
-    override fun saveStashedFilters(filters: FiltersAll?) {
+    override fun savePreviousFilters(filters: FiltersAll?) {
         if (filters != null) {
-            repository.saveStashedFilters(filters)
+            repository.savePreviousFilters(filters)
         } else {
-            repository.deleteStashedFilters()
+            repository.deletePreviousFilters()
         }
     }
 
-    override fun deleteStashedFilters() {
-        repository.deleteStashedFilters()
+    override fun deletePreviousFilters() {
+        repository.deletePreviousFilters()
     }
 }

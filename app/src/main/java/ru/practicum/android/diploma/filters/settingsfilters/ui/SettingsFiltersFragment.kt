@@ -34,7 +34,7 @@ class SettingsFiltersFragment : Fragment() {
 
     private val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            myOnBackArrowPressed()
+            myOnBackPressed()
         }
     }
 
@@ -151,9 +151,15 @@ class SettingsFiltersFragment : Fragment() {
 
     private fun myOnBackArrowPressed() {
         binding.arrowBackIv.setOnClickListener {
-            viewModel.saveStashedFilters()
+            viewModel.savePreviousFilters()
             findNavController().navigateUp()
         }
+    }
+
+    private fun myOnBackPressed() {
+        viewModel.savePreviousFilters()
+        callback.isEnabled = false
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     private fun updateButtonsVisibility() {
@@ -163,9 +169,9 @@ class SettingsFiltersFragment : Fragment() {
         val isAreaSet = viewModel.getAreaSettings() != null
         val isIndustrySet = viewModel.getIndustrySettings() != null
         binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
-        // есть спрятанные фильтры
-        val hasStashedFilters = viewModel.hasStashedFilters()
-        // показать кнопку применить если что-то поменялось
+        // есть предыдущие фильтры
+        val hasPreviousFilters = viewModel.hasPreviousFilters()
+        // показать кнопку применить если что-то поменялось (или есть предыдущие фильтры)
         val salaryInputValue = binding.industryTextInput.text.toString()
         val originalSalaryValue = originalFilters?.salary?.salary ?: ""
         val isSalaryChanged = salaryInputValue != originalSalaryValue
@@ -173,7 +179,7 @@ class SettingsFiltersFragment : Fragment() {
         val isAreaChanged = viewModel.getAreaSettings()?.id != originalFilters?.area?.id
         val isIndustryChanged = viewModel.getIndustrySettings()?.id != originalFilters?.industry?.id
         binding.applyButton.isVisible = isSalaryChanged || isNoSalaryChanged || isAreaChanged
-            || isIndustryChanged || hasStashedFilters
+            || isIndustryChanged || hasPreviousFilters
     }
 
     private fun changeTextInputLayoutEndIconMode(text: CharSequence?) {
@@ -267,8 +273,8 @@ class SettingsFiltersFragment : Fragment() {
         // Обновление оригинальных фильтров
         originalSalaryFilters = viewModel.getSalaryFilters()
         updateButtonsVisibility()
-        // стираем припрятанные фильтры, чтобы применились новые
-        viewModel.deleteStashedFilters()
+        // стираем предыдущие фильтры, чтобы применились новые
+        viewModel.deletePreviousFilters()
         // Переход на SearchFragment с примененными фильтрами
         findNavController().navigate(
             R.id.action_filterFragment_to_searchFragment,
@@ -279,7 +285,7 @@ class SettingsFiltersFragment : Fragment() {
     private fun resetFilters() {
         // Сброс всех фильтров
         viewModel.resetFilters()
-        viewModel.deleteStashedFilters()
+        viewModel.deletePreviousFilters()
         // originalFilters = viewModel.getOriginalFilters()
         renderSavedAreaSettings()
         renderSavedIndustrySettings()

@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
 
 const val SALARY_FILTERS_KEY = "key_for_salary_filters"
-const val STASHED_FILTERS_KEY = "key_for_stashed_filters"
+const val PREVIOUS_FILTERS_KEY = "key_for_previous_filters"
 
 class SettingsStorageImpl(
     private val sharedPreferences: SharedPreferences,
@@ -32,22 +32,22 @@ class SettingsStorageImpl(
             .apply()
     }
 
-    override fun readStashedFilters(): FiltersAll? {
-        val json = sharedPreferences.getString(STASHED_FILTERS_KEY, null)
+    override fun readPreviousFilters(): FiltersAll? {
+        val json = sharedPreferences.getString(PREVIOUS_FILTERS_KEY, null)
         if (json != null) return gson.fromJson(json, FiltersAll::class.java)
         return null
     }
 
-    override fun writeStashedFilters(filters: FiltersAll) {
+    override fun writePreviousFilters(filters: FiltersAll) {
         val json = gson.toJson(filters)
         sharedPreferences.edit()
-            .putString(STASHED_FILTERS_KEY, json)
+            .putString(PREVIOUS_FILTERS_KEY, json)
             .apply()
     }
 
-    override fun removeStashedFilters() {
+    override fun removePreviousFilters() {
         sharedPreferences.edit()
-            .remove(STASHED_FILTERS_KEY)
+            .remove(PREVIOUS_FILTERS_KEY)
             .apply()
     }
 }

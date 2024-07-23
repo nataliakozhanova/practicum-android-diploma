@@ -73,7 +73,7 @@ class SearchViewModel(
     }
 
     fun clearSearch() {
-        settingsInteractor.deleteStashedFilters()
+        settingsInteractor.deletePreviousFilters()
         initSearch()
         renderState(SearchState.Default, _state)
     }
@@ -118,21 +118,20 @@ class SearchViewModel(
         }
     }
 
-    fun saveStashedFilters() {
-        settingsInteractor.saveStashedFilters(activeFilters)
-        loadFilters(useLastChanges = false)
+    fun deletePreviousFilters() {
+        settingsInteractor.deletePreviousFilters()
     }
 
-    // для поиска загружаем активные фильтры - припрятанные либо последние
+    // для поиска загружаем активные фильтры - предыдущие либо последние
     private fun loadFilters(useLastChanges: Boolean) {
-        val stashedFilters = settingsInteractor.getStashedFilters()
+        val previousFilters = settingsInteractor.getPreviousFilters()
         latestFilters = FiltersAll(
             settingsInteractor.getSalaryFilters(),
             filterAreaInteractor.getAreaSettings(),
             filterIndustryInteractor.getIndustrySettings()
         )
-        activeFilters = if (!useLastChanges && stashedFilters != null) {
-            stashedFilters
+        activeFilters = if (!useLastChanges && previousFilters != null) {
+            previousFilters
         } else {
             latestFilters
         }
@@ -142,7 +141,11 @@ class SearchViewModel(
     private fun makeSearchRequest(expression: String): VacancySearchRequest {
         loadFilters(useLastChanges = false)
         val searchFilters = Filters(
-            areaId = activeFilters?.area?.id,
+            areaId = if (activeFilters?.area?.id.isNullOrEmpty()) {
+                activeFilters?.area?.countryInfo?.id
+            } else {
+                activeFilters?.area?.id
+            },
             industryId = activeFilters?.industry?.id,
             salary = activeFilters?.salary?.salary?.toIntOrNull(),
             onlyWithSalary = activeFilters?.salary?.checkbox ?: false,
@@ -194,6 +197,7 @@ class SearchViewModel(
     }
 
     fun filtersOn(): ButtonFiltersMode {
+        loadFilters(useLastChanges = false)
         return if (salaryFiltersOn() || areaFiltersOn() || industryFiltersOn()) {
             ButtonFiltersMode.ON
         } else {
