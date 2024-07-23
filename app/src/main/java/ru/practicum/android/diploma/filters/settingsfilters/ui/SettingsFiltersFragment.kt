@@ -271,6 +271,7 @@ class SettingsFiltersFragment : Fragment() {
     private fun resetFilters() {
         // Сброс всех фильтров
         viewModel.resetFilters()
+        viewModel.deleteStashedFilters()
         originalFilters = viewModel.getOriginalFilters()
         renderSavedAreaSettings()
         renderSavedIndustrySettings()
