@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.FiltersAll
+import ru.practicum.android.diploma.common.presentation.FilterArrow
 import ru.practicum.android.diploma.databinding.FragmentFiltersSettingsBinding
 import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
 import ru.practicum.android.diploma.filters.settingsfilters.presentation.viewmodel.SettingsFiltersViewModel
@@ -65,16 +66,41 @@ class SettingsFiltersFragment : Fragment() {
         }
     }
 
+    private fun openAreaSettings() {
+        findNavController().navigate(
+            R.id.action_filterFragment_to_chooseAreaFragment,
+        )
+    }
+
+    private fun openIndustrySettings() {
+        findNavController().navigate(
+            R.id.action_filterFragment_to_chooseIndustryFragment,
+        )
+    }
+
+    private fun onClickFilterArrows() {
+        binding.filterArrowForward1.setOnClickListener {
+            if (binding.filterArrowForward1.tag == FilterArrow.FORWARD.drawableId) {
+                openAreaSettings()
+            } else {
+                clearAreaSettings()
+            }
+        }
+        binding.filterArrowForward2.setOnClickListener {
+            if (binding.filterArrowForward2.tag == FilterArrow.FORWARD.drawableId) {
+                openIndustrySettings()
+            } else {
+                clearIndustrySettings()
+            }
+        }
+    }
+
     private fun setBindings() {
         binding.placeToWorkCl.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_filterFragment_to_chooseAreaFragment,
-            )
+            openAreaSettings()
         }
         binding.constraintIndustry.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_filterFragment_to_chooseIndustryFragment,
-            )
+            openIndustrySettings()
         }
 
         binding.noSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
@@ -82,13 +108,7 @@ class SettingsFiltersFragment : Fragment() {
             updateButtonsVisibility()
         }
 
-        binding.filterArrowForward1.setOnClickListener {
-            clearAreaSettings()
-        }
-
-        binding.filterArrowForward2.setOnClickListener {
-            clearIndustrySettings()
-        }
+        onClickFilterArrows()
 
         binding.industryTextInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -108,7 +128,7 @@ class SettingsFiltersFragment : Fragment() {
         binding.industryLayout.setEndIconOnClickListener {
             binding.industryTextInput.text?.clear()
             binding.industryLayout.endIconDrawable =
-                ContextCompat.getDrawable(requireContext(), R.drawable.clear_24px_input_edittext_button)
+                ContextCompat.getDrawable(requireContext(), FilterArrow.CLEAR.drawableId)
         }
         binding.applyButton.setOnClickListener {
             applyFiltersAndNavigate()
@@ -123,6 +143,7 @@ class SettingsFiltersFragment : Fragment() {
 
     private fun myOnBackArrowPressed() {
         binding.arrowBackIv.setOnClickListener {
+            viewModel.saveStashedFilters()
             findNavController().navigateUp()
         }
     }
@@ -134,7 +155,8 @@ class SettingsFiltersFragment : Fragment() {
         val isAreaSet = viewModel.getAreaSettings() != null
         val isIndustrySet = viewModel.getIndustrySettings() != null
         binding.resetButton.isVisible = isSalaryEntered || isNoSalaryChecked || isAreaSet || isIndustrySet
-
+        // есть спрятанные фильтры
+        val hasStashedFilters = viewModel.hasStashedFilters()
         // показать кнопку применить если что-то поменялось
         val salaryInputValue = binding.industryTextInput.text.toString()
         val originalSalaryValue = originalFilters?.salary?.salary ?: ""
@@ -142,7 +164,8 @@ class SettingsFiltersFragment : Fragment() {
         val isNoSalaryChanged = binding.noSalaryCheckbox.isChecked != originalFilters?.salary?.checkbox
         val isAreaChanged = viewModel.getAreaSettings()?.id != originalFilters?.area?.id
         val isIndustryChanged = viewModel.getIndustrySettings()?.id != originalFilters?.industry?.id
-        binding.applyButton.isVisible = isSalaryChanged || isNoSalaryChanged || isAreaChanged || isIndustryChanged
+        binding.applyButton.isVisible = isSalaryChanged || isNoSalaryChanged || isAreaChanged
+            || isIndustryChanged || hasStashedFilters
     }
 
     private fun changeTextInputLayoutEndIconMode(text: CharSequence?) {
@@ -154,7 +177,7 @@ class SettingsFiltersFragment : Fragment() {
                 viewModel.saveSalary(text.toString())
                 industryLayout.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 industryLayout.endIconDrawable =
-                    AppCompatResources.getDrawable(requireContext(), R.drawable.clear_24px_input_edittext_button)
+                    AppCompatResources.getDrawable(requireContext(), FilterArrow.CLEAR.drawableId)
             }
         }
     }
@@ -171,14 +194,18 @@ class SettingsFiltersFragment : Fragment() {
                 } else {
                     areaSettings.countryInfo.name
                 }
-                filterArrowForward1.setImageResource(R.drawable.clear_24px_input_edittext_button)
+                filterArrowForward1.setImageResource(FilterArrow.CLEAR.drawableId)
+                // чтобы определить потом реакцию на нажатие этого imageView
+                filterArrowForward1.tag = FilterArrow.CLEAR.drawableId
             }
         } else {
             with(binding) {
                 placeToWork.isVisible = true
                 placeToWorkDark.isVisible = false
                 placeToWorkTv.isVisible = false
-                filterArrowForward1.setImageResource(R.drawable.arrow_forward_24px_button)
+                filterArrowForward1.setImageResource(FilterArrow.FORWARD.drawableId)
+                // чтобы определить потом реакцию на нажатие этого imageView
+                filterArrowForward1.tag = FilterArrow.FORWARD.drawableId
             }
         }
     }
@@ -191,14 +218,14 @@ class SettingsFiltersFragment : Fragment() {
                 industryDark.isVisible = true
                 industryBigDark.isVisible = true
                 industryBigDark.text = industrySettings.name
-                filterArrowForward2.setImageResource(R.drawable.clear_24px_input_edittext_button)
+                filterArrowForward2.setImageResource(FilterArrow.CLEAR.drawableId)
             }
         } else {
             with(binding) {
                 industryFilterSetting.isVisible = true
                 industryDark.isVisible = false
                 industryBigDark.isVisible = false
-                filterArrowForward2.setImageResource(R.drawable.arrow_forward_24px_button)
+                filterArrowForward2.setImageResource(FilterArrow.FORWARD.drawableId)
             }
         }
     }

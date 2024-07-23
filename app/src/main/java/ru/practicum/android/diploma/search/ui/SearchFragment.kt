@@ -44,9 +44,8 @@ class SearchFragment : Fragment() {
         private const val RESTART_FLAG = "restartLastSearch"
         private const val SET_SEARCH_MASK = "setSearchMask"
 
-        // private const val SET_FILTERS = "setFilters"
-        fun createArgs(restartLastSearch: Boolean, searchMask: String?/*, setFilters: FiltersAll*/): Bundle =
-            bundleOf(RESTART_FLAG to restartLastSearch, SET_SEARCH_MASK to searchMask/*, SET_FILTERS to setFilters*/)
+        fun createArgs(restartLastSearch: Boolean, searchMask: String?): Bundle =
+            bundleOf(RESTART_FLAG to restartLastSearch, SET_SEARCH_MASK to searchMask)
     }
 
     private var _binding: FragmentSearchBinding? = null
@@ -107,6 +106,7 @@ class SearchFragment : Fragment() {
 
     // обработка состояний поиска первой страницы
     private fun searchStateCheck(state: SearchState) {
+        // Log.d("mine", "State = ${state.javaClass}")
         when (state) {
             SearchState.Default -> showStartPage()
 
@@ -135,6 +135,7 @@ class SearchFragment : Fragment() {
 
     // обработка состояний поиска следующих страниц
     private fun nextPageStateCheck(state: SearchState) {
+        // Log.d("mine", "nextState = ${state.javaClass}")
         when (state) {
             is SearchState.Default -> {
                 showNextPagePreloader(false)
@@ -183,6 +184,7 @@ class SearchFragment : Fragment() {
             )
             if (searchMask.trim().isEmpty()) {
                 viewModel.clearSearch()
+                showStartPage()
                 showNextPagePreloader(false)
                 nextPageRequestSending = true
             } // без условия hasFocus срабатывает при возврате на фрагмент
@@ -239,8 +241,6 @@ class SearchFragment : Fragment() {
 
     private fun bindOpenFilters() {
         binding.buttonFilters.setOnClickListener {
-            // сохраним фильтры на случай возвращения во фрагмент кнопкой назад
-            viewModel.saveStashedFilters()
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment,
                 SettingsFiltersFragment.createArgs(searchMask)
