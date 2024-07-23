@@ -245,6 +245,7 @@ class SettingsFiltersFragment : Fragment() {
     private fun clearIndustrySettings() {
         viewModel.clearIndustrySettings()
         renderSavedIndustrySettings()
+        updateButtonsVisibility()
     }
 
     private fun applyFiltersAndNavigate() {
