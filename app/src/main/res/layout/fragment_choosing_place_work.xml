@@ -49,6 +49,7 @@
         android:layout_height="@dimen/dp_24"
         android:layout_marginTop="@dimen/dp_56"
         android:src="@drawable/arrow_forward_24px_button"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
         app:layout_constraintTop_toBottomOf="@+id/screenPlaceWork" />
 
@@ -100,6 +101,7 @@
         android:layout_height="@dimen/dp_24"
         android:layout_marginTop="32dp"
         android:src="@drawable/arrow_forward_24px_button"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
         app:layout_constraintTop_toBottomOf="@+id/countryArrowAndCleanIv" />
 
