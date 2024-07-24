@@ -77,7 +77,9 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
     fun getSelectedIndustry(): IndustriesModel? {
         return if (selectedIndustry == null) {
             interactor.getIndustrySettings()
-        } else selectedIndustry
+        } else {
+            selectedIndustry
+        }
     }
 
     fun searchIndustries(query: String) {
