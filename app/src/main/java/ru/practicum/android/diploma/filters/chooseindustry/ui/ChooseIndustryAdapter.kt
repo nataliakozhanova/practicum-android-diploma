@@ -13,7 +13,7 @@ class ChooseIndustryAdapter(private val industriesClickListener: IndustryClickLi
         fun onClick(item: IndustriesModel)
     }
 
-    var industries: List<IndustriesModel> = emptyList()
+    private var industries: List<IndustriesModel> = emptyList()
 
     fun setItems(items: List<IndustriesModel>, industrySelected: IndustriesModel?) {
         industries = items

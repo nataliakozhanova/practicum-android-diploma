@@ -110,7 +110,7 @@ class ChooseIndustryFragment : Fragment() {
 
         binding.tietSearchMask.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // не используется
+                // empty
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -125,7 +125,7 @@ class ChooseIndustryFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // не используется
+                // empty
             }
         })
 

@@ -95,9 +95,9 @@ class ChooseAreaFragment : Fragment() {
     private fun renderAreaSettings() {
         areaSettings = viewModelChooseArea.getAreaSettings()
         if (areaSettings != null) {
-            showCountry()
+            showCountry(areaSettings!!)
             if (areaSettings!!.name.isNotEmpty()) {
-                showRegion()
+                showRegion(areaSettings!!)
             } else {
                 hideRegion()
             }
@@ -106,12 +106,12 @@ class ChooseAreaFragment : Fragment() {
         }
     }
 
-    private fun showCountry() {
+    private fun showCountry(areaSettings: AreaInfo) {
         with(binding) {
             countryTil.isVisible = true
             countryTv.isVisible = false
             countryDarkTv.isVisible = true
-            countryDarkTv.text = areaSettings!!.countryInfo.name
+            countryDarkTv.text = areaSettings.countryInfo.name
             applyBt.isVisible = true
             countryArrowAndCleanIv.setImageResource(R.drawable.clear_24px_input_edittext_button)
         }
@@ -127,12 +127,12 @@ class ChooseAreaFragment : Fragment() {
         }
     }
 
-    private fun showRegion() {
+    private fun showRegion(areaSettings: AreaInfo) {
         with(binding) {
             regionTil.isVisible = true
             regionTv.isVisible = false
             regionDarkTv.isVisible = true
-            regionDarkTv.text = areaSettings!!.name
+            regionDarkTv.text = areaSettings.name
             regionArrowAndCleanIv.setImageResource(R.drawable.clear_24px_input_edittext_button)
         }
     }

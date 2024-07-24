@@ -52,14 +52,17 @@ class VacancyDetailsFragment : Fragment() {
                 }
 
                 is DetailsState.NoInternet -> {
-                    viewModel.checkVacancyInDatabase(vacancyID!!)
+                    if (vacancyID != null) {
+                        viewModel.checkVacancyInDatabase(vacancyID!!)
+                    }
                     viewModel.vacancyExists.observe(viewLifecycleOwner) { exists ->
-                        if (exists) {
+                        if (exists && vacancyID != null) {
                             viewModel.getVacancyDatabase(vacancyID!!)
                         } else {
                             showTypeErrorOrEmpty(NoInternetError())
                         }
                     }
+
                 }
 
                 is DetailsState.Error -> {
@@ -68,7 +71,9 @@ class VacancyDetailsFragment : Fragment() {
 
                 is DetailsState.Empty -> {
                     showTypeErrorOrEmpty(DetailsNotFoundType())
-                    viewModel.deleteFavouriteVacancy(vacancyID!!)
+                    if (vacancyID != null) {
+                        viewModel.deleteFavouriteVacancy(vacancyID!!)
+                    }
                 }
 
                 is DetailsState.Loading -> {
@@ -117,6 +122,7 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun checkIsFavourite(favouriteState: Boolean) {
+        if (vacancy == null) return
         if (favouriteState) {
             vacancy!!.hhID.let { id -> viewModel.deleteFavouriteVacancy(id) }
         } else {
