@@ -70,7 +70,9 @@ class SettingsFiltersViewModel(
 
     fun applyFilters() {
         // Сохранение всех текущих настроек фильтра
-        settingsInteractor.saveSalaryFilters(salaryFilters!!)
+        if (salaryFilters != null) {
+            settingsInteractor.saveSalaryFilters(salaryFilters!!)
+        }
     }
 
     fun resetFilters() {

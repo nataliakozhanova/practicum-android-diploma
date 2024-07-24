@@ -46,7 +46,6 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
 
             else -> {
                 renderState(IndustriesStates.Error(errorType))
-                // renderChosen(ChosenStates.NotChosen)
             }
         }
     }

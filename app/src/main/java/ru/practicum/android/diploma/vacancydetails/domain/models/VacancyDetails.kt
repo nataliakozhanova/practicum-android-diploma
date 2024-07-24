@@ -9,7 +9,7 @@ class VacancyDetails(
     hhID: String,
     name: String,
     isFavorite: Boolean,
-    employerInfo: EmployerInfo, // name, logoUrl
+    employerInfo: EmployerInfo, // name, logoUrl, areaName
     salaryInfo: SalaryInfo?,
     val details: Details,
 ) : VacancyBase(
