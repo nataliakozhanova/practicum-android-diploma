@@ -12,15 +12,36 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.data.NetworkClient
 import ru.practicum.android.diploma.favorites.data.converters.VacancyDbConverter
 import ru.practicum.android.diploma.favorites.data.db.VacancyDatabase
+import ru.practicum.android.diploma.filters.choosearea.data.network.AreasRetrofitNetworkClient
+import ru.practicum.android.diploma.filters.choosearea.data.network.HhApiServiceAreas
+import ru.practicum.android.diploma.filters.choosearea.data.storage.AreasStorageApi
+import ru.practicum.android.diploma.filters.choosearea.data.storage.AreasStorageImpl
+import ru.practicum.android.diploma.filters.chooseindustry.data.network.HhApiServiceIndustry
+import ru.practicum.android.diploma.filters.chooseindustry.data.network.IndustryRetrofitNetworkClient
+import ru.practicum.android.diploma.filters.settingsfilters.data.storage.SettingsStorageApi
+import ru.practicum.android.diploma.filters.settingsfilters.data.storage.SettingsStorageImpl
 import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.vacancydetails.data.network.HhApiServiceDetails
 import ru.practicum.android.diploma.vacancydetails.data.network.RetrofitNetworkClientDetails
 
 val dataModule = module {
+    single {
+        androidContext()
+            .getSharedPreferences(DiConstants.PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    single<AreasStorageApi> {
+        AreasStorageImpl(get(), get())
+    }
+
+    single<SettingsStorageApi> {
+        SettingsStorageImpl(get(), get())
+    }
+
     single<HhApiService> {
         Retrofit.Builder()
-            .baseUrl("https://api.hh.ru")
+            .baseUrl(DiConstants.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiService::class.java)
@@ -28,10 +49,26 @@ val dataModule = module {
 
     single<HhApiServiceDetails> {
         Retrofit.Builder()
-            .baseUrl("https://api.hh.ru")
+            .baseUrl(DiConstants.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiServiceDetails::class.java)
+    }
+
+    single<HhApiServiceAreas> {
+        Retrofit.Builder()
+            .baseUrl(DiConstants.API_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(HhApiServiceAreas::class.java)
+    }
+
+    single<HhApiServiceIndustry> {
+        Retrofit.Builder()
+            .baseUrl(DiConstants.API_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(HhApiServiceIndustry::class.java)
     }
 
     single {
@@ -46,15 +83,23 @@ val dataModule = module {
             Context.MODE_PRIVATE
         )
     }
-    factory { VacancyDbConverter() }
 
-    factory { Gson() }
+    factory { VacancyDbConverter(get()) }
 
-    single<NetworkClient>(named("search")) {
+    single { Gson() }
+
+    single<NetworkClient>(named(DiConstants.SEARCH)) {
         RetrofitNetworkClient(get(), androidContext())
     }
-    single<NetworkClient>(named("details")) {
+    single<NetworkClient>(named(DiConstants.DETAILS)) {
         RetrofitNetworkClientDetails(get(), androidContext())
+    }
+
+    single<NetworkClient>(named(DiConstants.AREAS)) {
+        AreasRetrofitNetworkClient(get(), androidContext())
+    }
+    single<NetworkClient>(named(DiConstants.INDUSTRY)) {
+        IndustryRetrofitNetworkClient(get(), androidContext())
     }
 
 }

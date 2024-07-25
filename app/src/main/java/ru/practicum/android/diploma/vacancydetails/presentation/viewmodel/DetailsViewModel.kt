@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.common.data.ErrorType
-import ru.practicum.android.diploma.common.data.NoInternetError
-import ru.practicum.android.diploma.common.data.Success
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.NoInternetError
+import ru.practicum.android.diploma.common.domain.Success
 import ru.practicum.android.diploma.favorites.domain.db.FavouriteVacancyInteractor
 import ru.practicum.android.diploma.vacancydetails.domain.api.DetailsInteractor
 import ru.practicum.android.diploma.vacancydetails.domain.models.DetailsNotFoundType
@@ -23,8 +23,8 @@ class DetailsViewModel(
 ) : ViewModel() {
 
     private var isFavourite: Boolean = false
-    // private var isFavorite = MutableLiveData<Boolean>()
-    // fun observeFavoriteState(): LiveData<Boolean> = isFavorite
+    private val _vacancyExists = MutableLiveData<Boolean>()
+    val vacancyExists: LiveData<Boolean> get() = _vacancyExists
 
     private val vacancyState = MutableLiveData<DetailsState>()
     fun observeVacancyState(): LiveData<DetailsState> = vacancyState
@@ -41,12 +41,12 @@ class DetailsViewModel(
         }
     }
 
-    fun checkVacancyInDatabase(vacancyId: String, callback: (Boolean) -> Unit) {
+    fun checkVacancyInDatabase(vacancyId: String) {
         viewModelScope.launch {
             val exists = withContext(Dispatchers.IO) {
                 favouriteVacancyInteractor.getVacancyById(vacancyId) != null
             }
-            callback(exists)
+            _vacancyExists.postValue(exists)
         }
     }
 

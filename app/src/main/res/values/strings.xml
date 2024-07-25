@@ -18,7 +18,7 @@
     <string name="enter_amount">Введите сумму</string>
     <string name="enter_region">Введите регион</string>
     <string name="enter_industry">Введите отрасль</string>
-    <string name="not_show_without_salary">Не показывать без зарплаты</string>
+    <string name="only_with_salary">Не показывать без зарплаты</string>
     <string name="country">Страна</string>
     <string name="region">Регион</string>
     <string name="select_country">Выбор страны</string>
@@ -45,6 +45,7 @@
     <string name="key_skills">Ключевые навыки</string>
     <string name="contacts">Контакты</string>
     <string name="text_for_description_vacancy">Знание классических алгоритмов и структуры данных</string>
+    <string name="vacancy_name">%s, %s</string>
     <string name="salary_exact">%s %s</string>
     <string name="salary_from">от %s %s</string>
     <string name="salary_to">до %s %s</string>
@@ -75,6 +76,9 @@
     <string name="name">Имя</string>
     <string name="name_mock">JohnDoe</string>
     <string name="android_developer">Android-разработчик, Москва</string>
+    <string name="mock_rus_mos">Россия, Москва</string>
+    <string name="mock_IT">IT</string>
+    <string name="chose_area">Выбор места работы</string>
 
     <plurals name="vacancies_counter">
         <item quantity="zero">Найдено %d вакансий</item>

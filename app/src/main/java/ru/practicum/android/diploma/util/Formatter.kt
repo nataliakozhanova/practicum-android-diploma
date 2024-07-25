@@ -6,14 +6,10 @@ import ru.practicum.android.diploma.common.domain.SalaryInfo
 import ru.practicum.android.diploma.common.presentation.Currency
 
 object Formatter {
-    fun moneyFormat(num: Int) = "%,d".format(num).replace(",", " ")
-
-    inline fun <reified T : Enum<T>> enumValueOfOrNull(name: String): T? {
-        return enumValues<T>().find { it.name == name }
-    }
+    private fun moneyFormat(num: Int) = "%,d".format(num).replace(",", " ")
 
     private fun currencyFromStr(name: String?): String {
-        return enumValueOfOrNull<Currency>(name.toString())?.abbr ?: name.toString()
+        return Currency.valueOrNull(name.toString())?.abbr ?: name.toString()
     }
 
     fun formatSalary(context: Context, salaryInfo: SalaryInfo?): String {

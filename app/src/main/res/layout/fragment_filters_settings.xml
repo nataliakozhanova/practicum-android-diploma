@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
+    tools:context=".filters.settingsfilters.ui.SettingsFiltersFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeftGl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRightGl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <ImageView
+        android:id="@+id/arrowBackIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:clickable="true"
+        android:src="@drawable/arrow_back_24px"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/screenNameVacancy"
+        style="@style/VacancyViewCardHeader22TextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/filtering_settings"
+        app:layout_constraintStart_toEndOf="@+id/arrowBackIv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/filter_arrow_forward_1"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_56"
+        android:src="@drawable/arrow_forward_24px_button"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
+        app:layout_constraintTop_toBottomOf="@+id/screenNameVacancy" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/placeToWorkCl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/filter_arrow_forward_1"
+        app:layout_constraintEnd_toStartOf="@+id/filter_arrow_forward_1"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+        app:layout_constraintTop_toTopOf="@+id/filter_arrow_forward_1">
+
+        <TextView
+            android:id="@+id/placeToWork"
+            style="@style/filterPlaceAndIndustry16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/place_to_work"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/placeToWorkDark"
+            style="@style/filterPlaceAndIndustry12TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/place_to_work"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeToWork"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/placeToWorkTv"
+            style="@style/FilterCheckBox16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeToWorkDark"
+            tools:visibility="visible"
+            tools:text="@string/mock_rus_mos"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintIndustry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/filter_arrow_forward_2"
+        app:layout_constraintEnd_toStartOf="@+id/filter_arrow_forward_2"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+        app:layout_constraintTop_toTopOf="@+id/filter_arrow_forward_2">
+
+        <TextView
+            android:id="@+id/industryFilterSetting"
+            style="@style/filterPlaceAndIndustry16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/industry"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/industryDark"
+            style="@style/filterPlaceAndIndustry12TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/industry"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/industryFilterSetting"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/industryBigDark"
+            style="@style/FilterCheckBox16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mock_IT"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/industryDark"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/filter_arrow_forward_2"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/arrow_forward_24px_button"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
+        app:layout_constraintTop_toBottomOf="@+id/filter_arrow_forward_1" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/salaryLayout"
+        style="@style/InputLayoutFilterSetting"
+        android:layout_marginTop="@dimen/dp_48"
+        android:hint="@string/expected_salary"
+        app:cursorColor="@color/blue"
+        app:placeholderText="@string/enter_amount"
+        app:placeholderTextColor="?attr/android:textColorHint"
+        app:endIconMode="custom"
+        android:focusableInTouchMode="true"
+        app:endIconDrawable="@drawable/clear_24px_input_edittext_button"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
+        app:endIconTint="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+        app:layout_constraintTop_toBottomOf="@+id/constraintIndustry">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/salaryTextInput"
+            style="@style/InputTextFilterSetting"
+            android:background="@drawable/edit_text_background"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:maxLines="1"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/noSalaryCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/selector_check_box"
+        android:buttonTint="@color/blue"
+        app:layout_constraintBottom_toBottomOf="@+id/noSalaryText"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
+        app:layout_constraintTop_toTopOf="@+id/noSalaryText" />
+
+    <TextView
+        android:id="@+id/noSalaryText"
+        style="@style/FilterCheckBox16TextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_48"
+        android:text="@string/only_with_salary"
+        app:layout_constraintEnd_toStartOf="@+id/noSalaryCheckbox"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+        app:layout_constraintTop_toBottomOf="@+id/salaryLayout" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/apply_button"
+        style="@style/BigBlueButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/apply_button"
+        android:minHeight="64dp"
+        android:paddingVertical="@dimen/dp_12"
+        android:text="@string/apply_button"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/reset_button"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/reset_button"
+        style="@style/ThrowOffRedTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_16"
+        android:paddingVertical="@dimen/dp_12"
+        android:text="@string/reset_button"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

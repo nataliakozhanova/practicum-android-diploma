@@ -8,20 +8,30 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.common.data.ErrorType
-import ru.practicum.android.diploma.common.data.NoInternetError
-import ru.practicum.android.diploma.common.data.Success
+import ru.practicum.android.diploma.common.domain.ErrorType
+import ru.practicum.android.diploma.common.domain.FiltersAll
+import ru.practicum.android.diploma.common.domain.NoInternetError
+import ru.practicum.android.diploma.common.domain.Success
 import ru.practicum.android.diploma.common.domain.VacancyBase
+import ru.practicum.android.diploma.common.presentation.ButtonFiltersMode
+import ru.practicum.android.diploma.filters.choosearea.domain.api.ChooseAreaInteractor
+import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.IndustryInteractor
+import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
+import ru.practicum.android.diploma.search.domain.models.Filters
 import ru.practicum.android.diploma.search.domain.models.SearchResult
 import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
+import ru.practicum.android.diploma.search.domain.models.VacancySearchRequest
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.isConnected
 
 class SearchViewModel(
     private val context: Context,
-    private val interactor: SearchInteractor,
+    private val searchInteractor: SearchInteractor,
+    private val settingsInteractor: SettingsInteractor,
+    private val filterAreaInteractor: ChooseAreaInteractor,
+    private val filterIndustryInteractor: IndustryInteractor,
 ) : ViewModel() {
     companion object {
         const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
@@ -29,12 +39,14 @@ class SearchViewModel(
     }
 
     private var vacanciesList = mutableListOf<VacancyBase>()
-    private var vacanciesCheck = mutableListOf<String>()
+    private var vacanciesHhIDs = mutableListOf<String>()
     private var pages: Int = 0
     private var page: Int = 0
     private var latestSearchText: String? = null
     private var isNextPageLoading: Boolean = false
     private var searchJob: Job? = null
+    private var activeFilters: FiltersAll? = null
+    private var latestFilters: FiltersAll? = null
 
     private val _toast = SingleLiveEvent<String>()
     fun observeToast(): LiveData<String> = _toast
@@ -46,6 +58,7 @@ class SearchViewModel(
 
     init {
         _state.value = SearchState.Default
+        loadFilters(useLastChanges = false)
     }
 
     fun initSearch() {
@@ -53,13 +66,14 @@ class SearchViewModel(
         pages = 0
         latestSearchText = null
         vacanciesList.clear()
-        vacanciesCheck.clear()
+        vacanciesHhIDs.clear()
         if (searchJob != null && searchJob!!.isActive) {
             searchJob?.cancel()
         }
     }
 
     fun clearSearch() {
+        settingsInteractor.deletePreviousFilters()
         initSearch()
         renderState(SearchState.Default, _state)
     }
@@ -77,6 +91,12 @@ class SearchViewModel(
                 }
             }
         }
+    }
+
+    // запуск поиска по требованию
+    fun searchByClick(searchText: String) {
+        initSearch()
+        searchDebounce(searchText, instantStart = true)
     }
 
     private fun badSearchConditions(newSearchText: String, instantStart: Boolean): Boolean {
@@ -98,6 +118,46 @@ class SearchViewModel(
         }
     }
 
+    fun deletePreviousFilters() {
+        settingsInteractor.deletePreviousFilters()
+    }
+
+    // для поиска загружаем активные фильтры - предыдущие либо последние
+    private fun loadFilters(useLastChanges: Boolean) {
+        val previousFilters = settingsInteractor.getPreviousFilters()
+        latestFilters = FiltersAll(
+            settingsInteractor.getSalaryFilters(),
+            filterAreaInteractor.getAreaSettings(),
+            filterIndustryInteractor.getIndustrySettings()
+        )
+        activeFilters = if (!useLastChanges && previousFilters != null) {
+            previousFilters
+        } else {
+            latestFilters
+        }
+    }
+
+    // соберем запрос с фильтрами и параметрами
+    private fun makeSearchRequest(expression: String): VacancySearchRequest {
+        loadFilters(useLastChanges = false)
+        val searchFilters = Filters(
+            areaId = if (activeFilters?.area?.id.isNullOrEmpty()) {
+                activeFilters?.area?.countryInfo?.id
+            } else {
+                activeFilters?.area?.id
+            },
+            industryId = activeFilters?.industry?.id,
+            salary = activeFilters?.salary?.salary?.toIntOrNull(),
+            onlyWithSalary = activeFilters?.salary?.checkbox ?: false,
+        )
+        return VacancySearchRequest(
+            expression,
+            page,
+            ITEMS_PER_PAGE,
+            searchFilters
+        )
+    }
+
     private fun searchRequest(newSearchText: String) {
         // отгружаем в livedata для начального поиска или следующей страницы
         val stateSwitch = if (page > 0) {
@@ -111,7 +171,7 @@ class SearchViewModel(
             renderState(SearchState.Loading, stateSwitch)
             // корутина на поиск
             viewModelScope.launch {
-                interactor.findVacancies(newSearchText, page, ITEMS_PER_PAGE)
+                searchInteractor.findVacancies(makeSearchRequest(newSearchText))
                     .collect { pair ->
                         processResult(pair.first, pair.second, stateSwitch)
                     }
@@ -119,18 +179,39 @@ class SearchViewModel(
         }
     }
 
-    private fun vacancyHash(vacancy: VacancyBase): String {
-        return "${vacancy.name},${vacancy.employerInfo.areaName}," +
-            "${vacancy.employerInfo.employerName},${vacancy.salaryInfo}"
+    // просчет фильтров ведется на последних
+    private fun salaryFiltersOn(): Boolean {
+        return latestFilters?.salary != null
+            && (
+                latestFilters?.salary?.checkbox == true
+                    || latestFilters?.salary?.salary != null
+                )
+    }
+
+    private fun areaFiltersOn(): Boolean {
+        return latestFilters?.area != null
+            && (latestFilters?.area?.id?.isEmpty() != true || latestFilters?.area?.countryInfo?.id?.isEmpty() != true)
+    }
+
+    private fun industryFiltersOn(): Boolean {
+        return latestFilters?.industry != null && latestFilters?.industry?.id?.isNotEmpty() == true
+    }
+
+    fun filtersOn(): ButtonFiltersMode {
+        loadFilters(useLastChanges = false)
+        return if (salaryFiltersOn() || areaFiltersOn() || industryFiltersOn()) {
+            ButtonFiltersMode.ON
+        } else {
+            ButtonFiltersMode.OFF
+        }
     }
 
     private fun saveVacancies(vacancies: List<VacancyBase>) {
         // только уникальные вакансии
         for (newVacancy in vacancies) {
-            var vacHash = vacancyHash(newVacancy)
-            if (!vacanciesCheck.contains(vacHash)) {
+            if (!vacanciesHhIDs.contains(newVacancy.hhID)) {
                 vacanciesList.add(newVacancy)
-                vacanciesCheck.add(vacHash)
+                vacanciesHhIDs.add(newVacancy.hhID)
             }
         }
     }
@@ -167,10 +248,5 @@ class SearchViewModel(
 
     private fun renderState(state: SearchState, liveData: MutableLiveData<SearchState>) {
         liveData.postValue(state)
-    }
-
-    fun searchByClick(searchText: String) {
-        initSearch()
-        searchDebounce(searchText, instantStart = true)
     }
 }

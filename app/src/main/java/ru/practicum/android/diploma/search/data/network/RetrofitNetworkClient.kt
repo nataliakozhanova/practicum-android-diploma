@@ -5,15 +5,15 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.common.data.BadRequestError
+import ru.practicum.android.diploma.common.domain.BadRequestError
 import ru.practicum.android.diploma.common.data.NetworkClient
-import ru.practicum.android.diploma.common.data.NoInternetError
+import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.data.ResponseBase
-import ru.practicum.android.diploma.common.data.ServerInternalError
+import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.search.data.HhQueryOptions
-import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
+import ru.practicum.android.diploma.search.domain.models.VacancySearchRequest
 import ru.practicum.android.diploma.util.isConnected
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -31,7 +31,7 @@ class RetrofitNetworkClient(
             try {
                 when (dto) {
                     is VacancySearchRequest -> {
-                        val options = searchOptions(dto)
+                        val options = convertToRequestOptions(dto)
 
                         val response = apiService.findVacancies(options)
                         when (response.code()) {
@@ -57,16 +57,40 @@ class RetrofitNetworkClient(
         }
     }
 
-    private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
+    // зададим поля для запроса к API
+    private fun convertToRequestOptions(searchRequest: VacancySearchRequest): HashMap<String, String> {
         val options: HashMap<String, String> = HashMap()
-        options[HhQueryOptions.TEXT.key] = dto.expression
-        options[HhQueryOptions.SEARCH_FIELD.key] = "name" // поиск только по названию вакансии
-        if (dto.page != null) {
-            options[HhQueryOptions.PAGE.key] = dto.page.toString()
+        // маска поиска
+        options[HhQueryOptions.TEXT.key] = searchRequest.expression
+        // по какому полю искать
+        options[HhQueryOptions.SEARCH_FIELD.key] = HhQueryOptions.SEARCH_FIELD.value
+        // сортировка результатов
+        options[HhQueryOptions.VACANCY_SEARCH_ORDER.key] = HhQueryOptions.VACANCY_SEARCH_ORDER.value
+        // страница
+        if (searchRequest.page != null) {
+            options[HhQueryOptions.PAGE.key] = searchRequest.page.toString()
         }
-        if (dto.perPage != null) {
-            options[HhQueryOptions.PER_PAGE.key] = dto.perPage.toString()
+        // кол-во элементов на странице
+        if (searchRequest.perPage != null) {
+            options[HhQueryOptions.PER_PAGE.key] = searchRequest.perPage.toString()
         }
+        // фильтр по зарплате
+        if (searchRequest.filters.salary != null) {
+            options[HhQueryOptions.SALARY.key] = "${searchRequest.filters.salary}"
+        }
+        // флаг только если зп указана
+        if (searchRequest.filters.onlyWithSalary) {
+            options[HhQueryOptions.ONLY_WITH_SALARY.key] = "${searchRequest.filters.onlyWithSalary}"
+        }
+        // фильтр по региону
+        if (!searchRequest.filters.areaId.isNullOrEmpty()) {
+            options[HhQueryOptions.AREA.key] = "${searchRequest.filters.areaId}"
+        }
+        // фильтр по индустрии
+        if (!searchRequest.filters.industryId.isNullOrEmpty()) {
+            options[HhQueryOptions.INDUSTRY.key] = "${searchRequest.filters.industryId}"
+        }
+        // Log.d("mine", "options = $options")
         return options
     }
 

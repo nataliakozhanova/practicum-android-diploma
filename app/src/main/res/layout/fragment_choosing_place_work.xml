@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
+    tools:context=".filters.choosearea.ui.ChooseAreaFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeftGl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRightGl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <ImageView
+        android:id="@+id/arrowBackIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:src="@drawable/arrow_back_24px"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/screenPlaceWork"
+        style="@style/VacancyViewCardHeader22TextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/choosing_place_to_work"
+        app:layout_constraintStart_toEndOf="@+id/arrowBackIv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/countryArrowAndCleanIv"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_56"
+        android:src="@drawable/arrow_forward_24px_button"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
+        app:layout_constraintTop_toBottomOf="@+id/screenPlaceWork" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/countryCl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/countryArrowAndCleanIv"
+        app:layout_constraintEnd_toStartOf="@+id/countryArrowAndCleanIv"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+        app:layout_constraintTop_toTopOf="@+id/countryArrowAndCleanIv">
+
+        <TextView
+            android:id="@+id/countryTv"
+            style="@style/filterPlaceAndIndustry16TextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/country"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/countryTil"
+            style="@style/filterPlaceAndIndustry12TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/country"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/countryTv"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/countryDarkTv"
+            style="@style/FilterCheckBox16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/countryTil"
+            tools:text="@string/country"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/regionArrowAndCleanIv"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/arrow_forward_24px_button"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
+        app:layout_constraintTop_toBottomOf="@+id/countryArrowAndCleanIv" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/regionCl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/regionArrowAndCleanIv"
+        app:layout_constraintEnd_toStartOf="@+id/regionArrowAndCleanIv"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
+        app:layout_constraintTop_toTopOf="@+id/regionArrowAndCleanIv">
+
+        <TextView
+            android:id="@+id/regionTv"
+            style="@style/filterPlaceAndIndustry16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/region"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/regionTil"
+            style="@style/filterPlaceAndIndustry12TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/region"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/regionTv"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/regionDarkTv"
+            style="@style/FilterCheckBox16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/region"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/regionTil"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/applyBt"
+        style="@style/BigBlueButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/apply_button"
+        android:text="@string/enter_button"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
