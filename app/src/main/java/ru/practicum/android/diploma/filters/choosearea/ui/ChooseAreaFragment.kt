@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -70,7 +68,7 @@ class ChooseAreaFragment : Fragment() {
 
     private fun setBindingArrows() {
         binding.countryArrowAndCleanIv.setOnClickListener {
-            if (checkIvImage(binding.countryArrowAndCleanIv, R.drawable.arrow_forward_24px_button)) {
+            if (areaSettings == null) {
                 findNavController().navigate(
                     R.id.action_chooseAreaFragment_to_chooseCountryFragment
                 )
@@ -84,16 +82,15 @@ class ChooseAreaFragment : Fragment() {
         }
 
         binding.regionArrowAndCleanIv.setOnClickListener {
-            if (checkIvImage(binding.regionArrowAndCleanIv, R.drawable.arrow_forward_24px_button)) {
+            if (areaSettings == null || areaSettings?.id == "") {
                 findNavController().navigate(
                     R.id.action_chooseAreaFragment_to_chooseRegionFragment,
                     ChooseRegionFragment.createArgs(areaSettings?.countryInfo?.id)
                 )
             } else {
-                if (areaSettings != null) {
-                    viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
-                    hideRegion()
-                }
+                areaSettings = AreaInfo("", "", areaSettings!!.countryInfo)
+                viewModelChooseArea.saveAreaSettings(areaSettings!!)
+                hideRegion()
             }
         }
     }
@@ -160,11 +157,5 @@ class ChooseAreaFragment : Fragment() {
             regionTil.isVisible = false
             regionArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
         }
-    }
-
-    private fun checkIvImage(imageView: ImageView, imageResourceId: Int): Boolean {
-        return imageView.drawable?.let {
-            return it.constantState == ContextCompat.getDrawable(imageView.context, imageResourceId)?.constantState
-        } ?: false
     }
 }
