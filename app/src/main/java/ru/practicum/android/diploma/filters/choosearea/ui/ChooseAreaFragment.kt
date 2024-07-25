@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -54,8 +55,15 @@ class ChooseAreaFragment : Fragment() {
         }
 
         binding.arrowBackIv.setOnClickListener {
-            findNavController().navigateUp()
+            onBackPressedNavigation()
         }
+
+        val dispatcher = requireActivity().onBackPressedDispatcher
+        dispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressedNavigation()
+            }
+        })
 
         setBindingArrows()
     }
@@ -90,6 +98,11 @@ class ChooseAreaFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun onBackPressedNavigation() {
+        viewModelChooseArea.deleteCountrySettings()
+        findNavController().navigateUp()
     }
 
     private fun renderAreaSettings() {
