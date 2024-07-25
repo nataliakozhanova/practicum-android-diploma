@@ -70,27 +70,28 @@ class ChooseAreaFragment : Fragment() {
 
     private fun setBindingArrows() {
         binding.countryArrowAndCleanIv.setOnClickListener {
-            if (checkIvImage(binding.countryArrowAndCleanIv, R.drawable.clear_24px_input_edittext_button)) {
+            if (checkIvImage(binding.countryArrowAndCleanIv, R.drawable.arrow_forward_24px_button)) {
+                findNavController().navigate(
+                    R.id.action_chooseAreaFragment_to_chooseCountryFragment
+                )
+            } else {
                 viewModelChooseArea.deleteCountrySettings()
                 areaSettings = null
                 hideRegion()
                 hideCountry()
-            } else {
-                findNavController().navigate(
-                    R.id.action_chooseAreaFragment_to_chooseCountryFragment
-                )
+
             }
         }
 
         binding.regionArrowAndCleanIv.setOnClickListener {
-            if (checkIvImage(binding.regionArrowAndCleanIv, R.drawable.clear_24px_input_edittext_button)) {
-                viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
-                hideRegion()
-            } else {
+            if (checkIvImage(binding.regionArrowAndCleanIv, R.drawable.arrow_forward_24px_button)) {
                 findNavController().navigate(
                     R.id.action_chooseAreaFragment_to_chooseRegionFragment,
-                    ChooseRegionFragment.createArgs(areaSettings?.countryInfo?.id)
                 )
+                ChooseRegionFragment.createArgs(areaSettings?.countryInfo?.id)
+            } else {
+                viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
+                hideRegion()
             }
         }
     }
