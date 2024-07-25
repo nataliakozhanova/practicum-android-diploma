@@ -70,7 +70,6 @@ class ChooseAreaFragment : Fragment() {
 
     private fun setBindingArrows() {
         binding.countryArrowAndCleanIv.setOnClickListener {
-
             if (checkIvImage(binding.countryArrowAndCleanIv, R.drawable.arrow_forward_24px_button)) {
                 findNavController().navigate(
                     R.id.action_chooseAreaFragment_to_chooseCountryFragment
