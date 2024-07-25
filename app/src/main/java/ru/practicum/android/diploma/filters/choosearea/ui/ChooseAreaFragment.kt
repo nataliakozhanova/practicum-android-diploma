@@ -87,8 +87,8 @@ class ChooseAreaFragment : Fragment() {
             if (checkIvImage(binding.regionArrowAndCleanIv, R.drawable.arrow_forward_24px_button)) {
                 findNavController().navigate(
                     R.id.action_chooseAreaFragment_to_chooseRegionFragment,
+                    ChooseRegionFragment.createArgs(areaSettings?.countryInfo?.id)
                 )
-                ChooseRegionFragment.createArgs(areaSettings?.countryInfo?.id)
             } else {
                 viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
                 hideRegion()
