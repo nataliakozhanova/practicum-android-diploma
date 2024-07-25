@@ -90,8 +90,10 @@ class ChooseAreaFragment : Fragment() {
                     ChooseRegionFragment.createArgs(areaSettings?.countryInfo?.id)
                 )
             } else {
-                viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
-                hideRegion()
+                if (areaSettings != null) {
+                    viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
+                    hideRegion()
+                }
             }
         }
     }
