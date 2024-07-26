@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.domain.BadRequestError
 import ru.practicum.android.diploma.common.domain.ErrorType
 import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.common.domain.NoInternetError
@@ -86,8 +87,10 @@ class SearchViewModel(
                 if (page + 1 < pages) {
                     page += 1
                     searchDebounce(latestSearchText.toString(), instantStart = true)
-                } else {
+                } else if (pages > 0) {
                     renderState(SearchState.AtBottom, _nextPageState)
+                } else {
+                    renderState(SearchState.Error(BadRequestError()), _nextPageState)
                 }
             }
         }
@@ -183,9 +186,9 @@ class SearchViewModel(
     private fun salaryFiltersOn(): Boolean {
         return latestFilters?.salary != null
             && (
-                latestFilters?.salary?.checkbox == true
-                    || latestFilters?.salary?.salary != null
-                )
+            latestFilters?.salary?.checkbox == true
+                || latestFilters?.salary?.salary != null
+            )
     }
 
     private fun areaFiltersOn(): Boolean {
