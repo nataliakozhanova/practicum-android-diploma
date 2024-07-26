@@ -141,7 +141,9 @@ class SearchFragment : Fragment() {
             }
 
             is SearchState.AtBottom -> {
-                showNextPagePreloader(false, getString(R.string.bottom_of_list))
+                if (vacancySearchAdapter.vacancies.isNotEmpty()) {
+                    showNextPagePreloader(false, getString(R.string.bottom_of_list))
+                }
             }
 
             is SearchState.Loading -> {}
@@ -194,6 +196,7 @@ class SearchFragment : Fragment() {
                 ContextCompat.getDrawable(requireContext(), EditTextSearchIcon.SEARCH_ICON.drawableId)
             binding.editTextSearchLayout.editText?.setText(searchMask)
             viewModel.clearSearch()
+            vacancySearchAdapter.vacancies.clear()
             showNextPagePreloader(false)
             nextPageRequestSending = true
         }
