@@ -40,6 +40,7 @@ class SearchFragment : Fragment() {
         private const val SEARCH_MASK = ""
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 200L
         private const val TOAST_DEBOUNCE_DELAY_MILLIS = 1000L
+        private const val SHOW_PROGRESS_BAR_DEBOUNCE_DELAY_MILLIS = 500L
 
         private const val RESTART_FLAG = "restartLastSearch"
         private const val SET_SEARCH_MASK = "setSearchMask"
@@ -225,9 +226,10 @@ class SearchFragment : Fragment() {
         bindEditSearch()
         // мониторим скроллинг списка вакансий для загрузки новой страницы
         binding.searchResultsRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1) && !nextPageRequestSending) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                // если показан нижний элемент при скролле вниз, а также не запущен тот же запрос
+                if (dy > 0 && !recyclerView.canScrollVertically(1) && !nextPageRequestSending) {
                     // отправим запрос следующей страницы
                     loadNextPage()
                     // прокрутим адаптер вниз, иначе лоадер закрывает последнюю вакансию текущей страницы
@@ -312,7 +314,12 @@ class SearchFragment : Fragment() {
         if (!nextPageRequestSending) {
             showNextPagePreloader(true)
             nextPageRequestSending = true
-            viewModel.nextPageSearch()
+            lifecycleScope.launch {
+                // дадим прогресс бару покрутиться чтобы показать что процесс идет
+                delay(SHOW_PROGRESS_BAR_DEBOUNCE_DELAY_MILLIS)
+                // запускаем поиск следующей страницы
+                viewModel.nextPageSearch()
+            }
         }
     }
 
