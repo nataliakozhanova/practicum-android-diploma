@@ -186,9 +186,9 @@ class SearchViewModel(
     private fun salaryFiltersOn(): Boolean {
         return latestFilters?.salary != null
             && (
-            latestFilters?.salary?.checkbox == true
-                || latestFilters?.salary?.salary != null
-            )
+                latestFilters?.salary?.checkbox == true
+                    || latestFilters?.salary?.salary != null
+                )
     }
 
     private fun areaFiltersOn(): Boolean {
