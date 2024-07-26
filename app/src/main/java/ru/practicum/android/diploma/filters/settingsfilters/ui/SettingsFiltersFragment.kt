@@ -211,7 +211,6 @@ class SettingsFiltersFragment : Fragment() {
         val salaryFilters = viewModel.getSalaryFilters()
         if (salaryFilters != null) {
             binding.salaryTextInput.setText(salaryFilters.salary)
-            binding.salaryLayout.editText?.requestFocus()
             binding.noSalaryCheckbox.isChecked = salaryFilters.checkbox
         }
     }
