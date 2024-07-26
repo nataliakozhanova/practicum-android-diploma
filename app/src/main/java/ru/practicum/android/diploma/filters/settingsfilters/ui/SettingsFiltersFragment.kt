@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.filters.settingsfilters.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,6 +62,7 @@ class SettingsFiltersFragment : Fragment() {
         originalFilters = viewModel.getOriginalFilters()
         lastSearchMask = arguments?.getString(LAST_SEARCH_MASK)
         updateButtonsVisibility()
+        Log.d("mine", "hasPreviousFilters = ${viewModel.hasPreviousFilters()}")
     }
 
     private fun setBindings() {
@@ -100,15 +102,24 @@ class SettingsFiltersFragment : Fragment() {
 
     private fun myOnBackArrowPressed() {
         binding.arrowBackIv.setOnClickListener {
-            viewModel.savePreviousFilters()
+            doSavePreviousFilters()
             findNavController().navigateUp()
         }
     }
 
     private fun myOnBackPressed() {
-        viewModel.savePreviousFilters()
+        doSavePreviousFilters()
         callback.isEnabled = false
         requireActivity().onBackPressedDispatcher.onBackPressed()
+    }
+
+    // если маска поиска была непустая, сохраним фильтры
+    private fun doSavePreviousFilters() {
+        if (lastSearchMask != null) {
+            viewModel.savePreviousFilters()
+        } else {
+            viewModel.deletePreviousFilters()
+        }
     }
 
     private fun updateButtonsVisibility() {
