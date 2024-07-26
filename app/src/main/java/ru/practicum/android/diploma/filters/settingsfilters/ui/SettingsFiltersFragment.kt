@@ -100,15 +100,24 @@ class SettingsFiltersFragment : Fragment() {
 
     private fun myOnBackArrowPressed() {
         binding.arrowBackIv.setOnClickListener {
-            viewModel.savePreviousFilters()
+            doSavePreviousFilters()
             findNavController().navigateUp()
         }
     }
 
     private fun myOnBackPressed() {
-        viewModel.savePreviousFilters()
+        doSavePreviousFilters()
         callback.isEnabled = false
         requireActivity().onBackPressedDispatcher.onBackPressed()
+    }
+
+    // если маска поиска была непустая, сохраним фильтры
+    private fun doSavePreviousFilters() {
+        if (lastSearchMask != null) {
+            viewModel.savePreviousFilters()
+        } else {
+            viewModel.deletePreviousFilters()
+        }
     }
 
     private fun updateButtonsVisibility() {

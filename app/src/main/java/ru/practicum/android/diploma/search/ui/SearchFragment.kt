@@ -105,7 +105,6 @@ class SearchFragment : Fragment() {
 
     // обработка состояний поиска первой страницы
     private fun searchStateCheck(state: SearchState) {
-        // Log.d("mine", "State = ${state.javaClass}")
         when (state) {
             SearchState.Default -> showStartPage()
 
@@ -134,7 +133,6 @@ class SearchFragment : Fragment() {
 
     // обработка состояний поиска следующих страниц
     private fun nextPageStateCheck(state: SearchState) {
-        // Log.d("mine", "nextState = ${state.javaClass}")
         when (state) {
             is SearchState.Default -> {
                 showNextPagePreloader(false)
