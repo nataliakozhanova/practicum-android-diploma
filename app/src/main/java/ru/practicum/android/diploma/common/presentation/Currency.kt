@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.common.presentation
 
+import android.util.Log
+
 enum class Currency(val abbr: String, val curName: String) {
     AZN("₼", "Манаты"),
     BYR("Br", "Белорусские рубли"),
@@ -14,7 +16,12 @@ enum class Currency(val abbr: String, val curName: String) {
 
     companion object {
         fun valueOrNull(abbr: String): Currency? {
-            return entries.find { it.abbr == abbr }
+            return try {
+                valueOf(abbr)
+            } catch (e: IllegalArgumentException) {
+                e.message?.let { Log.e("Exception", it) }
+                null
+            }
         }
     }
 }
