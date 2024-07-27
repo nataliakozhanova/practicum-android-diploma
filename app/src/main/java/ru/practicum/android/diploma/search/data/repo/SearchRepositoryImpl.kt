@@ -3,8 +3,8 @@ package ru.practicum.android.diploma.search.data.repo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.common.data.NetworkClient
-import ru.practicum.android.diploma.common.domain.Resource
 import ru.practicum.android.diploma.common.domain.EmployerInfo
+import ru.practicum.android.diploma.common.domain.Resource
 import ru.practicum.android.diploma.common.domain.SalaryInfo
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.search.data.dto.VacancySearchDto

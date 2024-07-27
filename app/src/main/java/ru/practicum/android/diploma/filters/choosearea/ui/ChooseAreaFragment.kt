@@ -57,11 +57,14 @@ class ChooseAreaFragment : Fragment() {
         }
 
         val dispatcher = requireActivity().onBackPressedDispatcher
-        dispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onBackPressedNavigation()
+        dispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onBackPressedNavigation()
+                }
             }
-        })
+        )
 
         setBindingArrows()
     }
