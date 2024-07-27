@@ -66,7 +66,7 @@ class SearchFragmentHelper(
 
     fun showErrorOrEmptySearch(type: ErrorType) {
         hideKeyboard()
-
+        nextPageRequestSending = false
         when (type) {
             is VacanciesNotFoundType -> {
                 with(fragment.binding) {
@@ -146,7 +146,7 @@ class SearchFragmentHelper(
         Toast.makeText(fragment.requireContext(), toastMessage, Toast.LENGTH_SHORT).show()
     }
 
-    fun hideKeyboard() {
+    private fun hideKeyboard() {
         val view: View? = fragment.activity?.currentFocus
         if (view != null) {
             val inputMethodManager =
