@@ -105,6 +105,18 @@ class ChooseAreaRepositoryImpl(
         areasStorageApi.removeArea()
     }
 
+    override fun savePreviousAreaSettings(area: AreaInfo) {
+        areasStorageApi.writePreviousArea(area)
+    }
+
+    override fun getPreviousAreaSettings(): AreaInfo? {
+        return areasStorageApi.readPreviousArea()
+    }
+
+    override fun deletePreviousAreaSettings() {
+        areasStorageApi.removePreviousArea()
+    }
+
     private fun convertCountry(it: AreasCatalogDto): CountryInfo =
         CountryInfo(
             it.id,

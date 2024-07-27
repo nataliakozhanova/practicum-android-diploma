@@ -101,7 +101,19 @@ class ChooseAreaFragment : Fragment() {
     }
 
     private fun onBackPressedNavigation() {
-        viewModelChooseArea.deleteCountrySettings()
+        val currentFilters = viewModelChooseArea.getAreaSettings()
+        if (currentFilters == null) {
+            viewModelChooseArea.deletePreviousAreaSettings()
+        } else {
+            val previousFilters = viewModelChooseArea.getPreviousAreaSettings()
+            if (previousFilters == null) {
+                viewModelChooseArea.deleteCountrySettings()
+            } else {
+                viewModelChooseArea.saveAreaSettings(previousFilters)
+                viewModelChooseArea.deletePreviousAreaSettings()
+            }
+        }
+
         findNavController().navigateUp()
     }
 

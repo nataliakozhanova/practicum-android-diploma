@@ -69,6 +69,7 @@ class SettingsFiltersFragment : Fragment() {
 
         binding.placeToWorkCl.setOnClickListener {
             binder.openAreaSettings()
+            saveCurrentAreaFilters()
         }
         binding.constraintIndustry.setOnClickListener {
             binder.openIndustrySettings()
@@ -252,6 +253,13 @@ class SettingsFiltersFragment : Fragment() {
         binding.salaryTextInput.text?.clear()
         binding.noSalaryCheckbox.isChecked = false
         updateButtonsVisibility()
+    }
+
+    fun saveCurrentAreaFilters() {
+        val currentFilters = viewModel.getAreaSettings()
+        if (currentFilters != null) {
+            viewModel.savePreviousAreaSettings(currentFilters)
+        }
     }
 
     override fun onDestroyView() {

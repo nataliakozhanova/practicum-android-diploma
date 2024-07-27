@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.filters.settingsfilters.domain.models.Salary
 class SettingsFiltersViewModel(
     private val settingsInteractor: SettingsInteractor,
     private val chooseAreaInteractor: ChooseAreaInteractor,
-    private val chooseIndustryInteractor: IndustryInteractor
+    private val chooseIndustryInteractor: IndustryInteractor,
 ) : ViewModel() {
 
     private var originalFilters: FiltersAll? = null
@@ -46,6 +46,10 @@ class SettingsFiltersViewModel(
 
     fun clearAreaSettings() {
         chooseAreaInteractor.deleteAreaSettings()
+    }
+
+    fun savePreviousAreaSettings(area: AreaInfo) {
+        chooseAreaInteractor.savePreviousAreaSettings(area)
     }
 
     fun clearIndustrySettings() {
