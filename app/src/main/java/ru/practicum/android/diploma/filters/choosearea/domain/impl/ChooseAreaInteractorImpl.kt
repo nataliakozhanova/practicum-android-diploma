@@ -45,6 +45,18 @@ class ChooseAreaInteractorImpl(private val repository: ChooseAreaRepository) : C
         repository.deleteAreaSettings()
     }
 
+    override fun savePreviousAreaSettings(area: AreaInfo) {
+        repository.savePreviousAreaSettings(area)
+    }
+
+    override fun getPreviousAreaSettings(): AreaInfo? {
+        return repository.getPreviousAreaSettings()
+    }
+
+    override fun deletePreviousAreaSettings() {
+        repository.deletePreviousAreaSettings()
+    }
+
     private fun mapResult(result: Resource<AreasResult?>): Pair<AreasResult?, ErrorType> {
         return when (result) {
             is Resource.Success -> {

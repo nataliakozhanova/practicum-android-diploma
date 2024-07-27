@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.presentation.FilterArrow
 
 class SettingsFiltersBinding(
-    val fragment: SettingsFiltersFragment
+    val fragment: SettingsFiltersFragment,
 ) {
 
     fun onClickFilterArrows() {
@@ -31,6 +31,7 @@ class SettingsFiltersBinding(
         fragment.findNavController().navigate(
             R.id.action_filterFragment_to_chooseAreaFragment,
         )
+        fragment.saveCurrentAreaFilters()
     }
 
     fun openIndustrySettings() {

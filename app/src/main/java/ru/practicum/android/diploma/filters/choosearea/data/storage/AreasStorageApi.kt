@@ -6,4 +6,7 @@ interface AreasStorageApi {
     fun readArea(): AreaInfo?
     fun writeArea(area: AreaInfo)
     fun removeArea()
+    fun readPreviousArea(): AreaInfo?
+    fun writePreviousArea(area: AreaInfo)
+    fun removePreviousArea()
 }
