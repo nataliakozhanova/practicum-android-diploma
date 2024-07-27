@@ -94,6 +94,8 @@ class VacancyDetailsFragment : Fragment() {
         showVacancyContent(state)
         binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = true
         viewModel.isFavourite(vacancy!!.hhID)
+        binding.favoriteVacansyIv.isVisible = true
+        binding.shareVacansyIv.isVisible = true
     }
 
     private fun setBindings() {
@@ -171,6 +173,8 @@ class VacancyDetailsFragment : Fragment() {
         binding.detailsProgressBar.isVisible = true
         binding.errorPlaceholderIv.isVisible = false
         binding.errorPlaceholderTv.isVisible = false
+        binding.shareVacansyIv.isVisible = false
+        binding.favoriteVacansyIv.isVisible = false
     }
 
     private fun showVacancyContent(state: DetailsState.Content) {

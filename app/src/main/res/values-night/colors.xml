@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="icon_tint_color">@color/white_day</color>
-    <color name="bottom_nav_top_border">@color/light_grey</color>
+    <color name="bottom_nav_top_border">@color/dark_grey</color>
 </resources>
