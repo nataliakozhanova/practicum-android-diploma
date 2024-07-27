@@ -129,6 +129,7 @@ class SearchFragment : Fragment() {
             is SearchState.AtBottom -> {
                 if (vacancySearchAdapter.vacancies.isNotEmpty()) {
                     helper.showNextPagePreloader(false, getString(R.string.bottom_of_list))
+                    helper.setNextPageRequest(false)
                 }
             }
 
