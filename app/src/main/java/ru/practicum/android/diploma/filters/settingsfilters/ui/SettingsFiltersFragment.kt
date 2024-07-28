@@ -55,9 +55,9 @@ class SettingsFiltersFragment : Fragment() {
         viewModel.reloadFilters()
         viewModel.observeFilters().observe(viewLifecycleOwner) { filters ->
             renderSavedAreaSettings(filters)
+            renderSavedSalarySettings(filters)
+            renderSavedIndustrySettings(filters)
         }
-        renderSavedSalarySettings()
-        renderSavedIndustrySettings()
         originalFilters = viewModel.getOriginalFilters()
         lastSearchMask = arguments?.getString(LAST_SEARCH_MASK)
         updateButtonsVisibility()
@@ -184,8 +184,8 @@ class SettingsFiltersFragment : Fragment() {
         }
     }
 
-    private fun renderSavedIndustrySettings() {
-        val industrySettings = viewModel.getIndustrySettings()
+    private fun renderSavedIndustrySettings(filters: FiltersAll? = null) {
+        val industrySettings = filters?.industry ?: viewModel.getIndustrySettings()
         if (industrySettings != null) {
             with(binding) {
                 industryFilterSetting.isVisible = false
@@ -208,8 +208,8 @@ class SettingsFiltersFragment : Fragment() {
         }
     }
 
-    private fun renderSavedSalarySettings() {
-        val salaryFilters = viewModel.getSalaryFilters()
+    private fun renderSavedSalarySettings(filters: FiltersAll? = null) {
+        val salaryFilters = filters?.salary ?: viewModel.getSalaryFilters()
         if (salaryFilters != null) {
             binding.salaryTextInput.setText(salaryFilters.salary)
             binding.noSalaryCheckbox.isChecked = salaryFilters.checkbox
