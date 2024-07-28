@@ -17,7 +17,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.common.presentation.FilterArrow
 import ru.practicum.android.diploma.databinding.FragmentFiltersSettingsBinding
-import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
 import ru.practicum.android.diploma.filters.settingsfilters.presentation.viewmodel.SettingsFiltersViewModel
 import ru.practicum.android.diploma.search.ui.SearchFragment
 
@@ -53,7 +52,9 @@ class SettingsFiltersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBindings()
-        renderSavedAreaSettings()
+        viewModel.observeFilters().observe(viewLifecycleOwner) { filters ->
+            renderSavedAreaSettings(filters)
+        }
         renderSavedSalarySettings()
         renderSavedIndustrySettings()
         originalFilters = viewModel.getOriginalFilters()
@@ -154,8 +155,8 @@ class SettingsFiltersFragment : Fragment() {
         }
     }
 
-    private fun renderSavedAreaSettings() {
-        val areaSettings = viewModel.getAreaSettings()
+    private fun renderSavedAreaSettings(filters: FiltersAll? = null) {
+        val areaSettings = filters?.area ?: viewModel.getAreaSettings()
         if (areaSettings != null) {
             with(binding) {
                 placeToWork.isVisible = false
