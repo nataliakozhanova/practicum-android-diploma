@@ -148,6 +148,8 @@ class VacancyDetailsFragment : Fragment() {
         binding.errorPlaceholderIv.isVisible = true
         binding.errorPlaceholderTv.isVisible = true
         binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = false
+        binding.shareVacansyIv.isClickable = false
+        binding.favoriteVacansyIv.isClickable = false
         when (type) {
             is BadRequestError -> {
                 binding.favoriteVacansyIv.isVisible = false
@@ -164,6 +166,9 @@ class VacancyDetailsFragment : Fragment() {
             else -> {
                 binding.errorPlaceholderTv.text = getString(R.string.not_found_or_deleted_vacancy)
                 binding.errorPlaceholderIv.setImageResource(R.drawable.image_vacancy_not_found_error)
+                binding.shareVacansyIv.isVisible = true
+                binding.favoriteVacansyIv.isVisible = true
+
             }
         }
     }
