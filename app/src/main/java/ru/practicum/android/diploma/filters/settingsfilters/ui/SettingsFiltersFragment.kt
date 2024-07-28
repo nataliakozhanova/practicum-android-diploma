@@ -52,6 +52,7 @@ class SettingsFiltersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBindings()
+        viewModel.reloadFilters()
         viewModel.observeFilters().observe(viewLifecycleOwner) { filters ->
             renderSavedAreaSettings(filters)
         }

@@ -10,7 +10,6 @@ import ru.practicum.android.diploma.filters.chooseindustry.domain.interfaces.Ind
 import ru.practicum.android.diploma.filters.chooseindustry.domain.model.IndustriesModel
 import ru.practicum.android.diploma.filters.settingsfilters.domain.api.SettingsInteractor
 import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
-import java.util.logging.Filter
 
 class SettingsFiltersViewModel(
     private val settingsInteractor: SettingsInteractor,
@@ -25,12 +24,19 @@ class SettingsFiltersViewModel(
     fun observeFilters(): LiveData<FiltersAll?> = _filters
 
     init {
-        originalFilters = FiltersAll(
+        originalFilters = getAllFilters()
+    }
+
+    private fun getAllFilters(): FiltersAll {
+        return FiltersAll(
             salary = getSalaryFilters(),
             area = getAreaSettings(),
             industry = getIndustrySettings()
         )
-        _filters.value = originalFilters
+    }
+
+    fun reloadFilters() {
+        _filters.value = getAllFilters()
     }
 
     fun setOnlyWithSalary(checked: Boolean) {
