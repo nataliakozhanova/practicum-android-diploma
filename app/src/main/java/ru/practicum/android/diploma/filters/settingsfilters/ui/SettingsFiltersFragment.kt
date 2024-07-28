@@ -26,7 +26,6 @@ class SettingsFiltersFragment : Fragment() {
     private var _binding: FragmentFiltersSettingsBinding? = null
     val binding get() = _binding!!
     private val viewModel by viewModel<SettingsFiltersViewModel>()
-    private var originalSalaryFilters: SalaryFilters? = null
     private var originalFilters: FiltersAll? = null
     private var lastSearchMask: String? = null
 
@@ -57,7 +56,6 @@ class SettingsFiltersFragment : Fragment() {
         renderSavedAreaSettings()
         renderSavedSalarySettings()
         renderSavedIndustrySettings()
-        originalSalaryFilters = viewModel.getSalaryFilters()
         originalFilters = viewModel.getOriginalFilters()
         lastSearchMask = arguments?.getString(LAST_SEARCH_MASK)
         updateButtonsVisibility()
@@ -231,9 +229,6 @@ class SettingsFiltersFragment : Fragment() {
     private fun applyFiltersAndNavigate() {
         // Сохранение всех текущих настроек фильтра
         viewModel.applyFilters()
-        // Обновление оригинальных фильтров
-        originalSalaryFilters = viewModel.getSalaryFilters()
-        updateButtonsVisibility()
         // стираем предыдущие фильтры, чтобы применились новые
         viewModel.deletePreviousFilters()
         // Переход на SearchFragment с примененными фильтрами
