@@ -57,10 +57,10 @@ class SettingsFiltersFragment : Fragment() {
             renderSavedAreaSettings(filters)
             renderSavedSalarySettings(filters)
             renderSavedIndustrySettings(filters)
+            updateButtonsVisibility()
         }
         originalFilters = viewModel.getOriginalFilters()
         lastSearchMask = arguments?.getString(LAST_SEARCH_MASK)
-        updateButtonsVisibility()
     }
 
     private fun setBindings() {
@@ -243,12 +243,6 @@ class SettingsFiltersFragment : Fragment() {
         // Сброс всех фильтров
         viewModel.resetFilters()
         viewModel.deletePreviousFilters()
-        renderSavedAreaSettings()
-        renderSavedIndustrySettings()
-        renderSavedSalarySettings()
-        binding.salaryTextInput.text?.clear()
-        binding.noSalaryCheckbox.isChecked = false
-        updateButtonsVisibility()
     }
 
     fun saveCurrentAreaFilters() {

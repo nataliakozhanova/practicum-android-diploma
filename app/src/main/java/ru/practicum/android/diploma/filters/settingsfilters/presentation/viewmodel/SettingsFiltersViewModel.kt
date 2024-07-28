@@ -96,6 +96,7 @@ class SettingsFiltersViewModel(
         clearSalary()
         clearAreaSettings()
         clearIndustrySettings()
+        _filters.value = getAllFilters()
     }
 
     fun getOriginalFilters(): FiltersAll? {
