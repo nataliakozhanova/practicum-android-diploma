@@ -18,7 +18,6 @@ class SettingsFiltersViewModel(
 ) : ViewModel() {
 
     private var originalFilters: FiltersAll? = null
-    private var salaryFilters = settingsInteractor.getSalaryFilters()
 
     private val _filters = MutableLiveData<FiltersAll?>()
     fun observeFilters(): LiveData<FiltersAll?> = _filters
@@ -39,69 +38,64 @@ class SettingsFiltersViewModel(
         _filters.value = getAllFilters()
     }
 
-    fun setOnlyWithSalary(checked: Boolean) {
-        salaryFilters = SalaryFilters(
-            checkbox = checked,
-            salary = salaryFilters?.salary
+    fun saveSalaryCheckbox(checked: Boolean) {
+        val currentSalaryFilters = settingsInteractor.getSalaryFilters()
+        settingsInteractor.saveSalaryFilters(
+            SalaryFilters(
+                checkbox = checked,
+                salary = currentSalaryFilters?.salary
+            )
         )
-        settingsInteractor.saveSalaryFilters(salaryFilters!!)
+    }
+
+    fun saveSalarySum(amount: String) {
+        val currentSalaryFilters = settingsInteractor.getSalaryFilters()
+        settingsInteractor.saveSalaryFilters(
+            SalaryFilters(
+                checkbox = currentSalaryFilters?.checkbox ?: false,
+                salary = amount
+            )
+        )
     }
 
     fun getAreaSettings(): AreaInfo? {
         return chooseAreaInteractor.getAreaSettings()
     }
 
-    fun clearAreaSettings() {
-        chooseAreaInteractor.deleteAreaSettings()
-    }
-
-    fun savePreviousAreaSettings(area: AreaInfo) {
-        chooseAreaInteractor.savePreviousAreaSettings(area)
-    }
-
-    fun clearIndustrySettings() {
-        chooseIndustryInteractor.deleteIndustrySettings()
-    }
-
-    fun saveSalary(amount: String) {
-        salaryFilters = SalaryFilters(
-            checkbox = salaryFilters?.checkbox ?: false,
-            salary = amount
-        )
-        settingsInteractor.saveSalaryFilters(salaryFilters!!)
-    }
-
-    fun clearSalary() {
-        salaryFilters = SalaryFilters(
-            checkbox = salaryFilters?.checkbox ?: false,
-            salary = null
-        )
-        settingsInteractor.saveSalaryFilters(salaryFilters!!)
-    }
-
-    fun applyFilters() {
-        // Сохранение всех текущих настроек фильтра
-        if (salaryFilters != null) {
-            settingsInteractor.saveSalaryFilters(salaryFilters!!)
-        }
-    }
-
-    fun resetFilters() {
-        // Сброс всех фильтров
-        clearSalary()
-        clearAreaSettings()
-        clearIndustrySettings()
-        salaryFilters = SalaryFilters(checkbox = false, salary = null)
-        settingsInteractor.saveSalaryFilters(salaryFilters!!)
-        // _filters.value = salaryFilters
+    fun getIndustrySettings(): IndustriesModel? {
+        return chooseIndustryInteractor.getIndustrySettings()
     }
 
     fun getSalaryFilters(): SalaryFilters? {
         return settingsInteractor.getSalaryFilters()
     }
 
-    fun getIndustrySettings(): IndustriesModel? {
-        return chooseIndustryInteractor.getIndustrySettings()
+    fun clearAreaSettings() {
+        chooseAreaInteractor.deleteAreaSettings()
+    }
+
+    fun clearIndustrySettings() {
+        chooseIndustryInteractor.deleteIndustrySettings()
+    }
+
+    fun clearSalary() {
+        settingsInteractor.saveSalaryFilters(
+            SalaryFilters(
+                checkbox = false,
+                salary = null
+            )
+        )
+    }
+
+    fun savePreviousAreaSettings(area: AreaInfo) {
+        chooseAreaInteractor.savePreviousAreaSettings(area)
+    }
+
+    // Сброс всех фильтров
+    fun resetFilters() {
+        clearSalary()
+        clearAreaSettings()
+        clearIndustrySettings()
     }
 
     fun getOriginalFilters(): FiltersAll? {

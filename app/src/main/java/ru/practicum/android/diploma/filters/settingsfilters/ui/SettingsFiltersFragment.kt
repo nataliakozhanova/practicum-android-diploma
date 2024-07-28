@@ -76,7 +76,7 @@ class SettingsFiltersFragment : Fragment() {
         }
 
         binding.noSalaryCheckbox.setOnClickListener {
-            viewModel.setOnlyWithSalary(binding.noSalaryCheckbox.isChecked)
+            viewModel.saveSalaryCheckbox(binding.noSalaryCheckbox.isChecked)
             updateButtonsVisibility()
         }
 
@@ -147,7 +147,7 @@ class SettingsFiltersFragment : Fragment() {
                 viewModel.clearSalary()
                 salaryLayout.isEndIconVisible = false
             } else {
-                viewModel.saveSalary(text.toString())
+                viewModel.saveSalarySum(text.toString())
                 binding.salaryLayout.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 binding.salaryLayout.endIconDrawable =
                     AppCompatResources.getDrawable(requireContext(), FilterArrow.CLEAR.drawableId)
@@ -228,9 +228,8 @@ class SettingsFiltersFragment : Fragment() {
         updateButtonsVisibility()
     }
 
+    // Применение текущих настроек фильтра
     private fun applyFiltersAndNavigate() {
-        // Сохранение всех текущих настроек фильтра
-        viewModel.applyFilters()
         // стираем предыдущие фильтры, чтобы применились новые
         viewModel.deletePreviousFilters()
         // Переход на SearchFragment с примененными фильтрами
