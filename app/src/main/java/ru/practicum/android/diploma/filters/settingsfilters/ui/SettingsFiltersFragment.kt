@@ -17,7 +17,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.FiltersAll
 import ru.practicum.android.diploma.common.presentation.FilterArrow
 import ru.practicum.android.diploma.databinding.FragmentFiltersSettingsBinding
-import ru.practicum.android.diploma.filters.settingsfilters.domain.models.SalaryFilters
 import ru.practicum.android.diploma.filters.settingsfilters.presentation.viewmodel.SettingsFiltersViewModel
 import ru.practicum.android.diploma.search.ui.SearchFragment
 
@@ -26,7 +25,6 @@ class SettingsFiltersFragment : Fragment() {
     private var _binding: FragmentFiltersSettingsBinding? = null
     val binding get() = _binding!!
     private val viewModel by viewModel<SettingsFiltersViewModel>()
-    private var originalSalaryFilters: SalaryFilters? = null
     private var originalFilters: FiltersAll? = null
     private var lastSearchMask: String? = null
 
@@ -54,13 +52,15 @@ class SettingsFiltersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBindings()
-        renderSavedAreaSettings()
-        renderSavedSalarySettings()
-        renderSavedIndustrySettings()
-        originalSalaryFilters = viewModel.getSalaryFilters()
+        viewModel.reloadFilters()
+        viewModel.observeFilters().observe(viewLifecycleOwner) { filters ->
+            renderSavedAreaSettings(filters)
+            renderSavedSalarySettings(filters)
+            renderSavedIndustrySettings(filters)
+            updateButtonsVisibility()
+        }
         originalFilters = viewModel.getOriginalFilters()
         lastSearchMask = arguments?.getString(LAST_SEARCH_MASK)
-        updateButtonsVisibility()
     }
 
     private fun setBindings() {
@@ -76,7 +76,7 @@ class SettingsFiltersFragment : Fragment() {
         }
 
         binding.noSalaryCheckbox.setOnClickListener {
-            viewModel.setOnlyWithSalary(binding.noSalaryCheckbox.isChecked)
+            viewModel.saveSalaryCheckbox(binding.noSalaryCheckbox.isChecked)
             updateButtonsVisibility()
         }
 
@@ -147,7 +147,7 @@ class SettingsFiltersFragment : Fragment() {
                 viewModel.clearSalary()
                 salaryLayout.isEndIconVisible = false
             } else {
-                viewModel.saveSalary(text.toString())
+                viewModel.saveSalarySum(text.toString())
                 binding.salaryLayout.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 binding.salaryLayout.endIconDrawable =
                     AppCompatResources.getDrawable(requireContext(), FilterArrow.CLEAR.drawableId)
@@ -156,8 +156,8 @@ class SettingsFiltersFragment : Fragment() {
         }
     }
 
-    private fun renderSavedAreaSettings() {
-        val areaSettings = viewModel.getAreaSettings()
+    private fun renderSavedAreaSettings(filters: FiltersAll? = null) {
+        val areaSettings = filters?.area ?: viewModel.getAreaSettings()
         if (areaSettings != null) {
             with(binding) {
                 placeToWork.isVisible = false
@@ -184,8 +184,8 @@ class SettingsFiltersFragment : Fragment() {
         }
     }
 
-    private fun renderSavedIndustrySettings() {
-        val industrySettings = viewModel.getIndustrySettings()
+    private fun renderSavedIndustrySettings(filters: FiltersAll? = null) {
+        val industrySettings = filters?.industry ?: viewModel.getIndustrySettings()
         if (industrySettings != null) {
             with(binding) {
                 industryFilterSetting.isVisible = false
@@ -208,8 +208,8 @@ class SettingsFiltersFragment : Fragment() {
         }
     }
 
-    private fun renderSavedSalarySettings() {
-        val salaryFilters = viewModel.getSalaryFilters()
+    private fun renderSavedSalarySettings(filters: FiltersAll? = null) {
+        val salaryFilters = filters?.salary ?: viewModel.getSalaryFilters()
         if (salaryFilters != null) {
             binding.salaryTextInput.setText(salaryFilters.salary)
             binding.noSalaryCheckbox.isChecked = salaryFilters.checkbox
@@ -228,12 +228,8 @@ class SettingsFiltersFragment : Fragment() {
         updateButtonsVisibility()
     }
 
+    // Применение текущих настроек фильтра
     private fun applyFiltersAndNavigate() {
-        // Сохранение всех текущих настроек фильтра
-        viewModel.applyFilters()
-        // Обновление оригинальных фильтров
-        originalSalaryFilters = viewModel.getSalaryFilters()
-        updateButtonsVisibility()
         // стираем предыдущие фильтры, чтобы применились новые
         viewModel.deletePreviousFilters()
         // Переход на SearchFragment с примененными фильтрами
@@ -247,12 +243,6 @@ class SettingsFiltersFragment : Fragment() {
         // Сброс всех фильтров
         viewModel.resetFilters()
         viewModel.deletePreviousFilters()
-        renderSavedAreaSettings()
-        renderSavedIndustrySettings()
-        renderSavedSalarySettings()
-        binding.salaryTextInput.text?.clear()
-        binding.noSalaryCheckbox.isChecked = false
-        updateButtonsVisibility()
     }
 
     fun saveCurrentAreaFilters() {
