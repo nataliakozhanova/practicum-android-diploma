@@ -14,34 +14,60 @@ import ru.practicum.android.diploma.filters.settingsfilters.domain.models.Salary
 class SettingsFiltersViewModel(
     private val settingsInteractor: SettingsInteractor,
     private val chooseAreaInteractor: ChooseAreaInteractor,
-    private val chooseIndustryInteractor: IndustryInteractor
+    private val chooseIndustryInteractor: IndustryInteractor,
 ) : ViewModel() {
 
     private var originalFilters: FiltersAll? = null
-    private var salaryFilters = settingsInteractor.getSalaryFilters()
 
-    private val _state = MutableLiveData<SalaryFilters?>()
-    fun observeFilters(): LiveData<SalaryFilters?> = _state
+    private val _filters = MutableLiveData<FiltersAll?>()
+    fun observeFilters(): LiveData<FiltersAll?> = _filters
 
     init {
-        originalFilters = FiltersAll(
-            salary = salaryFilters,
+        originalFilters = getAllFilters()
+    }
+
+    private fun getAllFilters(): FiltersAll {
+        return FiltersAll(
+            salary = getSalaryFilters(),
             area = getAreaSettings(),
             industry = getIndustrySettings()
         )
-        _state.value = salaryFilters
     }
 
-    fun setOnlyWithSalary(checked: Boolean) {
-        salaryFilters = SalaryFilters(
-            checkbox = checked,
-            salary = salaryFilters?.salary
+    fun reloadFilters() {
+        _filters.value = getAllFilters()
+    }
+
+    fun saveSalaryCheckbox(checked: Boolean) {
+        val currentSalaryFilters = settingsInteractor.getSalaryFilters()
+        settingsInteractor.saveSalaryFilters(
+            SalaryFilters(
+                checkbox = checked,
+                salary = currentSalaryFilters?.salary
+            )
         )
-        settingsInteractor.saveSalaryFilters(salaryFilters!!)
+    }
+
+    fun saveSalarySum(amount: String) {
+        val currentSalaryFilters = settingsInteractor.getSalaryFilters()
+        settingsInteractor.saveSalaryFilters(
+            SalaryFilters(
+                checkbox = currentSalaryFilters?.checkbox ?: false,
+                salary = amount
+            )
+        )
     }
 
     fun getAreaSettings(): AreaInfo? {
         return chooseAreaInteractor.getAreaSettings()
+    }
+
+    fun getIndustrySettings(): IndustriesModel? {
+        return chooseIndustryInteractor.getIndustrySettings()
+    }
+
+    fun getSalaryFilters(): SalaryFilters? {
+        return settingsInteractor.getSalaryFilters()
     }
 
     fun clearAreaSettings() {
@@ -52,43 +78,25 @@ class SettingsFiltersViewModel(
         chooseIndustryInteractor.deleteIndustrySettings()
     }
 
-    fun saveSalary(amount: String) {
-        salaryFilters = SalaryFilters(
-            checkbox = salaryFilters?.checkbox ?: false,
-            salary = amount
-        )
-        settingsInteractor.saveSalaryFilters(salaryFilters!!)
-    }
-
     fun clearSalary() {
-        salaryFilters = SalaryFilters(
-            checkbox = salaryFilters?.checkbox ?: false,
-            salary = null
+        settingsInteractor.saveSalaryFilters(
+            SalaryFilters(
+                checkbox = false,
+                salary = null
+            )
         )
-        settingsInteractor.saveSalaryFilters(salaryFilters!!)
     }
 
-    fun applyFilters() {
-        // Сохранение всех текущих настроек фильтра
-        settingsInteractor.saveSalaryFilters(salaryFilters!!)
+    fun savePreviousAreaSettings(area: AreaInfo) {
+        chooseAreaInteractor.savePreviousAreaSettings(area)
     }
 
+    // Сброс всех фильтров
     fun resetFilters() {
-        // Сброс всех фильтров
         clearSalary()
         clearAreaSettings()
         clearIndustrySettings()
-        salaryFilters = SalaryFilters(checkbox = false, salary = null)
-        settingsInteractor.saveSalaryFilters(salaryFilters!!)
-        _state.value = salaryFilters
-    }
-
-    fun getSalaryFilters(): SalaryFilters? {
-        return settingsInteractor.getSalaryFilters()
-    }
-
-    fun getIndustrySettings(): IndustriesModel? {
-        return chooseIndustryInteractor.getIndustrySettings()
+        _filters.value = getAllFilters()
     }
 
     fun getOriginalFilters(): FiltersAll? {

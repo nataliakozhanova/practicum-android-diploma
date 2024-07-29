@@ -5,10 +5,10 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.common.domain.BadRequestError
 import ru.practicum.android.diploma.common.data.NetworkClient
-import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.data.ResponseBase
+import ru.practicum.android.diploma.common.domain.BadRequestError
+import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.domain.ServerInternalError
 import ru.practicum.android.diploma.search.data.HhQueryOptions
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
@@ -90,7 +90,6 @@ class RetrofitNetworkClient(
         if (!searchRequest.filters.industryId.isNullOrEmpty()) {
             options[HhQueryOptions.INDUSTRY.key] = "${searchRequest.filters.industryId}"
         }
-        // Log.d("mine", "options = $options")
         return options
     }
 

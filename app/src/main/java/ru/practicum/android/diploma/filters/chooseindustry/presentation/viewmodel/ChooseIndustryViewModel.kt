@@ -46,7 +46,6 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
 
             else -> {
                 renderState(IndustriesStates.Error(errorType))
-                // renderChosen(ChosenStates.NotChosen)
             }
         }
     }
@@ -75,7 +74,13 @@ class ChooseIndustryViewModel(private val interactor: IndustryInteractor) : View
         }
     }
 
-    fun getSelectedIndustry(): IndustriesModel? = interactor.getIndustrySettings()
+    fun getSelectedIndustry(): IndustriesModel? {
+        return if (selectedIndustry == null) {
+            interactor.getIndustrySettings()
+        } else {
+            selectedIndustry
+        }
+    }
 
     fun searchIndustries(query: String) {
         val filteredIndustries = if (query.isEmpty()) {

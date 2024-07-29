@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.databinding.ItemVacancyViewBinding
 import ru.practicum.android.diploma.util.Formatter
 
 class VacancyViewHolder(
-    private val clickListener: VacancyAdapter.SearchClickListener,
+    private val clickListener: VacancyAdapter.VacancyClickListener,
     private val binding: ItemVacancyViewBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 

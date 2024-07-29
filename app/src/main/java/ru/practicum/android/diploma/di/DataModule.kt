@@ -25,10 +25,13 @@ import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.vacancydetails.data.network.HhApiServiceDetails
 import ru.practicum.android.diploma.vacancydetails.data.network.RetrofitNetworkClientDetails
 
+private const val API_BASE_URL = "https://api.hh.ru"
+private const val PREFERENCES = "CareerCompass_preferences"
+
 val dataModule = module {
     single {
         androidContext()
-            .getSharedPreferences(DiConstants.PREFERENCES, Context.MODE_PRIVATE)
+            .getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
     }
 
     single<AreasStorageApi> {
@@ -41,7 +44,7 @@ val dataModule = module {
 
     single<HhApiService> {
         Retrofit.Builder()
-            .baseUrl(DiConstants.API_BASE_URL)
+            .baseUrl(API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiService::class.java)
@@ -49,7 +52,7 @@ val dataModule = module {
 
     single<HhApiServiceDetails> {
         Retrofit.Builder()
-            .baseUrl(DiConstants.API_BASE_URL)
+            .baseUrl(API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiServiceDetails::class.java)
@@ -57,7 +60,7 @@ val dataModule = module {
 
     single<HhApiServiceAreas> {
         Retrofit.Builder()
-            .baseUrl(DiConstants.API_BASE_URL)
+            .baseUrl(API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiServiceAreas::class.java)
@@ -65,7 +68,7 @@ val dataModule = module {
 
     single<HhApiServiceIndustry> {
         Retrofit.Builder()
-            .baseUrl(DiConstants.API_BASE_URL)
+            .baseUrl(API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiServiceIndustry::class.java)

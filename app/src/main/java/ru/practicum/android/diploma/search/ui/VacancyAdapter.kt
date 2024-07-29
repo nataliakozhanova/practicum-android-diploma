@@ -7,7 +7,7 @@ import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.ItemVacancyViewBinding
 
 class VacancyAdapter(
-    private val searchClickListener: SearchClickListener,
+    private val vacancyClickListener: VacancyClickListener,
 ) : RecyclerView.Adapter<VacancyViewHolder>() {
 
     var vacancies: ArrayList<VacancyBase> = ArrayList()
@@ -15,7 +15,7 @@ class VacancyAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
         return VacancyViewHolder(
-            searchClickListener,
+            vacancyClickListener,
             ItemVacancyViewBinding.inflate(layoutInspector, parent, false)
         )
     }
@@ -28,7 +28,7 @@ class VacancyAdapter(
         return vacancies.size
     }
 
-    fun interface SearchClickListener {
+    fun interface VacancyClickListener {
         fun onVacancyClick(vacancy: VacancyBase)
     }
 

@@ -20,4 +20,11 @@ class ChooseAreaViewModel(
         chooseAreaInteractor.saveAreaSettings(area)
     }
 
+    fun getPreviousAreaSettings(): AreaInfo? {
+        return chooseAreaInteractor.getPreviousAreaSettings()
+    }
+
+    fun deletePreviousAreaSettings() {
+        chooseAreaInteractor.deletePreviousAreaSettings()
+    }
 }

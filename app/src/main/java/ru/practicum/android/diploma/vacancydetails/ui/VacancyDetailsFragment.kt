@@ -52,14 +52,17 @@ class VacancyDetailsFragment : Fragment() {
                 }
 
                 is DetailsState.NoInternet -> {
-                    viewModel.checkVacancyInDatabase(vacancyID!!)
+                    if (vacancyID != null) {
+                        viewModel.checkVacancyInDatabase(vacancyID!!)
+                    }
                     viewModel.vacancyExists.observe(viewLifecycleOwner) { exists ->
-                        if (exists) {
+                        if (exists && vacancyID != null) {
                             viewModel.getVacancyDatabase(vacancyID!!)
                         } else {
                             showTypeErrorOrEmpty(NoInternetError())
                         }
                     }
+
                 }
 
                 is DetailsState.Error -> {
@@ -68,7 +71,9 @@ class VacancyDetailsFragment : Fragment() {
 
                 is DetailsState.Empty -> {
                     showTypeErrorOrEmpty(DetailsNotFoundType())
-                    viewModel.deleteFavouriteVacancy(vacancyID!!)
+                    if (vacancyID != null) {
+                        viewModel.deleteFavouriteVacancy(vacancyID!!)
+                    }
                 }
 
                 is DetailsState.Loading -> {
@@ -89,6 +94,8 @@ class VacancyDetailsFragment : Fragment() {
         showVacancyContent(state)
         binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = true
         viewModel.isFavourite(vacancy!!.hhID)
+        binding.favoriteVacansyIv.isVisible = true
+        binding.shareVacansyIv.isVisible = true
     }
 
     private fun setBindings() {
@@ -117,6 +124,7 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun checkIsFavourite(favouriteState: Boolean) {
+        if (vacancy == null) return
         if (favouriteState) {
             vacancy!!.hhID.let { id -> viewModel.deleteFavouriteVacancy(id) }
         } else {
@@ -140,6 +148,8 @@ class VacancyDetailsFragment : Fragment() {
         binding.errorPlaceholderIv.isVisible = true
         binding.errorPlaceholderTv.isVisible = true
         binding.itemVacancyDetails.itemVacancyDetailsView.isVisible = false
+        binding.shareVacansyIv.isClickable = false
+        binding.favoriteVacansyIv.isClickable = false
         when (type) {
             is BadRequestError -> {
                 binding.favoriteVacansyIv.isVisible = false
@@ -156,6 +166,9 @@ class VacancyDetailsFragment : Fragment() {
             else -> {
                 binding.errorPlaceholderTv.text = getString(R.string.not_found_or_deleted_vacancy)
                 binding.errorPlaceholderIv.setImageResource(R.drawable.image_vacancy_not_found_error)
+                binding.shareVacansyIv.isVisible = true
+                binding.favoriteVacansyIv.isVisible = true
+
             }
         }
     }
@@ -165,6 +178,8 @@ class VacancyDetailsFragment : Fragment() {
         binding.detailsProgressBar.isVisible = true
         binding.errorPlaceholderIv.isVisible = false
         binding.errorPlaceholderTv.isVisible = false
+        binding.shareVacansyIv.isVisible = false
+        binding.favoriteVacansyIv.isVisible = false
     }
 
     private fun showVacancyContent(state: DetailsState.Content) {

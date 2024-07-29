@@ -10,14 +10,13 @@
 
     <TextView
         android:id="@+id/teamTV"
+        style="@style/Medium22TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_16"
-        android:fontFamily="@font/ys_text_medium"
         android:text="@string/team"
         android:textColor="?attr/colorPrimary"
-        android:textSize="@dimen/sp_22"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.006"
         app:layout_constraintStart_toStartOf="parent"

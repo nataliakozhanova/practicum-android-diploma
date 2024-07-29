@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -54,35 +53,47 @@ class ChooseAreaFragment : Fragment() {
         }
 
         binding.arrowBackIv.setOnClickListener {
-            findNavController().navigateUp()
+            onBackPressedNavigation()
         }
+
+        val dispatcher = requireActivity().onBackPressedDispatcher
+        dispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onBackPressedNavigation()
+                }
+            }
+        )
 
         setBindingArrows()
     }
 
     private fun setBindingArrows() {
         binding.countryArrowAndCleanIv.setOnClickListener {
-            if (checkIvImage(binding.countryArrowAndCleanIv, R.drawable.clear_24px_input_edittext_button)) {
+            if (areaSettings == null) {
+                findNavController().navigate(
+                    R.id.action_chooseAreaFragment_to_chooseCountryFragment
+                )
+            } else {
                 viewModelChooseArea.deleteCountrySettings()
                 areaSettings = null
                 hideRegion()
                 hideCountry()
-            } else {
-                findNavController().navigate(
-                    R.id.action_chooseAreaFragment_to_chooseCountryFragment
-                )
+
             }
         }
 
         binding.regionArrowAndCleanIv.setOnClickListener {
-            if (checkIvImage(binding.regionArrowAndCleanIv, R.drawable.clear_24px_input_edittext_button)) {
-                viewModelChooseArea.saveAreaSettings(AreaInfo("", "", areaSettings!!.countryInfo))
-                hideRegion()
-            } else {
+            if (areaSettings == null || areaSettings?.id == "") {
                 findNavController().navigate(
                     R.id.action_chooseAreaFragment_to_chooseRegionFragment,
                     ChooseRegionFragment.createArgs(areaSettings?.countryInfo?.id)
                 )
+            } else {
+                areaSettings = AreaInfo("", "", areaSettings!!.countryInfo)
+                viewModelChooseArea.saveAreaSettings(areaSettings!!)
+                hideRegion()
             }
         }
     }
@@ -92,12 +103,29 @@ class ChooseAreaFragment : Fragment() {
         _binding = null
     }
 
+    private fun onBackPressedNavigation() {
+        val currentFilters = viewModelChooseArea.getAreaSettings()
+        if (currentFilters == null) {
+            viewModelChooseArea.deletePreviousAreaSettings()
+        } else {
+            val previousFilters = viewModelChooseArea.getPreviousAreaSettings()
+            if (previousFilters == null) {
+                viewModelChooseArea.deleteCountrySettings()
+            } else {
+                viewModelChooseArea.saveAreaSettings(previousFilters)
+                viewModelChooseArea.deletePreviousAreaSettings()
+            }
+        }
+
+        findNavController().navigateUp()
+    }
+
     private fun renderAreaSettings() {
         areaSettings = viewModelChooseArea.getAreaSettings()
         if (areaSettings != null) {
-            showCountry()
+            showCountry(areaSettings!!)
             if (areaSettings!!.name.isNotEmpty()) {
-                showRegion()
+                showRegion(areaSettings!!)
             } else {
                 hideRegion()
             }
@@ -106,12 +134,12 @@ class ChooseAreaFragment : Fragment() {
         }
     }
 
-    private fun showCountry() {
+    private fun showCountry(areaSettings: AreaInfo) {
         with(binding) {
             countryTil.isVisible = true
             countryTv.isVisible = false
             countryDarkTv.isVisible = true
-            countryDarkTv.text = areaSettings!!.countryInfo.name
+            countryDarkTv.text = areaSettings.countryInfo.name
             applyBt.isVisible = true
             countryArrowAndCleanIv.setImageResource(R.drawable.clear_24px_input_edittext_button)
         }
@@ -127,12 +155,12 @@ class ChooseAreaFragment : Fragment() {
         }
     }
 
-    private fun showRegion() {
+    private fun showRegion(areaSettings: AreaInfo) {
         with(binding) {
             regionTil.isVisible = true
             regionTv.isVisible = false
             regionDarkTv.isVisible = true
-            regionDarkTv.text = areaSettings!!.name
+            regionDarkTv.text = areaSettings.name
             regionArrowAndCleanIv.setImageResource(R.drawable.clear_24px_input_edittext_button)
         }
     }
@@ -144,11 +172,5 @@ class ChooseAreaFragment : Fragment() {
             regionTil.isVisible = false
             regionArrowAndCleanIv.setImageResource(R.drawable.arrow_forward_24px_button)
         }
-    }
-
-    private fun checkIvImage(imageView: ImageView, imageResourceId: Int): Boolean {
-        return imageView.drawable?.let {
-            return it.constantState == ContextCompat.getDrawable(imageView.context, imageResourceId)?.constantState
-        } ?: false
     }
 }

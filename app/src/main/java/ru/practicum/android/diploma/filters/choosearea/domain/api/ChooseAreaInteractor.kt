@@ -13,4 +13,7 @@ interface ChooseAreaInteractor {
     fun saveAreaSettings(area: AreaInfo)
     fun getAreaSettings(): AreaInfo?
     fun deleteAreaSettings()
+    fun savePreviousAreaSettings(area: AreaInfo)
+    fun getPreviousAreaSettings(): AreaInfo?
+    fun deletePreviousAreaSettings()
 }

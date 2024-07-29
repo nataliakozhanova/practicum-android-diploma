@@ -79,7 +79,6 @@ class ChooseRegionFragment : Fragment() {
                 }
 
                 is AreasWithCountriesState.Error -> {
-                    // showErrorPlaceholder(R.drawable.image_empty_content, getString(R.string.failed_to_get_list))
                     showTypeErrorOrEmpty(state.errorType)
                 }
 
@@ -100,7 +99,6 @@ class ChooseRegionFragment : Fragment() {
                 }
 
                 is AreasByParentIdState.Error -> {
-                    // showErrorPlaceholder(R.drawable.image_empty_content, getString(R.string.failed_to_get_list))
                     showTypeErrorOrEmpty(state.errorType)
                 }
 
@@ -129,7 +127,7 @@ class ChooseRegionFragment : Fragment() {
 
         binding.tietSearchMask.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // for fu**ing detekt
+                // empty
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -144,7 +142,7 @@ class ChooseRegionFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // for fu**ing detekt
+                // empty
             }
         })
 

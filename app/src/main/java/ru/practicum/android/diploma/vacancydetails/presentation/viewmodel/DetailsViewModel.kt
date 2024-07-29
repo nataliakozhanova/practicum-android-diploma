@@ -19,7 +19,7 @@ import ru.practicum.android.diploma.vacancydetails.presentation.models.DetailsSt
 
 class DetailsViewModel(
     private val vacancyInteractor: DetailsInteractor,
-    private val favouriteVacancyInteractor: FavouriteVacancyInteractor
+    private val favouriteVacancyInteractor: FavouriteVacancyInteractor,
 ) : ViewModel() {
 
     private var isFavourite: Boolean = false
@@ -28,7 +28,7 @@ class DetailsViewModel(
 
     private val vacancyState = MutableLiveData<DetailsState>()
     fun observeVacancyState(): LiveData<DetailsState> = vacancyState
-    private var favouriteTracksId: List<String>? = null
+    private var favouriteVacanciesId: List<String>? = null
     var vacancy: VacancyDetails? = null
 
     fun addToFavById(vacancyId: VacancyDetails) {
@@ -81,15 +81,17 @@ class DetailsViewModel(
                 favouriteVacancyInteractor
                     .getAllFavouritesVacanciesId()
                     .collect {
-                        favouriteTracksId = it
+                        favouriteVacanciesId = it
                     }
             }
-            if (favouriteTracksId!!.contains(vacancyId)) {
-                isFavourite = true
-                vacancyState.postValue(DetailsState.isFavorite(isFavourite))
-            } else {
-                isFavourite = false
-                vacancyState.postValue(DetailsState.isFavorite(isFavourite))
+            if (favouriteVacanciesId != null) {
+                if (favouriteVacanciesId!!.contains(vacancyId)) {
+                    isFavourite = true
+                    vacancyState.postValue(DetailsState.isFavorite(isFavourite))
+                } else {
+                    isFavourite = false
+                    vacancyState.postValue(DetailsState.isFavorite(isFavourite))
+                }
             }
         }
     }
