@@ -7,7 +7,6 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-        jcenter()
     }
 }
 
@@ -17,7 +16,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter()
+        mavenLocal()
+        maven {
+            setUrl("https://mvnrepository.com/artifact/org.sufficientlysecure/html-textview")
+        }
     }
 }
 
