@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.vacancydetails.ui
 
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -238,7 +239,8 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun setDescription(binding: ItemVacancyDetailsViewBinding, state: DetailsState.Content) {
         val htmlDescription = state.vacancy.details.description
-        binding.descriptionVacancy.setHtml(htmlDescription)
+        //binding.descriptionVacancy.setHtml(htmlDescription)
+        binding.descriptionVacancy.text = Html.fromHtml(htmlDescription, Html.FROM_HTML_MODE_COMPACT)
         binding.vacancyDescriptionTv.isVisible = true
         binding.descriptionVacancy.isVisible = true
     }

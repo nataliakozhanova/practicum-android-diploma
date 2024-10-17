@@ -125,7 +125,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/formatWorkTv" />
 
-    <org.sufficientlysecure.htmltextview.HtmlTextView
+    <TextView
         android:id="@+id/descriptionVacancy"
         style="@style/Medium16TextStyle"
         android:layout_width="match_parent"
